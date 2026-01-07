@@ -1,0 +1,46 @@
+# =========================
+# Quarto
+# =========================
+.quarto/
+.quarto-cache/
+_cache/
+
+# (Only ignore _site if you are NOT using it)
+_site/
+
+# =========================
+# OS / editor noise
+# =========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Language-specific (optional)
+# Uncomment what applies
+# =========================
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+
+# =========================
+# IMPORTANT
+# =========================
+# DO NOT ignore docs/
+# GitHub Pages needs it
