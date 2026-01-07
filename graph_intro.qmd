@@ -1,0 +1,45 @@
+---
+title: Graph of a model
+subtitle: Visualizing the network of relationships between sensors 
+---
+
+***
+
+The graph of sensors interconnection enables to visualize through a condensed view what are the currently available relationships between the sensors. 
+
+This makes it possible to immediately see patterns showing which subsets of sensors are *intimately linked*. These links might be implied by the physical laws that govern this subset of sensors according to explicit relationships that hold independent of the context of excitation and use. 
+
+:::{.callout-tip title='Availability of the graph tool'}
+The graph of the sensors interconnection is available for the **g2sys** module and the GUI associated to the **pwpol** module as well. 
+:::
+
+Below is an example of a Graph view resulted from the use of **g2sys** in exploring the 
+relationships that hold in a hydraulic rig system[^rigseelater]: 
+
+![Screenshot of the g2sys section dedicated to the visualization of the graph of the hydraulic rig system (Zema dataset).](images/graph_g2sys_zema.png){width=80%}
+
+From this graph, the following facts can be infered: 
+
+1. There are three sensors appearing as the labels in **recursive relationships**. These are the sensors labelling nodes with thick boundaries, namely: `PS1`, `PS4` and `PS6`. 
+
+2. There is a **static relationship** that provides `PS2` as a function of `PS1` and `PS3`.
+
+3. `EPS1` statically depends on `PS1` and nothing else. 
+
+4. `PS6` is an autonomous (probably oscillator or periodic variable). 
+
+5. `PS4` appears in a recursive equations but it does not depends on itself. Probably `PS4` has the same derivative than `PS6`. Moreover, `PS4` is not needed to build the simulator of the system as it does not impact any of the other sensors while it is dynamically *intimately* linked to `PS6`. 
+
+:::{.callout-important title='Precaution of use during graph generation'}
+Notice that for the graph to be relevant, sensors should not have two relationships in the folder of models. In other words, for each sensor, there is **at most** one relationship where the sensor plays the role of a label.
+:::
+
+
+
+Notice also that the distinction into **recursive** (or dynamic) and static relationships holds only for the graph of models that are designed using the **g2sys** module. Those built up using the **pwpol** module does not show this distinction. 
+
+For a video showing the creation of such a graph on the hydraulic rig system, please refer to the [graph on the hydraulic rig system](graph_zema.qmd) section. 
+
+It is also shown later on that the graph of models built up using **g2sys** might facilitate the design of an associated **digital twin** as it is discussed in details in the [digital twins](digital_twins_intro.qmd) section.
+
+[^rigseelater]: See the [graph on the hydraulic rig system](graph_zema.qmd) section for a detailed explanation. 

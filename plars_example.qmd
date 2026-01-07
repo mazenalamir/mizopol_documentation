@@ -1,0 +1,203 @@
+---
+title: plars
+subtitle: Detailed analysis of a use-case
+---
+
+***
+
+## The problem 
+In order to better understand the parameters involved in the `plars` instantiation and use, it is worth working on a specific illustrative example so that the effect of changing each parameter value can be easily observed and explained. 
+
+So let us consider the following script that define a dataset that is associated to a known polynomial so that we can examine how the `plars` is able to recover the *hidden truth* from the pair $(X,y)$ of features matrix and label vector. 
+
+Let us consider the relationship defined by 
+
+$$
+y = x_0^2-30x_1x_3^3+4x_5^5-1
+$${#eq-leydefini}
+
+## The settings 
+We shall consider three different settings in order to illustrate some of the capabilities of `plars` in orienting the solution of the problem, namely: 
+
+:::{.panel-tabset}
+
+### Setting 1
+In this setting, we use the exact number of variable $n_x=6$ involved in @eq-leydefini. Morover, we instantiate the solver with *a slightly* higher degree than the unknown hidden one involved in @eq-leydefini, namely `deg`=6 instead of $5$. 
+
+_Notice that in this case, the number of eligible monomials is equal to 924_.
+
+### Setting 2
+ In this setting, we increase the number of variable $n_x=9$. Morover, we instantiate the solver with a **higher degree** than the unknown hidden one involved in @eq-leydefini, namely `deg`=7. 
+
+_Notice that in this case, the number of eligible monomial is equal to 11440_.
+
+### Setting 3
+We reuse the previous setting but we ask `plars` to select only `nfeats=4` among the $n_x=9$ variables to be involved in the polynomial expansion. 
+
+Notice how this induces a reduction in the computation time. Moreover, notice that the `nfeat` attribute of the solution is still computed based on $n_x=9$ while in fact, internally the truly used number of variables is `nfeats=4` which explain the reduction in the computation time. 
+:::
+
+
+## The results
+
+::: {.panel-tabset}
+
+# Setting 1
+
+```python 
+import numpy as np 
+from plars import PLARS
+
+nx = 6
+nt = 100000
+X =  np.random.rand(nt, nx)
+y = X[:,0]**2 -30*X[:,1] * X[:,3]**3 + 4 * X[:,5]**5-1
+
+pl = PLARS(window=500, deg=6, nModels=5, nModes=10, eps=1e-2)
+sol = pl.fit(X, y, compute_contributions=True)
+
+print('number of eligible parameters', sol['nfeat'])
+print(sol['dfe_train'])
+print(sol['card'])
+print(sol['df_sol'])
+print(f'cpu = {sol["cpu"]:3.2} sec')
+```
+
+which results in 
+
+:::{.very_small}
+```verbatim
+number of eligible parameters 924
+         Error
+50%   0.003069
+80%   0.005694
+90%   0.006973
+95%   0.008930
+98%   0.010817
+99%   0.011353
+100%  0.012464
+13
+    x0  x1  x2  x3  x4  x5  Contribution       std      coefs
+0    0   1   0   3   0   0     -0.522762  0.038242 -29.997015
+1    0   0   0   0   0   0     -0.136881  0.000000  -0.977973
+2    0   0   0   0   0   5      0.092488  0.006196   3.948401
+3    5   0   0   0   0   0     -0.088545  0.005112  -3.756293
+4    3   0   0   0   0   0      0.084649  0.003616   2.447522
+5    6   0   0   0   0   0      0.045957  0.003128   2.288520
+6    3   0   0   0   0   2     -0.007943  0.000618  -0.680418
+7    2   0   0   0   0   3      0.007027  0.000576   0.609813
+8    4   0   0   0   0   2      0.006844  0.000667   0.749974
+9    3   0   0   0   0   3     -0.005838  0.000494  -0.651726
+10   0   0   0   0   0   6      0.000618  0.000035   0.031106
+11   0   0   0   1   0   0     -0.000247  0.000005  -0.003558
+12   2   0   0   1   0   0      0.000152  0.000008   0.006449
+cpu = 0.3 sec
+```
+:::
+
+# Setting 2
+
+```python 
+import numpy as np 
+from plars import PLARS
+
+nx = 9
+nt = 100000
+X =  np.random.rand(nt, nx)
+y = X[:,0]**2 -30*X[:,1] * X[:,3]**3 + 4 * X[:,5]**5-1
+
+pl = PLARS(window=500, deg=7, nModels=5, nModes=10, eps=1e-2)
+sol = pl.fit(X, y, compute_contributions=True)
+
+print('number of eligible parameters', sol['nfeat'])
+print(sol['dfe_train'])
+print(sol['card'])
+print(sol['df_sol'])
+print(f'cpu = {sol["cpu"]:3.2} sec')
+```
+
+which results in 
+
+:::{.very_small}
+```verbatim
+number of eligible parameters 11440
+         Error
+50%   0.000585
+80%   0.000912
+90%   0.001099
+95%   0.001274
+98%   0.001481
+99%   0.001661
+100%  0.003145
+11
+    x0  x1  x2  x3  x4  x5  x6  x7  x8  Contribution           std      coefs
+0    0   1   0   3   0   0   0   0   0     -0.630226  4.183679e-02 -29.994346
+1    0   0   0   0   0   0   0   0   0     -0.166666  1.853559e-17  -0.998278
+2    0   0   0   0   0   5   0   0   0      0.072542  4.441163e-03   2.634459
+3    2   0   0   0   0   0   0   0   0      0.055356  2.311301e-03   0.985651
+4    0   0   0   0   0   4   0   0   0      0.046204  2.754222e-03   1.379038
+5    0   0   0   0   0   3   0   0   0     -0.015762  6.486132e-04  -0.385597
+6    0   0   0   0   0   7   0   0   0      0.008070  7.056783e-04   0.375179
+7    3   0   0   0   0   0   0   0   0      0.002117  1.182423e-04   0.050505
+8    4   0   0   0   0   0   0   0   0     -0.002028  1.001263e-04  -0.061360
+9    5   0   0   0   0   0   0   0   0      0.000697  4.547199e-05   0.025390
+10   0   1   0   1   0   0   0   0   0     -0.000191  7.361118e-06  -0.004540
+cpu = 0.93 sec
+```
+:::
+
+# Setting 3
+
+```python 
+import numpy as np 
+from plars import PLARS
+
+nx = 9
+nt = 100000
+X =  np.random.rand(nt, nx)
+y = X[:,0]**2 -30*X[:,1] * X[:,3]**3 + 4 * X[:,5]**5-1
+
+pl = PLARS(window=500, deg=7, nModels=5, nModes=10, eps=1e-2)
+sol = pl.fit(X, y, compute_contributions=True, nfeats=4)
+
+print('number of eligible parameters', sol['nfeat'])
+print(sol['dfe_train'])
+print(sol['card'])
+print(sol['df_sol'])
+print(f'cpu = {sol["cpu"]:3.2} sec')
+```
+
+which results in 
+
+:::{.very_small}
+```verbatim
+number of eligible parameters 330
+         Error
+50%   0.000446
+80%   0.000795
+90%   0.001035
+95%   0.001326
+98%   0.001644
+99%   0.001769
+100%  0.002796
+12
+    x3  x1  x5  x0  Contribution       std      coefs
+0    3   1   0   0     -0.652083  0.050207 -29.998752
+1    0   0   0   0     -0.172005  0.000000  -1.001214
+2    0   0   5   0      0.106215  0.006788   3.722983
+3    0   0   0   2      0.056125  0.002432   0.984052
+4    0   0   4   0      0.005643  0.000364   0.164724
+5    0   0   0   3      0.002525  0.000092   0.058017
+6    0   0   7   0      0.002488  0.000244   0.117669
+7    0   0   0   4     -0.001779  0.000088  -0.051696
+8    0   0   0   6      0.000367  0.000022   0.014886
+9    0   0   2   3     -0.000363  0.000032  -0.025200
+10   0   0   3   4      0.000195  0.000017   0.023137
+11   0   0   0   5     -0.000111  0.000007  -0.003900
+cpu = 0.23 sec
+```
+:::
+
+:::
+
+In the next section, a simple GUI enables to smoothly using the `plars` algorithm by simply uploading the dataframes is described. 

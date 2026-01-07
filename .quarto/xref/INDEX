@@ -1,0 +1,136 @@
+{
+  "index.qmd": {
+    "index.html": "9a564bb6",
+    "index.tex": "eddd2374"
+  },
+  "about.qmd": {
+    "about.html": "bcc4bcfd",
+    "about.tex": "eeaa1ea1"
+  },
+  "what_is.qmd": {
+    "what_is.html": "57c6992b"
+  },
+  "overview.qmd": {
+    "overview.html": "2a065359",
+    "overview.tex": "bc13982e"
+  },
+  "polynomials.qmd": {
+    "polynomials.html": "1ad4aebc",
+    "polynomials.tex": "a37d18b4"
+  },
+  "plars.qmd": {
+    "plars.html": "c22f2f7b",
+    "plars.tex": "6207ea6c"
+  },
+  "plars_intro.qmd": {
+    "plars_intro.html": "02dbbd38"
+  },
+  "plars_principle.qmd": {
+    "plars_principle.html": "bb61ef0c"
+  },
+  "plars_description.qmd": {
+    "plars_description.html": "404e717f"
+  },
+  "plars_example.qmd": {
+    "plars_example.html": "afd32805"
+  },
+  "use_cases/lars_staubli_4.qmd": {
+    "lars_staubli_4.html": "2787b039"
+  },
+  "plars_gui.qmd": {
+    "plars_gui.html": "3c9b70dd"
+  },
+  "sysgraph_intro.qmd": {
+    "sysgraph_intro.html": "f2ddd9c7"
+  },
+  "sysgraph_principle.qmd": {
+    "sysgraph_principle.html": "ec33bbf6"
+  },
+  "sysgraph_alignment.qmd": {
+    "sysgraph_alignment.html": "7a1d5f3b"
+  },
+  "g2sys_principle.qmd": {
+    "g2sys_principle.html": "2d7fa646"
+  },
+  "g2sys_intro.qmd": {
+    "g2sys_intro.html": "b1c33870"
+  },
+  "g2sys_alignment.qmd": {
+    "g2sys_alignment.html": "7fa94ee1"
+  },
+  "g2sys_fit_model.qmd": {
+    "g2sys_fit_model.html": "c463c9f1"
+  },
+  "g2sys_gui.qmd": {
+    "g2sys_gui.html": "2e273cc4"
+  },
+  "g2sys_metro.qmd": {
+    "g2sys_metro.html": "868bf4d3"
+  },
+  "g2sys_zema.qmd": {
+    "g2sys_zema.html": "3d73413d"
+  },
+  "g2sys_alignment_relationships.qmd": {
+    "g2sys_alignment_relationships.html": "f0eb7f3b"
+  },
+  "g2sys_valves.qmd": {
+    "g2sys_valves.html": "e00c6917"
+  },
+  "pwpolynomials.qmd": {
+    "pwpolynomials.html": "e17349e9"
+  },
+  "g2sys_delay.qmd": {
+    "g2sys_delay.html": "1288b77f"
+  },
+  "pwp_intro.qmd": {
+    "pwp_intro.html": "1ba116d3"
+  },
+  "pwpol_robot.qmd": {
+    "pwpol_robot.html": "f924730b"
+  },
+  "pwpol_anaesthesy.qmd": {
+    "pwpol_anaesthesy.html": "3c8ce06b"
+  },
+  "pwpol_anaesthesia.qmd": {
+    "pwpol_anaesthesia.html": "f3abafa0"
+  },
+  "plars_staubli_4.qmd": {
+    "plars_staubli_4.html": "b9e8e8fe"
+  },
+  "rlars_intro.qmd": {
+    "rlars_intro.html": "8e7c9f85"
+  },
+  "rlars_twin.qmd": {
+    "rlars_twin.html": "769d386f"
+  },
+  "g2sys_turbofan.qmd": {
+    "g2sys_turbofan.html": "873c62c9"
+  },
+  "graph_intro.qmd": {
+    "graph_intro.html": "ec20b0f0"
+  },
+  "graph_zema.qmd": {
+    "graph_zema.html": "b5c41800"
+  },
+  "digital_twins_intro.qmd": {
+    "digital_twins_intro.html": "36e84ba5"
+  },
+  "xpwpol_intro.qmd": {
+    "xpwpol_intro.html": "70bb16b8"
+  },
+  "xpwpol_robot.qmd": {
+    "xpwpol_robot.html": "622f99b4"
+  },
+  "parsimony.qmd": {
+    "parsimony.html": "2ef62334"
+  },
+  "parsimony_example_pol.qmd": {
+    "parsimony_example_pol.html": "719c7965"
+  },
+  "parsimony_oscillator.qmd": {
+    "parsimony_oscillator.html": "ac9f3d61"
+  },
+  "state_context_anomalies.qmd": {
+    "state_context_anomalies.html": "c5be2dfb"
+  }
+}

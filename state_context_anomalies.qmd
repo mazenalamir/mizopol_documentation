@@ -1,0 +1,90 @@
+---
+title: True vs False anomalies
+subtitle: Three reasons why time-series leave the normality domain.
+---
+
+***
+
+# State/parametes/context 
+
+In this first set of slides, we recall the problem of anomaly detection from blind normality characterization using healthy data. 
+
+The slides below explain that the time-series produced by an industrial equipment depend on three items, namely: 
+
+- The so-called **state vector** of the equipment 
+
+- The vector of **parameters** of the equipments and 
+ 
+- The exgenous items representing the **context** of operation. 
+
+
+<div class="slideshow">
+  <img id="slide1" src="images/anomalies_detection_pbstat_1.png" width="100%">
+  <br>
+  <button onclick="prev1()">Previous</button>
+  <button onclick="next1()">Next</button>
+</div>
+
+<script>
+(() => {
+  const images1 = [
+    "images/anomalies_detection_pbstat_1.png",
+    "images/anomalies_detection_pbstat_2.png",
+    "images/anomalies_detection_pbstat_3.png",
+    "images/anomalies_detection_pbstat_4.png",
+    "images/anomalies_detection_pbstat_5.png",
+    "images/anomalies_detection_pbstat_6.png",
+    "images/anomalies_detection_pbstat_7.png"
+  ];
+  let index1 = 0;
+
+  function show1() {
+    document.getElementById("slide1").src = images1[index1];
+  }
+  window.next1 = () => { index1 = (index1 + 1) % images1.length; show1(); };
+  window.prev1 = () => { index1 = (index1 - 1 + images1.length) % images1.length; show1(); };
+})();
+</script>
+
+:::{.callout-note title="True/False Alarm"}
+Ideally, we need to detect excursions, outside the normality domain, that are due to changes in the system's parameters or internal relationships and not because of a new unseen context or because of the state visiting regions of operation that were not encountered in the training data. 
+:::
+
+
+# The state/context induced false alarm 
+
+The next slides show a visual explanation of the above mentioned three reasons for which the time-series indicators leave the domain of normality as learned using the healthy training data. 
+
+<div class="slideshow">
+  <img id="slide2" src="images/sources_of_anomalies_1.png" width="100%">
+  <br>
+  <button onclick="prev2()">Previous</button>
+  <button onclick="next2()">Next</button>
+</div>
+
+<script>
+(() => {
+  const images2 = [
+    "images/sources_of_anomalies_1.png",
+    "images/sources_of_anomalies_2.png",
+    "images/sources_of_anomalies_3.png",
+    "images/sources_of_anomalies_4.png",
+    "images/sources_of_anomalies_5.png",
+    "images/sources_of_anomalies_6.png",
+    "images/sources_of_anomalies_7.png",
+    "images/sources_of_anomalies_8.png",
+    "images/sources_of_anomalies_9.png",
+    "images/sources_of_anomalies_10.png",
+    "images/sources_of_anomalies_11.png",
+    "images/sources_of_anomalies_12.png"
+  ];
+  let index2 = 0;
+
+  function show2() {
+    document.getElementById("slide2").src = images2[index2];
+  }
+
+  window.next2 = () => { index2 = (index2 + 1) % images2.length; show2(); };
+  window.prev2 = () => { index2 = (index2 - 1 + images2.length) % images2.length; show2(); };
+})();
+</script>

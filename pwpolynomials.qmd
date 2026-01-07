@@ -1,0 +1,153 @@
+---
+title: Piece-wise polynomials
+subtitle: On the rationale behind and the explicit/implicit forms of piece-wise polynomial residuals and their potential use.
+---
+
+***
+
+In this section, we discuss the class of piece-wise polynomial relationship, in their implicit and explicit forms. 
+
+But let us first justify the reason for which these relationships might be of great help in characterizing the normality in industrial time-series and hence in detecting unmodelled anomalies in industrial equipments. 
+
+## Why?
+
+Although multi-variate polynomials relationhips cover a wide class of physical laws, it is obvious that they do not cover every possibility. Think about the relationship involving trigonometric functions, square roots, exponential or rational relationships[^ifknown]. 
+
+However, any smooth relationship can be represented by **region-dependent** polynomials, namely: 
+
+:::{.callout-note title='Piece-wise polynomials'}
+ the feature space is *partitioned* into a set of regions over each of which a polynomial relationship captures the dependencies that hold on that specific region.  
+:::
+
+In the industrial context, the regions mentioned above can be the result of **different contexts** of use that might encompass different tunings of controller, different values of the set-points or different configurations of the system. 
+
+## Examples 
+
+One can simply think about a controlled system that tracks some reference signal $\texttt{y\_ref}$ and depending on the error $e=y-\texttt{y\_ref}$ between the regulated signal $y$ and that reference $\texttt{y\_ref}$. In order to avoid overshoots, it is common to define a **gain scheduled** feedback which applies a control voltage, say $u$ which is propotional to the error with a proportional gain $K$ that is: 
+
+- High when small tracking errors are measured and 
+- Low when high tracking errors are measured. 
+
+Namely 
+
+$$
+u = \left\{
+\begin{array}{ll}
+-K_h\times e\quad & \text{if $\vert e\vert \le \epsilon$}\\
+-K_\ell\times e\quad & \text{otherwise}\\
+\end{array}
+\right.
+$${#eq-conditionalgain}
+
+This obviously splits the space (via the condition $\vert y-\texttt{y\_{ref}}\vert\le \epsilon$) into two regions over each of which the relationship between the features $(y,\texttt{y\_ref})$ and the targeted label $u$ is polynomial (linear in the specific example) but there is no a single polynomial relationship that matches the relationship @eq-conditionalgain on the whole space of features. 
+
+This example is quite simple compared to industrial context where so many parameters might be involved in the definition of the so-called context. The latter is rarely available to the engineer in charge of designing anomaly detection algorithms. This means that: 
+
+:::{.callout-warning title='Blind handling of context'}
+The normality characterization algorithm should be unaware of the parameters that defines the context (the different regions of smooth relationships). The piece-wise relationships should be built **without the knowlege** of the precise definition of the unknown region. 
+:::
+
+::: {.columns}
+
+::: {.column width=65%}
+The figure aside shows another examples that comes from the [Kaggle dataset](https://www.kaggle.com/datasets/mazenalamir/parametric-anomaly-detection-in-time-series) dedicated to the parameteric anomaly detection in time-series. 
+
+Over each of the four regions, a sensor $y$ depends on the features vector $x\in \mathbb R^2$ through different polynomials, namely:
+
+$$
+y = P_i(x)\quad x\in \mathcal R_i\quad i\in \{1,\dots,4\}
+$${#eq-explicit}
+:::
+
+::: {.column width=5%}
+ 
+:::
+
+::: {.column width=30%}
+![](images/pwregions.png)
+:::
+
+:::
+
+## Explicit form
+
+When the region is known, namely when it is possible, knowing $x$ to associate the index $i$ of the region as shown in @eq-explicit, the relationship is called **explicit piewe-wise polynomial**. 
+
+More precisely, in the case of explicit piece-wise relationships, there exists a known integer values map $i^\star$ such that for a given $x$, $i^\star(x)$ denotes the index of the region to which belong the features vector $x$:
+
+$$
+x\in \mathcal R_{i^\star(x)}
+$${#eq-indexmap}
+
+In this case, the relationship @eq-explicit enables to *predict* the value of the label $y$ for a given value of the features vector $x$. The normality is then associated to the so-called **prediction error** given by: 
+
+$$
+e = \mu\Bigl(\overbrace{P_{i^\star(x)}(x)}^{\hat y(x)}-y\Bigr)
+$${#eq-explicit-error}
+
+The `xpwpol` module of the `MizoPol` package enables to derive this kind of explicit relationships in some parituclar use-cases. More details in the  [`xpwpol` module' section](xpwpol_intro.qmd) and the sections that follow it where some examples are given.
+
+Although the explicit piece-wise polynomial form is even larger than the explicit single unique polynomial form, it is sometimes hard to find for the reasons invoked in the following section. 
+
+### The need for an implicit form
+
+Unfortunately, as it has been mentioned earlier, it is not always possible to identify the region's index map @eq-indexmap in real-life situations. There are two reasons for this impossibility:
+
+1. The first lies in the difficulties associated to the identification of the classifier represented by the index region map $i^\star(x)$ even when it factually exists. 
+
+2. More importantly, it is possible that there is no explicit relationship between the feature vector $x$ and the label $y$ because the information contained in $x$ is not complete. 
+
+    This is the case for instance when the true *hidden* relationship that governs $y$ takes the following form: 
+
+    $$
+    y = F(x, z)\quad  \text{$z$ not available}
+    $$
+
+    where $z$ is a context variable having a finite set of unknown values that do not depend on the vector $x$ of features[^context]. Obviously, since in this case, the context does not depend on the features, it is impossible to identify the index map from the sole knowledge of $x$ as $z$ which is a crucial information that is needed to define the region, is simply not available. 
+
+Here is where the implicit form of the piece-wise relationships enter into the scene. This is explained in the next section. 
+
+## Implicit form 
+
+In the implicit form of the normality characterization via piece-wise polynomial relationships, the residual is defined by the following equality:
+
+$$
+e = \min_{i=1}^{n_r} \left\vert y - P_i(x)\right\vert 
+$${#eq-implicit-pwpol}
+
+where $n_r$ is the number of multi-variate polynomials that are involved in the implicit relationship. 
+
+It is important to notice that:
+
+::: {.callout-warning title='No predicted value of $y$'}
+The relationship @eq-implicit-pwpol that determines the residual $e$ expresses the distance of the measurement $y$ to the closest value among the set of values provided by the set of polynomials at $x$, namely: 
+
+$$\Bigl\{\hat y_i(x):=P_i(x)\Bigr\}_{i\le n_r}$$ 
+
+There is no way to compute the predicted value of $y$ (by the model) before the true value of $y$ is known. 
+
+In other words, in the absence of $y$, there is no way to determine which one of the values $P_i(x)$ is the closest to the true value $y$.
+:::
+
+This is why the implicit relationships are mainly used to characterize the normality and hence to **raise alarms** when the residual goes beyond some pre-defined threshold. 
+
+The explicit form might be used for both anomalies detection and digital twin enhancement. But the latter is less common to be found. 
+
+## All the identification are parsimonious
+
+In the above discussion, we did not recall the fact that:
+
+:::{.callout-note title='All raltionships are parsimoniously identified'}
+ whether they are implicit or explicit, the polynomial relationships that are identified by the modules of the MizoPol suite are all **parsimonious**.
+:::
+
+ The reasons for which parsimony is a key element in the context of processing industrial and technological time-series are discussed in the next section. 
+
+ 
+
+[^ifknown]: Notice however that if these non polynomial maps are a priori known, a virtual components might be added to the vector of features $x$ so that the standard polynomial structure become appropriate to capture the originally non polynomial relationships. But we do not consider this case here. 
+
+[^context]: Think about a robot performing a set of different tasks involving pieces of different weights and/or moments of ineria.
+
+
+

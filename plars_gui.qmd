@@ -1,0 +1,25 @@
+---
+title: User Graphical Interface for plars
+subtitle: Offering a smooth tunning experience
+---
+
+*** 
+
+The datasets used in the video bellow are described in the [KAGGLE repository](https://www.kaggle.com/datasets/mazenalamir/dataset-for-nonlinear-state-estimator-design) dedicated to the Machine Learning nonlinear state estimator design. 
+
+
+The dataset contains two examples where the **features** are represented by the past measurements instances over a so called *observation horizon* while the **label** is the value of the state at the present instant. 
+
+<video controls width="100%" style="border: 3px solid #3f7086ff; border-radius: 4px;">
+  <source src="https://www.mazenalamir.fr/videos/gui_plars.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+
+
+![](images/kaggle_datasets_estimator.png)
+
+
+
+
+

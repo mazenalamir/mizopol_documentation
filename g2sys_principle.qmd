@@ -1,0 +1,134 @@
+---
+title: g2sys
+subtitle: Principle 
+---
+
+***
+
+## Computation architecture
+
+The principle of the **g2sys** module is depicted in @fig-g2sysprinciple below 
+
+![Principle of g2sys: It is all about preparing the identification problem for the `plars` algorithm as described by the arguments shown in red.](images/g2sys_principle.png){#fig-g2sysprinciple}
+
+Notice the following fact: 
+
+1) The set of alignments between columns is reported in a dictionary of correlations. **Only uncorrelated columns are used in the search for relationships**. This reduces the computational burden by avoiding establishing easy-to-detect relationships. 
+
+    Obviously, later on, the normality check must also investigate whether previously aligned columns remain to be so, otherwise a missing alignement flag should be raised. 
+
+
+2) For each of the remaining *non aligned* columns, a `plars`-compatible problem (see the [introductory section for g2sys](#g2sys_intro.qmd)) and the associated regression problem is solved and the results are reported for the user's convenience. 
+
+    Notice that the creation of the plars-compatible regression problem needs the parameters `d`, `nd` and `recursive` to be defined. 
+
+3) :::{.callout-note title="recursive=True -> dynamic / otherwise static"}
+The recursive parameters is used to designate whether it is a static or a dynamic relationship that is searched for. More precisely, setting `recursive` to `true` means that a dynamic relationship is searched for, otherwise, a static relationship is targeted. 
+:::
+
+4) The operation is repeated over the list of sensors to be investigated. This list is designated by the input argument `list_of_c`.
+
+## Sparsity enhances reliability & interpretability
+
+While the crucial role of **sparsity** in addressing false alarm and anomaly detection has been previously underlined in the [Parsimony-related chapter](parsimony.qmd) and the examples that follow. It is worth mentioning it again in this **g2sys** chapter by addressing more **realistic examples** while underlying a new advantage that is associated to the **interpretability issue**.
+
+### Reliability
+
+It is important to understand the role of **sparsity** in providing reliable and **interpretable** anomaly detection because sparsity lies in the very heart of the **MizoPol** set of tools. 
+
+#### Real life example{#sec-compressor-ex} 
+
+In order to understand this key issue, we shall invoke the results shown in the use-case presented in [the metro compressor](g2sys_metro.qmd) section where a system representing a train's compressor (15 sensors) is analyzed by means of the **g2sys** dedicated Graphical User Interface (GUI). 
+
+After few clicks and iterations, it is shown that a tight **static** relationship can be found *indexed* by the sensor called `Reservoir`. The model has been fitted using only 12% of the learning data. 
+
+The following figure shows a screenshot of the GUI after these manipulations.
+
+:::{.columns}
+
+:::{.column width=35%}
+The **bold** title of the figure states the following fact: 
+
+- The model involves only $5$ monomials (hence, $5$ coefficients).
+
+- It provides a very small regression error and an almost **perfect alignment**
+:::
+
+:::{.column width=3%}
+
+:::
+
+:::{.column width=62%}
+![Screenshot of the **g2sys** GUI showing some information regarding the identified polynomial and the regression quality of the sensor/label $\texttt{Reservoirs}$.](images/compressor1.png)
+:::
+
+:::
+
+The next figure show the examination by the GUI of the residual (the normalized regression error) between the truly measured value of the $\texttt{Reservoir}$ sensor and the one provided by the fitted sparse polynomial:
+
+![Evolution of the residual, averaged over a rolling window of 5000 samples. Recall that the training has been performed using the first 30,000 samples.](images/compressor2.png){#fig-anomaly-compressor}
+
+This figure suggests the following observations:
+
+1) The relationship that links the sensor defining the label, namely $\texttt{Reservoirs}$ to the two sensors: $\texttt{H1}$ and $\texttt{Oil\_temperature}$ so that one can write: 
+
+$$
+\texttt{Reservoir} = P\Bigl(\texttt{H1}, \texttt{Oil\_temperature}\Bigr)
+$${#eq-reservoirH1Oil}
+
+where $P$ is a polynomial with only $5$ monomials as discussed above. 
+
+Based on the previous fact, let us consider the following question:
+
+:::{.callout-tip title='About normality detection'}
+**What are the odds** that a model with **only 5 parameters** fits with an error **lower than 7%** over almost all the 300,000 instances while **reaching 20% consistently** over a small interval (see @fig-anomaly-compressor) without this interval representing one of following two possibilities affecting the triplet $$(\texttt{Reservoir}, \texttt{H1}, \texttt{Oil\_temperature})$$
+
+- Either a context that is not seen in the training data 
+
+- Or a true anomaly affecting the compressor that *disturbed the relationship between these three sensors*?
+
+The odds should be very small but **the answer would not be so straightforward should the model be a Deep Neural Network with 200,000 parameters**. 
+:::
+
+#### A sketchy example 
+
+If this is not yet clear, the following two tabs hopefully might help:
+
+:::{.panel-tabset}
+
+## Parsimonious 
+
+![Since the model (in Green) is parsimonious and still fits almost all points, the red one can be declared to be anomalous **with high confidence**.](images/parsimony1){width=80%}
+
+## Non parsimonious
+
+![Because the model (in Green) is not parsimonuous, the probability it outit the data is greater making the diagnosis of the red circle more difficult to assess with confidence.](images/parsimony2){width=80%}
+:::
+
+### Interpretability 
+
+The discussion of the previous section was centered on reliability: sparsity makes decision reliable as the characterization of normality is less prone to overfitting and mis-representation. 
+
+But what about interpretability? 
+
+Let us consider again the example of the train compressor system used in @sec-compressor-ex above. Recall that our dataset involves **15 sensors** meaning that if we use an anomaly detection method that provides a black-box like anomaly-related residual, it would be difficult to interpret this residual having high value[^theraremethods]. One can just states that *there is something wrong happening*. 
+
+On the contrary, the fact that the residual is defined by the error on  @eq-reservoirH1Oil leads naturally to the following diagnosis: 
+
+:::{.callout-note title="Localisation of the anomaly source"}
+There is an anomaly that is linked to the triplet: 
+
+($\texttt{Reservoir}, \texttt{H1}, \texttt{Oil\_tempoerature}$), 
+
+namely: 
+
+- Either at least one of these sensors is deficient (but this should therefore be seen in all sparse relationships that involves this sensor)
+
+- Or their relationship is *detuned* for whatever reasons that the operator would recognize quite rapidly once she is notified that the default lies in this set of three sensors.
+:::
+
+Another very speaking example showing the role of the sparsity in enhancing both the reliability of the diagnosis and its interpetability is given through the use-case of the section dedicated to the [hydraulic system](g2sys_zema.qmd).
+
+ 
+[^noneed]: In case you are using the GUI, you probably do not need to go through the detailed description although this can help understanding the set of parameters to be tuned. 
+[^theraremethods]: There are some alternatives but franckly, they are not reliable nor trustworthy. 

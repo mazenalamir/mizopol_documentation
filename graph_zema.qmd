@@ -1,0 +1,30 @@
+---
+title: Graph of a model
+subtitle: Example of graph design using **g2sys**-generated  model of a hydraulic rig.
+---
+
+***
+
+In this section, a movie is proposed that shows how to build the graph of a system using the following steps: 
+
+1. Use **g2sys** to find the parsimonious static relationships between sensors. This step is shown in a accelerated manner as this functionality has been shown elsewhere in this site[^othermovies].  
+
+2. Each time such a **static relationship** is found, the sensor used as label is removed from the next steps. This is because this sensors can be expressed as a static relationship involving the other sensors and hence it should be useless in discovering the remaining relationships. 
+
+3. One no more good-enough **static** relationships can be found and all the sensors involved (as labels) in the previously found **static** relationships have been removed. **Some of the remaining sensors might represent the state components of the system** and their dynamic relationships can be looked for using the **g2sys** parameter `recursive` set to `True`. 
+
+These steps are shown in the following video that uses the publicly available **Zema** dataset that is available at [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/dataset/447/condition+monitoring+of+hydraulic+systems).
+
+<video controls width="100%" style="border: 3px solid #3f7086ff; border-radius: 4px;">
+  <source src="https://www.mazenalamir.fr/videos/graph_zema.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+:::{.callout-note title="Works also with pwpol"}
+Notice that the **implicit relationships** provided by the piece-wise polynomial modelling tool can also be visualized as a graph of connection. This uses mainly the same prinicple with the two differences: 
+
+1. There is currently no **static** vs **dynamic** relationships.
+2. The graph **cannot be used to design digital twins** since the relaionships are not explicit. 
+:::
+
+[^othermovies]: See for instance the movies of the **g2sys** used for the [hydraulic rig system](g2sys_zema.qmd), [the industrial valves](g2sys_valves.qmd) and the [compressor system.](g2sys_metro.qmd)

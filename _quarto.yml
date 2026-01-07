@@ -1,0 +1,138 @@
+project:
+  type: website
+  output-dir: docs
+
+bibliography: 
+  - biblio.bib
+
+website:
+  title: "**MizoPol**"
+  page-navigation: true
+  navbar:
+    pinned: true
+    logo: images/logo_mizopol.jpeg
+    left:
+      - text: Home
+        href: index.qmd
+      - text: Overview
+        href: overview.qmd
+      - text: Plars
+        href: plars_intro.qmd
+      - text: g2sys
+        href: g2sys_intro.qmd
+      - text: pwpol
+        href: pwp_intro.qmd
+      - text: xpwpol
+        href: xpwpol_intro.qmd
+      - text: rlars
+        href: rlars_intro.qmd
+      - text: Graph
+        href: graph_intro.qmd
+      - text: Digital twins
+        href: digital_twins_intro.qmd
+      - text: About
+        href: about.qmd
+
+    right:
+      - href: https://www.mazenalamir.fr
+        text: Mazen Alamir
+      - icon: github
+        href: https://github.com/mazenalamir
+        aria-label: GitHub
+
+  sidebar: 
+    contents: 
+      - index.qmd 
+      - section: "**Preliminaries**"
+        contents: 
+          - overview.qmd 
+          - polynomials.qmd
+          - text: "piewe-wise polynomials"
+            href: pwpolynomials.qmd
+          - text: "Parsimony: Intro"
+            href: parsimony.qmd
+          - text: "Parsimony: Example 1"
+            href: parsimony_oscillator.qmd
+          - text: "Parsimony: Example 2"
+            href: parsimony_example_pol.qmd
+          - text: "True/False anomalies"
+            href: state_context_anomalies.qmd
+      - section: "**plars**"
+        contents:
+          - text: "plars: Introduction"
+            href: plars_intro.qmd
+          - text: "plars: Principle"
+            href: plars_principle.qmd
+          - text: "plars: Example of use"
+            href: plars_example.qmd
+          - text: "plars: GUI"
+            href: plars_gui.qmd
+          - text: "plars: Robotic"
+            href: plars_staubli_4.qmd
+      - section: "**g2sys**"
+        contents:
+          - text: "g2sys: Introduction"
+            href: g2sys_intro.qmd
+          - text: "g2sys: Principle"
+            href: g2sys_principle.qmd
+          - text: "g2sys: Delays matter"
+            href: g2sys_delay.qmd
+          - text: "g2sys: Hydraulic rig"
+            href: g2sys_zema.qmd
+          - text: "g2sys: Compressor"
+            href: g2sys_metro.qmd
+          - text: "g2sys: Valves"
+            href: g2sys_valves.qmd
+          - text: "g2sys: turbofan"
+            href: g2sys_turbofan.qmd
+      - section: "**implicit pwpol**"
+        contents:
+          - text: "pwpol: Intro"
+            href: pwp_intro.qmd
+          - text: "pwpol: Robotic"
+            href: pwpol_robot.qmd
+          - text: "pwpol: Medical data"
+            href: pwpol_anaesthesia.qmd
+      - section: "**explicit pwpol**"
+        contents:
+          - text: "xpwpol: Intro"
+            href: xpwpol_intro.qmd
+          - text: "xpwpol: Robotic"
+            href: xpwpol_robot.qmd
+      - section: "**rlars**"
+        contents:
+          - text: "rlars: Intro"
+            href: rlars_intro.qmd
+          - text: "rlars: Twin-pendulum"
+            href: rlars_twin.qmd
+      - section: "**Graph of a model**"
+        contents: 
+          - text: "Graph: Introduction"
+            href: graph_intro.qmd
+          - text: "Graph: g2sys|Hydraulic rig"
+            href: graph_zema.qmd
+      - section: "**Digital twins**"
+        contents:
+          - text: "DT: Introduction"
+            href: digital_twins_intro.qmd
+      - about.qmd
+
+format:
+  html:
+    theme: flatly  # see https://bootxswatch.com
+    number-sections: true
+    html-math-method: mathjax
+    css: styles/styles.css
+    link-citations: true
+    csl: styles/apa.csl
+    toc: true
+
+resources:
+  - images/sparsity_osc_*.png
+  - images/anomalies_detection_pbstat_*.png
+  - images/sources_of_anomalies_*.png
+
+
+
+
+

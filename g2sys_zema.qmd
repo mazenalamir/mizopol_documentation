@@ -1,0 +1,44 @@
+---
+title: g2sys
+subtitle: Application to a hydraulic rig system (Zema). 
+---
+
+***
+
+:::{.callout-note title='This is an introductory usecase for the **g2sys** GUI.'}
+This first dataset is used to introduce the different options available in the user-friendly tool **g2sys**. In the movie representing the other use-cases, it is assumed that the user is familiar with these options which makes this movie **a must to see**! 
+:::
+
+
+:::{.columns}
+:::{.column width=45%}
+**Zema** Dataset
+: This is a public dataset that is available at [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/dataset/447/condition+monitoring+of+hydraulic+systems).
+
+***
+
+The data set addresses the condition assessment of a hydraulic test rig based on multi sensor data. 
+
+Four fault types are superimposed with several severity grades impeding selective quantification.
+
+ | **7** sensors | **255,420** rows |
+
+:::
+
+:::{.column width=4%}
+ 
+:::
+
+
+:::{.column width=50%}
+![Detecting invariants and anomalies in a hydraulic systems. (The above AI-generated photo is used for illustrative purpose and is not directly related to the dataset.)](images/zema_process.png){width=95% fig-align="right"}
+:::
+:::
+
+***
+
+<video controls width="100%" style="border: 3px solid #3f7086ff; border-radius: 4px;">
+  <source src="https://www.mazenalamir.fr/videos/g2sysZema.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+

@@ -1,0 +1,49 @@
+---
+title: "MizoPol"
+subtitle: A set of tools for identification, normality characterization and  anomaly detection in industrial time-series.
+---
+
+***
+
+:::{.columns}
+
+:::{.column width="20%"}
+![](images/logo_mizopol.jpeg)
+:::
+
+:::{.column width="3%"}
+ 
+:::
+
+:::{.column width="70%"}
+
+<br>
+**MizoPol** is a set of python modules[^mizopol_suite] that addresses the problem of  **identifying (piece-wise) polynomial relationships** between time series. This identification is detrimental in solving the following problems:
+
+[^mizopol_suite]: **MizoPol** is not rigorously speaking a *python package*. This is the reason why it is referred to as a *python suite* or a *set of modules*. Nevertheless, it is possible that the work *package* is used here and there by mistake. 
+:::
+
+:::
+
+
+- Anomaly detection by normality characterization 
+- Understanding the coupling between sensors beyond linear correlations
+- Identifying dynamics governing nonlinear unmodelled systems
+- Creating virtual sensors
+- Generating parametric subtil defaults to auto-train models 
+- help designing digital twins
+
+:::{.callout-note title="Domains of application"}
+Achieving the above listed tasks paves the way towards addressing many important domains of interest in industry such as:
+
+- Predictive **maintenance**. 
+- Nonlinear **control design**. 
+- State / parameter **estimation** of nonlinear systems.
+- Introducing relevant **parametric anomalies** beyond bias or relative error
+- **Context** detection.
+
+:::
+
+We'll come back to these applications as we explain the different modules and their illustrative use-cases.
+
+

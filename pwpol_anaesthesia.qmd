@@ -1,0 +1,179 @@
+---
+title: Piece-wise polynomial invariants
+subtitle: Usin pwpol to characterize normality in anaesthesia-related sensors
+---
+
+***
+
+## Objective 
+
+:::{.columns}
+
+:::{.column width=65%}
+In this section, it is shown how the identification of multivariate piece-wise polynomial invariants involving a set of sensors might be used to characterize the normality and hence help **detecting abnormal events during intervention in the operation room**. 
+
+The dataset used in this work is a subset of the well known $\texttt{vitalDB}$ dataset @lee_vitaldb_2022
+:::
+
+:::{.column width=5%}
+ 
+:::
+
+:::{.column width=30%}
+![](images/anaesthesia.png)
+:::
+
+:::
+
+
+The objective behind establishing invariant relationships can be stated as follows:
+
+:::{.columns}
+
+:::{.column width=60%}
+:::{.callout-note title='Problem statement'}
+Use some recorded sensors' measurements under *normal conditions* in order to:
+
+- Characterize normality 
+- Use the characterization to 
+    - detect events (anomalies) or 
+    - derive an automatic annotation tool.
+:::
+:::
+
+:::{.column width=5%}
+ 
+:::
+
+:::{.column width=35%}
+![](images/ana_anomaly_detection.png)
+:::
+
+:::
+
+Obviously, these goal can be progressively achieved by iterations between the algorithm and experts annotating/correcting the early labelling by the automatic tool. This is sketched in the following scheme: 
+
+![The principle of annotation/training/annotation cycle towards building a reliable events detection algorithm. (1) A first version of the algorithm is used to fit a model (2). This model can be used to annotate (3) a new subset of the dataset experts confirm/correct/annotate this new part (4). The resulting extended set is used to re-train the automatic annotator (5) and so on.](images/principle_annotation.png)
+
+
+:::{.callout-important title='Preliminary PoC'}
+As the roadmap needs several iterations and these require a long term committment from practicionners. The entire process has not yet been undertaken. Only the first two steps of the above described cycle have been implemented. 
+
+Consequently, the methods and the results discussed in this section can only be viewed as a sort of proof of concept and a roadmap rather than a ready-to-use tool.
+:::
+
+## The Dataset
+
+We work on a dataset involving **19 patients** having different kinds of surgeries. The sensors represented in the dataset are linked to the anaesthesia monitoring. More precisely, the following measurement sensors are involved: 
+
+**BIS**
+: Bi-Spectral Index (EEG measurements interpreted),
+
+**MAP**
+: Mean Arterial Pressure,
+
+**HR**
+: Heart Rate,
+
+**RR**
+: Respiration Rate (RR),
+
+**ETCO2**
+: End-Tidal Carbon Dioxide (ETCO2).
+
+Nevertheless, it is worth amphasizing that the methodology is perfetcly generic and might be successfully applied to any extended set of sensors[^sampling] (and not necessarily those linked to anaesthesia).
+
+## The priniciple 
+
+The principle of the method is sketched on the set of tabs below. Notice in particular the central role played by the identification of piece-wise polynomial relationships which is the precise task assigned to the `pwpol` module. 
+
+:::{.panel-tabset}
+
+## Sensors Time-series 
+
+![Zoom on several patients time-series which are concatenated to form the working dataset. The black solid line represent the events-related label which is provided by the annotators (doctors) working on the dataset.](images/fit2.png)
+
+## Fit models 
+
+![Five piece-wise polynomial models are fitted in each of which, one of the first five sensors is used as targeted label ($y$). DH stands for *Healthy Data*, namely, data with no or very few events. ](images/fit3.png)
+
+## Residuals time-series
+
+![By spanning the available measurement instants, the residuals of the relationships are computed in order to form the residual time-series for all the identified piece-wise relationships. These residuals profiles are used to analyze the ability of the resulting anomaly detector to raise relevant event-detection related alarms.](images/fit5.png)
+
+:::
+
+Based on the *Big Picture* explained in the figures above, let us focus on the identification task and evaluate the ability of the `pwpol` module to capture **tight** invariant relationships linking the available sensors information in spite of the variety of patients, operations and anaesthesiologists involved. 
+
+## Characteristics of identified models 
+
+The table below shows the characteristics of of the piece-wise polynomial invariant relationships for different targeted sensors:
+
+$$
+\texttt{BIS}, \texttt{MAP}, \texttt{HR}, \texttt{RR}, \texttt{ETCO2}
+$$
+and different precision thresholds: 
+$$
+\texttt{th}\in \{0.02, 0.05, 0.1, 0.15, 0.2, 0.3\}
+$$
+
+These models have been identified on the first $25\%$ of the patients (this corresponds to a patient-based split between train and test datasets).
+
+<div style="text-align: center;">
+<iframe src="html_files/dfRes.html" height="650" width="70%" style="border: 0.3px solid black;"></iframe>
+</div>
+
+Notice that in spite of the complex nature of the relationships, the number of monomials that is needed to capture the invariant relationship with high precision[^seemore] is rather moderate if not quite small and the computation time never exceeds half a minute. 
+
+
+## Visualizing some residuals {#sec-visualizing}
+ 
+:::{.panel-tabset}
+
+### th=0.02 | filter_win = 100
+
+<iframe src="html_files/residual_0_02.html" height="1200" width="130%" style="border: 0.0px solid black;"></iframe>
+
+### th=0.05 | filter_win = 1000
+
+<iframe src="html_files/residual_0_05.html" height="1200" width="130%" style="border: 0.0px solid black;"></iframe>
+
+### th=0.1 | filter_win = 1000
+
+<iframe src="html_files/residual_0_1.html" height="1200" width="130%" style="border: 0.0px solid black;"></iframe>
+
+:::
+
+## Event detection results 
+
+The previously defined normality characterization might be used to fire alarms in the operation rooms. The following figures show the resulting events detection statistics for different levels of acceptable false alarm rates. 
+
+Notice that there are different columns corresponding each to a level of precision so that each one can be used alone to fire alarm signals. The threshold used for each individual *worker* is the one written in purple at the top right corners of each table. 
+
+The last column corresponds to the case where an alarm is raised as soon as one of the workers fires an alarm. 
+
+The effective false alarm is the one associated to the last row in the tables. This differs from the previously mentioned one (in purple) which is used by each worker to fire the alarm.
+
+:::{.callout-tip}
+The events-related intervals have been annotated by doctors from the CHU-Grenoble on the recordings of 19 patients.
+:::
+
+:::{.panel-tabset}
+
+### admissible FA=10
+
+![](images/FA10_medical.png)
+
+### admissible FA=15
+
+![](images/FA15_medical.png)
+
+### admissible FA=20
+
+![](images/FA20_medical.png)
+
+:::
+
+[^sampling]: The sensors need to be presented using a common acquisition period. Therefore, in case of discrepancy, some data processing (under-sampling or interpolation) might be necessary in this case. 
+
+[^seemore]: This is better assessed by examining the representative figures shown in @sec-visualizing.

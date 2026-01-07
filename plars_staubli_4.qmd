@@ -1,0 +1,139 @@
+---
+title:  plars | use-case (1) 
+subtitle: Identification of the torque function for inverse model of a 4-axis **manipulator robot**
+---
+
+![The manipulator robot with 4-axis](images/staubliPhoto.png){width="20%" fig-align="left"}
+
+
+*** 
+
+# Dataset 
+
+We have the following dataframe representing the recording of kinematic variables and the torques at the axis joints:
+
+$$
+\{q_i\}_{i=1}^4,\quad \{\dot q_i\}_{i=1}^4, \quad\{\ddot q_i\}_{i=1}^4,\quad \{T_i\}_{i=1}^4
+$$
+ 
+of a 4-axis manipulator robot. 
+
+
+![Head of the dataframe containing 1617936 rows and 16 columns](images/staubli4dataframe.png)
+
+# Problem statement 
+
+
+:::{.callout-note title="Problem statement"}
+**Regression Problam** Find a sparse polynomial relationship $P$ such that 
+$$
+T_1 \approx P\bigl(x\bigr)\quad \vert\quad x:= \begin{bmatrix} 
+q\cr \dot q\cr \ddot q
+\end{bmatrix}\in \mathbb R^{12}
+$$
+The relationship $P$ should be fitted using only $10\%$ of the data[^withoutshuffle] and tested on the remaining $90\%$ of the data.
+:::
+
+
+# Solution and Results
+
+::: {.panel-tabset}
+
+# Fit on the training dataset
+
+The following script creates an instance of the `PLARS` class and look for a polynomial of degree 3. 
+
+```python 
+from plars import PLARS
+
+pl = PLARS(deg=3, window=1000, nModels=10, nModes=15, eps=0.01)
+sol = pl.fit(Xtrain, ytrain)
+
+print('number of rows in the training data = ', len(ytrain))
+print('number of eligible monomials', sol['nfeat'])
+print('Number of monomials used = ', sol['card'])
+print(f'cpu = {sol["cpu"]:3.4} sec')
+```
+
+The printed results are 
+
+```verbatim
+number of rows in the training data =  161793
+number of eligible parameters 455
+Number of monomials used =  101
+cpu = 1.756 sec
+```
+
+# Evaluate on the test dataset
+
+Now we use the `predict` method of the `PLARS` class in order to computed the torque on the test unseen dataset[^undersampling]. 
+
+```python
+from plars import predict 
+
+nJump = 10
+ypred = predict(Xtest[::nJump], sol)
+print(Xtest.shape)
+```
+
+```verbatim
+(1456143, 12)
+```
+
+# Results on test data
+
+:::{.callout-important}
+[**This solution has been found in less than 2 sec!**]{.smallcaps .large}
+:::
+
+<iframe src="html_files/robot4axis.html" width="100%" height="500px" style="border:none;"></iframe>
+It is possible to **zoom on the figure** in order to appreciate the quality of the prediction provided by the fitted sparse polynomial.
+
+:::
+
+# Contributions of monomials 
+
+Using the `monomial_contributions` function available in the `plars` module, it is possible to rank the relative contributions of the selected monomials in the solution `sol` delivered by the `fit` method. 
+
+In the following results these contributions are examined using the train and the test datasets successively. 
+
+:::{.callout-tip title="About the sensitivity results"}
+- The similar results in the two datasets suggests the relevance of the estimated contributions. 
+- Notice the prevalence of the two most important monotmials are precisely $\ddot q_1$ and $\dot q_1$ which seem relevant given that the targeted label is the torque applied to the fist axis. 
+::: 
+
+:::{.panel-tabset}
+
+# Train dataset 
+
+```python 
+from plars import monomial_contributions
+
+df_Contrib = monomial_contributions(df[colXq].iloc[0:nTrain], 
+                                    sol, 
+                                    win=pl.window)
+
+df_Contrib.reset_index(drop=True).iloc[0:10]
+```
+![Contribution of the selected monomial in the train dataset](images/contribTrain.png){width=50% fig-align="left"}
+
+# Test dataset 
+
+```python 
+from plars import monomial_contributions
+
+df_Contrib = monomial_contributions(df[colXq].iloc[nTrain:], 
+                                    sol, 
+                                    win=pl.window)
+
+df_Contrib.reset_index(drop=True).iloc[0:10]
+```
+
+![Contribution of the selected monomials in the test dataset](images/contribTest.png){width=50% fig-align="left"}
+
+:::
+
+
+[^withoutshuffle]: The split should be done without shuffile by using only the first $10\%$ of the data to fit the model. 
+
+[^undersampling]: Only one row each 10 is computed so that the resulting plotly-generated html be *memory-friendly*.

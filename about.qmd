@@ -1,0 +1,48 @@
+---
+title: "About mizopol"
+subtitle: "Contact information"
+---
+
+***
+
+:::{.columns}
+
+:::{.column width=27%}
+![](images/logo_mizopol.jpeg)
+:::
+
+:::{.column width=3%}
+ 
+:::
+
+:::{.column width=70%}
+MizoPol is a `Python` package written by **Mazen Alamir**, research director at CNRS, Grenoble, France.
+
+Visit the author's website [website](https://www.mazenalamir.fr) for more details regarding his research topics. 
+For any comment and/or suggestions, feel free to <a href="#" onclick="location.href='mailto:mazen.alamir@grenoble-inp.fr'; return false;">
+  contact him directly.
+</a>
+:::
+
+:::
+
+:::{.callout-tip}
+If you feel that the tools of **MizoPol** can help you 
+
+- understanding your data, 
+- discovering relationships, 
+- characterizing normality for anomaly detection, 
+- suggesting relationships for your digital twin ceation process
+- designing virtual sensors 
+- ...
+
+feel free to <a href="#" onclick="location.href='mailto:mazen.alamir@grenoble-inp.fr'; return false;">
+  contact me
+</a>
+for a simple discussion or more. I am interested in having even more friction with real data and issues so that **mutual benefit** can be generated for both of us.
+
+:::
+
+***
+
+

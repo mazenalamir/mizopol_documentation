@@ -1,0 +1,28 @@
+---
+title: g2sys
+subtitle: On the relevance of introducing delays in the relationships
+---
+
+*** 
+
+In this section, an example is introduced that shows that introducing delayed versions of the sensors time-series as additional features might be crucial in getting successful identification of sparse and precise relationships. 
+
+This is shown using the example of the hydraulic rig that is extensively studied in [ the related section](g2sys_zema.qmd). 
+
+Here we just focus on a single sensor's relationship identification in order to show how the introduction of delays enables a better identification. 
+
+::: {.callout-note title='Introducing delay requires scalability'}
+It is crucial to keep in mind that when the system shows $n_s$ sensors then introducing $n_d$ delay results in the new identification problem having $n_s\times n_d$ sensors. 
+
+When seeking multi-variate polynomials, the number of candidate monomials rapidly grows. Here is were the solver scalability becomes mandatory 
+
+(see the discussion regarding this issue in the [dedicated section](g2sys_intro.qmd#sec-scalability). 
+:::
+
+
+***
+
+<video controls width="100%" style="border: 3px solid #3f7086ff; border-radius: 4px;">
+  <source src="https://www.mazenalamir.fr/videos/delays_matter.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>

@@ -1,0 +1,37 @@
+---
+title: g2sys
+subtitle: Finding invariant relationships in a train's **compressor**
+---
+
+***
+
+:::{.columns}
+:::{.column width=45%}
+**MetroPT-3 Dataset**
+: This dateset is available at the [KAGGLE repository](https://www.kaggle.com/datasets/dhirajbembade/metropt-3-dataset?utm_source=chatgpt.com)
+
+ *** 
+
+It consists of multivariate time-series recordings obtained from several analogue and digital sensors installed on the compressor of a train. 
+
+The data spans between February and August 2020 and includes 15 signals, such as pressures, motor current, oil temperature, and electrical signals of air intake valves
+
+ | **15** sensors | **300,000** rows |
+
+:::
+
+:::{.column width=3%}
+ 
+:::
+
+:::{.column width=50%}
+![The train's compressor system. (The above AI-generated photo is used for illustrative purpose and is not directly related to the dataset.)](images/metroPT.png){width=95% fig-align="right"}
+:::
+:::
+
+***
+
+<video controls width="100%" style="border: 3px solid #3f7086ff; border-radius: 4px;">
+  <source src="https://www.mazenalamir.fr/videos/g2sys_metroPT.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>

@@ -1,0 +1,46 @@
+---
+title: Physics-induced parsimony 
+subtitle: Context-independent normality characterization 
+---
+
+***
+
+In the slides below, we show how the physics-informed definition of the features enables to better separate the time-series in clusters that are determined by the coefficients of the system. 
+
+The slides shows two ways of generating features:
+
+- The first is based on the first three componenets as computed using the Principal Components Analysis (PCA) of the time-series 
+
+- The second is based on the coefficients of the model that links the different **filtered versions** of the first three derivation orders, namely, 0, 1, and 2.
+
+
+<div class="slideshow">
+  <img id="slide" src="images/sparsity_osc_1.png" width="100%">
+  <br>
+  <button onclick="prev()">Previous</button>
+  <button onclick="next()">Next</button>
+</div>
+
+<script>
+const images = ["images/sparsity_osc_1.png","images/sparsity_osc_2.png", "images/sparsity_osc_3.png","images/sparsity_osc_4.png","images/sparsity_osc_5.png","images/sparsity_osc_6.png","images/sparsity_osc_7.png","images/sparsity_osc_8.png","images/sparsity_osc_9.png","images/sparsity_osc_10.png","images/sparsity_osc_11.png","images/sparsity_osc_12.png","images/sparsity_osc_13.png",
+];
+let index = 0;
+
+function show() {
+  document.getElementById("slide").src = images[index];
+}
+function next() {
+  index = (index + 1) % images.length;
+  show();
+}
+function prev() {
+  index = (index - 1 + images.length) % images.length;
+  show();
+}
+</script>
+
+:::{.callout-important}
+Now obviously, the idea is not to look for a physical modelling of each use case but to underline the fact that if one look for sparse relationships between sensors and their delayed versions (as it is, in paritular done in the **g2sys** module of the MizoPol suite), it is most likely that relationships which are based on the physics naturally emerge from the search process.
+::: 
+
+In the next section, another example is provided that underlines the advantages of sparse solutions to an identification problem. 

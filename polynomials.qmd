@@ -1,0 +1,81 @@
+---
+title: Polynomials
+subtitle: A reminder on multi-variate polynomials' notation and related modules
+---
+
+***
+
+In this section, we recall some definitions related to multi-variate polynomials as the latter are in the heart of the **mizopol** package.
+
+## Definition {#sec-poldef}
+
+- Let us assume that $x\in \mathbb R^n$ is an $n$-dimensional vector of features. 
+- A multivariate[^multivariate] polynomial in $x$ is a scalar map $P(x)$ that takes the following form:
+
+$$
+P(x)=\sum_{i=1}^{n_c} c_i\phi_i(x)\quad\text{where}\quad \phi_i(x) = \prod_{j=1}^{n}x_j^{p_{ij}} 
+$${#eq-defdepol}
+
+where each $\phi_i$ in @eq-defdepol is called a **monomial**. 
+
+- The degree of monomial $\phi_i$ is defined by the sum of its powers, namely: 
+
+$$
+\texttt{deg}(\phi_i) = \sum_{j=1}^{n}p_{ij}
+$${#eq-degphi}
+
+- The degree of the polynomial is the maximum degree of its monomial, namely:
+
+$$
+\texttt{deg}(P) = \max_{i=1}^{n_c}\Bigl[\texttt{deg}(\phi_i)\Bigr]
+$${#eq-degP}
+
+## Representation {#sec:polrepresentation}
+
+From the very definition of a monomial $\phi_i$, it comes out that its contribution to the expression of the polynomial $P$ is entirely defined by the following attributes: 
+
+1. The vector of powers $p_{ij}$ for $j\in \{1,\dots,n\}$ (these are integers)
+2. The coefficient $c_i$ that is associated to the monomial 
+
+In other words, the information associated to $\phi_i$ takes the following form:
+
+![Attributes of a monomial in a polynomial in $n$ arguments](images/attributes_monomial.png){#fig-attributes-mono width="80%"}
+
+Now since the polynomial $P$ involves $n_c$ monomials, it comes out that $P$ is totally determined by its power matrix and its associated vectors of coefficients as it is shown in the following figure (see also @eq-defdepol):
+
+![The 'powers' and 'coefs' attributes of a polynomial $P$ with $n_c$ monomials and $n$ variables](images/Powers_coefs.png){#fig-attributes-polynomial  width="100%"}
+
+## Example 
+
+The following script shows the use of the above representation in defining a polynomial and evaluating its values on a matrix of features. This script uses the `polyval` function of the `utilities` module of **mizopol**.
+
+
+```python
+import numpy as np 
+from utilities import polyval
+
+nx = 6
+nt = 10000
+
+# Generate data 
+X = np.random.rand(nt, nx)
+y = X[:,0]**2 -3*X[:,1] * X[:,3]**3 + 4 * X[:,5]**5-1
+
+# Define the powers and the coefficients of the polynomial 
+P = [[2, 0, 0, 0, 0, 0], 
+     [0, 1, 0, 3, 0, 0],
+     [0, 0, 0, 0, 0, 5], 
+     [0, 0, 0, 0, 0, 0]
+     ]
+
+c = [1, -3, 4, -1]
+
+# Predict the value of the polynomial at X
+# and compare to the true value
+ypred = polyval(X, P, c)
+print(abs(y-ypred).max())
+
+>> 8.881784197001252e-16
+```
+
+[^multivariate]: We shall drop the word *multivariate* in the sequel. 

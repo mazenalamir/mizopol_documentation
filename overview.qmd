@@ -1,0 +1,237 @@
+---
+title: Overview 
+subtitle: The mizopol suite in a glance.
+---
+
+***
+
+The **mizopol** suite currently consists of the following modules that are presented in details through this documentation. 
+
+The presentation below aims at giving a brief and sketchy overview of the tools. 
+
+::: {.panel-tabset}
+
+# `plars`
+
+:::{.columns}
+:::{.column width="45%"}
+Identify a sparse multi-variate polynomial[^poly] $P$ such that:
+$$y\approx P(x)$$ 
+
+The algorithm is based on a modified, **scalable version** of the `LARS` (least angle) algorithm. 
+
+The `plars` module is detailed [here](plars_intro.qmd).
+
+***
+
+:::{.small-gray-light}
+**M. Alamir**, Nonlinear control of uncertain systems: conventional and data driven alternatives with python. **Springer-Nature**, November, 2025
+:::
+
+[^poly]: see the [polynomial](polynomials.qmd) page for a rigorous definition.
+:::
+
+:::{.column width="5%"}
+ 
+:::
+:::{.column width="50%"}
+
+```python
+from plars import PLARS, predict 
+
+# Create an instance of the PLARS class
+pl = PLARS(
+        deg=3, 
+        window=1000, 
+        nModes=10, 
+        nModels=10, 
+        eps=0.05
+)
+
+# Fit the data and get the solution 
+sol = pl.fit(X, y , ...)
+
+# Predict on new data with sol 
+ypred = predict(Xtest, sol)
+```
+:::
+:::
+
+
+# `g2sys`
+
+:::{.columns}
+:::{.column width="58%"}
+Given sensors $s_1$, ..., $s_n$, 
+fit a set of relationships of one of the following two forms: 
+
+:::{.small}
+
+:::{.callout-note title='Static'}
+**Static**
+$$
+s_i(k)=F_i\left(\{s_j(k-\sigma\times d_i)\}_{(j\neq i,\sigma\in \{0,\dots,m_i\})}\right)
+$$
+ $\rightarrow$ $s_i$ is a static function of the other sensors and their past values up to $m_i\times d_i$.
+:::
+
+:::{.callout-note title='Dynamic'}
+
+**Dynamic**
+$$
+\Delta s_i(k)=F_i\left(\begin{array}
+\{s_i(k-\sigma\times d_i)\}_{\sigma\in \{1,\dots,m_i\}}\cr 
+\{s_j(k-\sigma\times d_i)\}_{(j\neq i,\sigma\in \{0,\dots,m_i\})}
+\end{array}
+\right)
+$$
+$\rightarrow$ The increment $\Delta s_i:=s_i(k)-s_i(k-d_i)$ of $s_i$ is a static function of the all sensors and their past values up to $m_i\times d_i$.
+:::
+Can be use to achieve the following tasks: 
+
+- Design **explainable** normality indicators 
+- **Discover** unmodelled **relationships**
+- Help designing Dynamic **Digital Twins** 
+- **Detecting contexts** in the datasets
+- Remove **redundant sensors**
+- Survey **persistant correlations**
+
+The **g2sys** module is detailed [here](g2sys_intro.qmd)
+
+:::
+:::
+
+:::{.column width=1%}
+ 
+:::
+
+:::{.column width="41%"}
+
+:::{.panel-tabset}
+
+# Objective
+
+![Discover the graph of coupling. Undertand the equiment and how the available sensors connect to each other as far as the dataset can tell.](images/g2sys_graph.png){ style="border: 0px solid #498aa6ff; border-radius: 0px;" }
+
+# Screenshot
+![A user friendly and responsive environment to discover the relationship by manipulating the model's parameters $d_i$, $m_i$, `static`, `dynamic` etc.](images/g2sys_overview.png){ style="border: 0px solid #498aa6ff; border-radius: 0px;" }
+:::
+
+:::
+:::
+
+# `pwpol`
+
+:::{.columns}
+:::{.column width="55%"}
+Given a set of sensors $s_j$, $j=1,\dots,n_s$ and a target sensor $s_i$, find a set of $n_r$ polynomials $P_\sigma$, $\sigma=1,\dots,n_r$, such that the following residual: 
+$$
+e_i = \min_{\sigma=1}^{n_r}\Bigl\vert s_i-P_\sigma(\{s_j\}_{j\neq i})\Bigr\vert
+$${#eq-residual-implicit}
+is small.
+
+Notice that: 
+
+- @eq-residual-implicit defines an **implicit** invariant describing the normality of the system should the dataset on which it is computed be healthy.
+
+- The number $n_r$ of polynomials should be made as small as possible.
+
+- @eq-residual-implicit does not provide a *prediction* capability since the residual can be computed only when the measurement $s_i$ is available. 
+
+The **pwpol** module is detailed [here](pwp_intro.qmd).
+
+:::{.column width=2%}
+ 
+:::
+
+:::
+:::{.column width="42%"}
+![Schematic view of a piece-wise defined relationship with two regions $\mathcal R_a$ and $\mathcal R_b$ and the random search hypercubes used in the `pwpol` module.](images/piece_wise.png){width=100%} 
+:::
+:::
+
+# `rlars`
+
+:::{.columns}
+
+::: {.column width=50%}
+Given 
+
+- a features vector $x$ and 
+- a label $y$, 
+
+find a set of multi-variate polynomials: 
+
+$$
+c_0(x),\dots, c_r(x)
+$$
+
+such that $y$ is a root of the following scalar polyomial (in the unknown $z$):
+
+$$
+c_r(x)z^r+\dots+c_1(x)z+c_0(x)
+$$
+
+More precisely, the following can be viewed as a residual for the normality characterization of the pair $(x,y)$: 
+
+$$
+R(x,y):=\sum_{j=0}^rc_j(x)y^j
+$${#eq-residualofrlars}
+
+:::
+::: {.column width=2%}
+ 
+:::
+
+::: {.column width=47%}
+
+:::{.callout-note title="Rational functions"}
+The starting point of this structure is that in the particular case where $r=1$, @eq-residualofrlars simply implies that:
+$$
+y = -\dfrac{c_0(x)}{c_1(x)}
+$$
+
+which is simply a multi-variate fractional expression in the features vector $x$. 
+
+This generalizes the polynomial structure targeted by `plars`. 
+
+Notice however that this is only the starting point, the results obviously offer a much wider generalization than simply fractional representation when $r>1$. 
+:::
+
+:::
+
+:::
+
+# `xpwpol` 
+
+:::{.columns}
+
+::: {.column width=50%}
+Given 
+
+- a features vector $x$ and 
+- a label $y$, 
+
+the `xpwpol` module enables to design relationships of the form: 
+
+$$
+y = P_{\mathcal R(x)}(x) 
+$$
+
+where 
+
+- $\mathcal R(x)\in \{1,\dots,n_r\}$ is a region map 
+
+- $P_j$ for $j\in \{1,\dots,n_r\}$ is the multi-variate polynomial that represents the relationship between $x$ and $y$ in the associated region of the features space.
+:::
+::: {.column width=2%}
+ 
+:::
+
+::: {.column width=47%}
+
+![Given a features vector $x$, the region map $\mathcal R(x)$ determines which polynomial should be used to predict the value of the label $y$](images/illustration_xpwpol_overview.png)
+
+:::
+
+:::

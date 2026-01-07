@@ -1,0 +1,216 @@
+---
+title: g2sys
+subtitle: Discovering the graph of static and dynamic connections in a set of sensors. 
+---
+
+*** 
+
+**g2sys** leverages the **plars** module in order to exhibit multi-variate **polynomial[^polyrecall] relationships** involving a set of sensors' time-series included in the training dataset. 
+
+Let us first state the problem the g2sys is designed to address before we go deeper in the presentation.
+
+## Problem statement
+
+**g2sys** is a friendly graphical user-interface  (GUI) which enables an easy and efficient manipualtion of the parameters in order to discover **invariant relationships** between a set of sensors and their delayed values. 
+
+Moreover, the GUI enables to choose the training regions and show the residuals associated to the *discovered* relationships over the whole dataset. This enables to check their generalization powers (the persistence of their invariance). 
+
+Let us first of all precisely define the class of relationships **g2sys** helps disconvering. 
+
+:::{.callout-tip title='Sensor-based indexing of relationships'}
+Regardless of the kind of a relationhip (see below), the latter is always associated to a sensor index, say $i$. 
+
+The relationship is then expressed in one of the following two forms: 
+
+$$
+\begin{align}
+&(\texttt{Static})\qquad\qquad  &s_i(k) = P_i(\dots) \\
+&(\texttt{Dynamic})\qquad\qquad  &s_i(k)-s_i(k-d) = P_i(\dots) 
+\end{align}
+$${#eq-static-dynamic}
+where $P_i$ is a polynomial, $d$ is a chosen delay and where the input arguments, the denoted by $\dots$ are detailed in the following sections.
+:::
+
+In the following sections, the two classes of relationships are detailed.
+
+## The classes of relationships 
+
+Depending on the parameters setting of the **g2sys** module, the following two kinds of polynomial relationships might be targeted by the search engine: 
+
+### Static relationships 
+
+In a static relationship, **related to sensor index $i$**, the st of arguments of the polynomial $P_i$ involved in @eq-static-dynamic is given by:
+
+$$
+\texttt{(Static)}\quad \texttt{arguments of $P_i$}: \quad \begin{bmatrix} 
+s_j(k)\\
+s_j(k-d)\\
+\vdots\\
+s_j(k-n_d\times d)
+\end{bmatrix}_{j\neq i}
+$${#eq-arguments-exp}
+Namely, all the values of all the sensors, **except $i$**, and their delayed version, with $n_d$ multiples of the delay $d$. 
+
+:::{.callout-tip title='Regarding the design parameters $d$ and $n_d$'}
+The elementary delay $d\in \mathbb N$ as well as the number of delays considered in the arguments of $P_i$ are two of the search parameters (see below).
+
+Notice that when choosing $d>1$, an under-sampling is applied which can be necessary in many cases where a high sampling rate is present in the data that is not necessarily useful[^harmful] for the relationships' discovery.
+::: 
+
+Based on the above definitions, the **static relationships** can be schematically described by the following figure: 
+
+![Illustration of the logic of a static relationship indexed by sensor 2 with $n_d=3$, $d=2$.](images/g2sys_static.png){#fig-static-scheme}
+
+### Dynamic relationships 
+
+The dynamic relatioships might possibly[^prov] correspond to discrete versions of any possible differential relationships expressed via multi-variate polynomials. 
+
+Mathematically, such relationships involve arguments of the form expressed by @eq-arguments-exp with a major difference in that the index $j$ spans all sensors indices including the index $i$ of the targeted sensor, namely:
+
+$$
+\texttt{(Dynamic)}\quad \texttt{arguments of $P_i$}: \quad \begin{bmatrix} 
+s_j(k)\\
+s_j(k-d)\\
+\vdots\\
+s_j(k-n_d\times d)
+\end{bmatrix}_{\forall j}
+$${#eq-arguments-exp_allj}
+
+Moreover, keep in mind that the relationship should approximate the increment $$\Delta s_i(k):=s_i(k)-s_i(k-d)$$ rather than the simple value $s_i(k)$.
+
+This can be schematically represented in the following figure: 
+
+![Illustration of the a **dynamic relationship** associated to $i=2$, $d=2$ and $n_d=3$.](images/g2sys_dynamic.png){#fig-dyn-scheme}
+
+:::{.callout-warning title="Risk of trivial solution for dynamic relationship with $n_d\ge 2$"}
+Using dynamique relationships with $n_d\ge 2$ might lead to the risk of identifying **trivial relationships** as in many use-cases, the following might be true: 
+$$
+\Delta s(k) := s(k)-s(k-d) \approx s(k-d)-s(k-2d)
+$${#eq-trivial}
+
+and since the terms in the r.h.s of @eq-trivial are both in the set of arguments of $P_i(\cdot)$, a tight relationship might be thought to be found while it simply represent an zero order extrapolation of the previous increment's value. 
+
+That is the reason why, when dynamic relationships are seeked with $n_d\ge 2$, a meticulous check should be undertaked to certify that the relationship is not a trivial one. 
+
+**Another way to avoid this risk is to prefer dynamic relationships with $n_d=1$ and to use higher values only in case of failure.**
+:::
+
+## Redundancy & implicit character
+
+In this section, some important aspects that are worth keeping in mind when using **g2sys** are briefly discussed. 
+
+### An illustrative example
+
+As a supporting example, let us consider the following relationship linking tow sensors: 
+
+- The speed $v$ of a vehcile of mass $m$ and 
+- The acceleration pedal's angular position $\theta$.
+
+Let us assume that an angular position $\theta$ induces a traction force $T=K\theta$ that is proportional to $\theta$ and that a friction term given by $-\lambda_f v^2$ is present.  The Newton's law can be written as follows: 
+
+$$
+\dfrac{dv}{dt} = K\theta-\lambda_f v^2
+$${#eq-car-newton}
+
+In this example, we dispose of two sensors: 
+
+$$
+s_1=v\quad \text{and}\quad s_2=\theta
+$$
+
+Let us try to analyze what happens when we try to exhibit (*discover*) relationships when successively using $i=1$ and $i=2$.
+
+#### Case where $i=1$ 
+
+In this case, one is targetting relationships on the sensor $$s_1=v$$ As mentioned, above this can be static or dynamic. 
+
+##### Static relationships
+
+In this case, one is looking for a relationship of the form: 
+
+$$v_k=P_1(\theta_k, \theta_{k-d}, \dots, \theta_{k-n_d\times d})$$
+
+which is obviously **non existant**. One cannot guess the speed of the vehicle from the recent history of the angular position of the acceleration's pedal. 
+
+##### Dynamic relationships 
+
+In this case, one is looking for a relationship of the form: 
+
+$$v_k-v_{k-d}=P_1(v_{k-d}, \dots, v_{k-n_d\times d}, \theta_k, \theta_{k-d}, \dots, \theta_{k-n_d\times d})$$
+
+But we know from @eq-car-newton that we have (approximately):
+
+$$
+\dfrac{v_{k}-v_{k-d}}{d\times \tau} = K\theta_k -\lambda_f (v_{k-d}^2 + \varepsilon_k)\quad \text{where}\quad  \varepsilon_k:=(v_k^2-v_{k-d}^2)
+$$
+where $\tau$ stands for the sampling acquisition period. 
+
+This means that a dynamic relationship can be approximately find **provided that the speed of the vehicle[^slowly] is slowly varying**. 
+
+To summarize, in this case, a dynamic relationship would be found for which the polynomial present in the r.h.s of @eq-static-dynamic is given by:
+
+$$
+P_1(\cdot) = (d\times \tau)\times (K\theta_k-\lambda_f v_{k-d}^2)
+$${#eq-case1dynamic}
+
+#### Case where $i=2$
+
+Now what happens when using $i=2$ which considers the target sensor to be $$s_2=\theta\qquad ?$$
+
+##### Static relationships
+
+Stranglely enough, this is much simpler since the static form of @eq-static-dynamic can be identified leading to: 
+
+$$
+\theta_k \approx P_2(\cdot):=\dfrac{1}{K}\times \Bigl[\dfrac{1}{d\times \tau}(v_k-v_{k-d})+\lambda_f\times v_k^2\Bigr]
+$${#eq-case2static}
+
+which simply expresses the fact that the acceleration pedal's angular position can be expressed in terms of the speed and its delayed value. 
+
+##### Dynamic relationships
+
+Obviouly @eq-case2static when written at instants $k$ and $k-1$ enables to write:
+
+$$
+\begin{align}
+\theta_k-\theta_{k-d} = &\dfrac{1}{K}\times \Bigl[\dfrac{1}{d\times \tau}(v_k-v_{k-d})+\lambda_f\times v_k^2\Bigr] \\
+&+ \dfrac{1}{K}\times \Bigl[\dfrac{1}{d\times \tau}(v_{k-d}-v_{k-2d})+\lambda_f\times v_{k-d}^2\Bigr] \label{encoreundyntheta}
+\end{align}
+$${#eq-encoreunedyntheta}
+
+which is another representation of the same physical law @eq-car-newton that can be obgained provided that $n_d\ge 2$ is used.
+
+Therefore, the statement of the next section should be kept in mind.
+
+### Keep in mind 
+
+The previous simple example illustrates the following statement that should be kept in mind when using g2sys tools: 
+
+:::{.callout-important title='keep in mind'}
+
+Fact1
+: The same physical law might **lead** (or *lie behind*) **several** relationships that can be *discovered* by **g2sys**. Some of the latter can be static while others are dynamics. 
+
+Fact2
+: The woriding *static* or *dynamic* is totally linked to the targeted sensor $i$: A static relationship for sensor $i$ contains only $s_i(k)$ in the left hand side of the relationship while $s_i(k)-s_i(k-d)$ appears in the l.h.s of *dynamic* relationships. 
+
+BUT static relationships might involve **dynamic[^derivative] terms** in the r.h.s as it is the case in @eq-case2static and @eq-encoreunedyntheta. 
+:::
+
+## The importance of scalability {#sec-scalability}
+
+The number of original variables (before polynomial expansion) that results from the choice of the number of delays $n_d$ is equal to:
+
+$$
+n = (n_d+1) \times (\text{number of sensors})
+$$
+
+Recalling that it is a polynomial expansion of these variables that is to be searched for, it appears clearly that the scalability of the **sparse solver** becomes rapidly quite important in order to handle realistic industriel problems. (See the discussion on the [cardinality of multi-variate polynomials](plars_intro.qmd#cardinality_lars) which is analyzed in the introductiont to the *plars* module.) 
+
+
+[^polyrecall]: Refer to [the polynomial's dedicated section](polynomials.qmd) for the precise definition.
+[^prov]: Provided that the parameters $n_d$ and $d$ are correctly tuned.
+[^harmful]: It can even be harmful in the presence of relatively high noise in the 
+measurements. 
+[^slowly]: As present in the training dataset.
+[^derivative]: Expression derivatives of other sensors.

@@ -1,0 +1,81 @@
+---
+title: plars
+subtitle: Principle
+---
+
+***
+
+It is uselful to understand the principle of the `plars` algorithm as this paves the way to a better understanding of the input arguments involved in the modules' call. 
+
+A more detailed presentation is provided in [@alamir2025Book].
+
+## Principle of the `plars` algorithm
+
+::: {.panel-tabset}
+
+# window
+
+![Select randomly a window and extract the working data $X_w$ and $y_w$.](images/lars_principle_1.png)
+
+# Partial fit 
+
+![The solution extracts the `nModes` most aligned monomials with $y_w$.](images/lars_principle_2.png)
+
+# Repeat 
+
+![Repeat the random window selection process `nModels` times.](images/lars_principle_3.png)
+
+# Group modes 
+
+![This leads to *at most* `nModels x nModes` selected monomials](images/lars_principle_4.png)
+
+# Final solution 
+
+![Select the ones that are relevant up to the precision defined by `eps`.](images/lars_principle_5.png)
+
+:::
+
+The following features come out directly from the principle sketched above: 
+
+:::{.callout-note title="Randomness & scalability"}
+The process inside `plars` involves an amount of randomness due to the randomly selected `nModels` windows. Consequently, the solution returned is never rigorously the same. 
+
+Notice however that the random windowing process is in the heart of **the scalability** of `plars`. 
+:::
+
+## Input arguments 
+
+From the above principle, it comes clearly that the call of `plars` need the following arguments to be provided: 
+
+`X`
+: Feature matrix 
+
+`y`
+: Label vector 
+
+`window`
+: The size of the window (integer) representing the number of **subsequent** rows to be selected for the current partial fit. 
+
+`deg` 
+: The degree of the polynomials used in the monomial selection process.
+
+`nModes`
+: Number of monomials to be extracted at each partial fit. 
+
+`nModels`
+: Number of repeated rounds of random selection  of working window. 
+
+`eps`
+: Targeted precision impacting the number of monomials retained in the final solution. 
+
+These are the input arguments that directly follows from the principle of the `plars` modules, other arguments are also possible to use in order to orient the execution towards some specific objective. 
+
+Further description of the input arguments is provided in the [example](plars_example.qmd).
+
+## Returned solution 
+
+Notice that according to the principle exposed above, the solution consists in the list of monomials with their associated coefficients. This is precisely what is needed to define the **sparse** multivariate polynomial, solution of the regression problem stated in [Problem statement section](plars_intro.qmd#problem-statement).
+
+As a matter of fact, the returned solution, say `sol` is a dictionary that contains many *keys*, among them, `powers` and `coefs` are available to represent the fitted polynomial. 
+
+Further description of the returned solution is provided in the next section that proposes a simple illustrative example.

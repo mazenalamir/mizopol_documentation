@@ -1,0 +1,41 @@
+---
+title: xpwpol 
+subtitle: Explicit piece-wise polynomial relationships
+---
+
+***
+
+## Why?
+
+While the implicit relationships that are designed using the [pwpol](pwp_intro.qmd) section enables normality characterization and anomaly detection, it does not enable prediction of the label $y$ given the vector of features $x$. 
+
+In some applications, such as the data-driven state estimation of nonlinear systems to cite but a single example, one would like to have a prediction of non measured quantities that are not necessarily given by purely polynomial expressions of the $x$. Here is where the `xpwpol` module comes handy. 
+
+## Explicit relationships
+
+Indeed, the `xpwpol` module enables to design relationships of the form: 
+
+$$
+y = P_{\mathcal R(x)}(x)\quad \texttt{where}\quad  \mathcal R(x)\in \{1,\dots,n_r\}
+$$
+
+in which:
+
+- $n_r\in \mathbb N$ is the **number of polynomials** involved, each associated to an explicitly defined region of the features space. 
+
+- $\mathcal R:\mathbb R^n\rightarrow \{1,\dots,n_r\}$ is the **region's index map** that associates to each value of the features vector a region's number which designates a specific region in the features space and hence the associated specific polynomial.
+
+- $P_j$ for some $j\in \{1,\dots, n_r\}$ is the multi-variate polynomial that represents the relationships between $x$ and $y$ in the associated region of the features space. 
+
+## Link to `plars`
+
+The `xpwpol` module is built on the top of the `plars` module with the following obviously needed additional features: 
+
+- The solutions is a list of `plars`-like solution, each is defined on a specific region. 
+
+- The solution incoporates the regions' map classifier (denoted by $\mathcal R$) in the previous section. 
+
+- The computation of the sensors contribution is made a little bit more complicated as there is a list of `PLARS` instances participating each to a global contribution analyser that should also take into account the sizes of the different regions. 
+
+In the next section, a use-case is shown to illustrate the relevance of the `xpwpol` module in capturing non strictly polynomial relationships. 
+

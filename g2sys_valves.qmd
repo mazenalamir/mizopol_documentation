@@ -1,0 +1,37 @@
+---
+title: g2sys
+subtitle: Finding invariant relationship between sensors installed on an industrial valves. 
+---
+
+***
+
+
+
+:::{.columns}
+:::{.column width=45%}
+**indus_focets** Dataset
+: This is a true industrial dataset that is made anomymous to meet an industrial partner.
+
+***
+
+The data set addresses the problem of discovering relationhips between many sensors placed on industrial valves. Many physical sensors are involved such as: **currents**, **voltages**, **torques**, **pressure** and differential pressures. 
+
+ | **21** sensors | **870,000** rows |
+
+:::
+
+:::{.column width=4%}
+ 
+::: 
+
+:::{.column width=45%}
+![Detecting invariants and anomlay in an industrial valve system (The above AI-generated photo is used for illustrative purpose and is not directly related to the dataset.)](images/vannes.png){width=95% fig-align="right"}
+:::
+:::
+
+***
+
+<video controls width="100%" style="border: 3px solid #3f7086ff; border-radius: 4px;">
+  <source src="https://www.mazenalamir.fr/videos/g2sys_valves.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
