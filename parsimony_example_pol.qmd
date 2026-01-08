@@ -7,7 +7,7 @@ subtitle: A simple illustrative example
 
 In this section, we consider a very simple example of the comparison between the behavior of a parsimonious model and several non parsimonious models in order to highlight the robustness of the normality characterization via parsimonious relationships to unseen contexts. 
 
-## The protocole 
+## The protocol 
 
 We shall define a dataset that involves $n_x=3$ features through a label that is an exact polynomial of degree `deg`=3 involving only $4$ monomials. 
 
