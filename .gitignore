@@ -44,3 +44,4 @@ venv/
 # =========================
 # DO NOT ignore docs/
 # GitHub Pages needs it
+/.quarto/

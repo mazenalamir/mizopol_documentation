@@ -508,8 +508,18 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#plars" id="toc-plars" class="nav-link active" data-scroll-target="#plars"><span class="header-section-number">1</span> <code>plars</code></a></li>
+  <li><a href="#g2sys" id="toc-g2sys" class="nav-link" data-scroll-target="#g2sys"><span class="header-section-number">2</span> <code>g2sys</code></a></li>
+  <li><a href="#pwpol" id="toc-pwpol" class="nav-link" data-scroll-target="#pwpol"><span class="header-section-number">3</span> <code>pwpol</code></a></li>
+  <li><a href="#rlars" id="toc-rlars" class="nav-link" data-scroll-target="#rlars"><span class="header-section-number">4</span> <code>rlars</code></a></li>
+  <li><a href="#xpwpol" id="toc-xpwpol" class="nav-link" data-scroll-target="#xpwpol"><span class="header-section-number">5</span> <code>xpwpol</code></a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -537,10 +547,8 @@ window.Quarto = {
 <hr>
 <p>The <strong>mizopol</strong> suite currently consists of the following modules that are presented in details through this documentation.</p>
 <p>The presentation below aims at giving a brief and sketchy overview of the tools.</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true"><code>plars</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false"><code>g2sys</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false"><code>pwpol</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" role="tab" aria-controls="tabset-2-4" aria-selected="false"><code>rlars</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-5" role="tab" aria-controls="tabset-2-5" aria-selected="false"><code>xpwpol</code></a></li></ul>
-<div class="tab-content">
-<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<section id="plars" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> <code>plars</code></h1>
 <div class="columns">
 <div class="column" style="width:45%;">
 <p>Identify a sparse multi-variate polynomial<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math inline">\(P\)</span> such that: <span class="math display">\[y\approx P(x)\]</span></p>
@@ -571,8 +579,9 @@ window.Quarto = {
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>ypred <span class="op">=</span> predict(Xtest, sol)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-</div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+</section>
+<section id="g2sys" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> <code>g2sys</code></h1>
 <div class="columns">
 <div class="column" style="width:58%;">
 <p>Given sensors <span class="math inline">\(s_1\)</span>, …, <span class="math inline">\(s_n\)</span>, fit a set of relationships of one of the following two forms:</p>
@@ -648,8 +657,9 @@ Dynamic
 </div>
 </div>
 </div>
-</div>
-<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+</section>
+<section id="pwpol" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> <code>pwpol</code></h1>
 <div class="columns">
 <div class="column" style="width:55%;">
 <p>Given a set of sensors <span class="math inline">\(s_j\)</span>, <span class="math inline">\(j=1,\dots,n_s\)</span> and a target sensor <span class="math inline">\(s_i\)</span>, find a set of <span class="math inline">\(n_r\)</span> polynomials <span class="math inline">\(P_\sigma\)</span>, <span class="math inline">\(\sigma=1,\dots,n_r\)</span>, such that the following residual: <span id="eq-residual-implicit"><span class="math display">\[
@@ -674,8 +684,9 @@ e_i = \min_{\sigma=1}^{n_r}\Bigl\vert s_i-P_\sigma(\{s_j\}_{j\neq i})\Bigr\vert
 </div>
 </div>
 </div>
-</div>
-<div id="tabset-2-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-4-tab">
+</section>
+<section id="rlars" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> <code>rlars</code></h1>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>Given</p>
@@ -718,8 +729,9 @@ y = -\dfrac{c_0(x)}{c_1(x)}
 </div>
 </div>
 </div>
-</div>
-<div id="tabset-2-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-5-tab">
+</section>
+<section id="xpwpol" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> <code>xpwpol</code></h1>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>Given</p>
@@ -747,11 +759,7 @@ y = P_{\mathcal R(x)}(x)
 </div>
 </div>
 </div>
-
-
-</div>
-</div>
-</div>
+</section>
 
 
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>

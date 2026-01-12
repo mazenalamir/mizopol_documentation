@@ -9,7 +9,6 @@ The **mizopol** suite currently consists of the following modules that are prese
 
 The presentation below aims at giving a brief and sketchy overview of the tools. 
 
-::: {.panel-tabset}
 
 # `plars`
 
@@ -231,7 +230,5 @@ where
 ::: {.column width=47%}
 
 ![Given a features vector $x$, the region map $\mathcal R(x)$ determines which polynomial should be used to predict the value of the label $y$](images/illustration_xpwpol_overview.png)
-
-:::
 
 :::
