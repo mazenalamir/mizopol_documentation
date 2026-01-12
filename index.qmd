@@ -46,4 +46,8 @@ Achieving the above listed tasks paves the way towards addressing many important
 
 We'll come back to these applications as we explain the different modules and their illustrative use-cases.
 
+:::{.callout-tip title='Reading-frienly introductory slides'}
+A reading-firendly set of slides introducting the MizoPol suite of tools, their advantages, *raison d'être* compared to existing options can be [downloded here](https://www.mazenalamir.fr/home/index.php/presentation-of-mizopol-suite)
+:::
+
 
