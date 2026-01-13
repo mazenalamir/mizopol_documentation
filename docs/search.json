@@ -336,73 +336,471 @@
     ]
   },
   {
-    "objectID": "parsimony_example_pol.html",
-    "href": "parsimony_example_pol.html",
-    "title": "Parsimonuous models are robust to context variation",
-    "section": "",
-    "text": "In this section, we consider a very simple example of the comparison between the behavior of a parsimonious model and several non parsimonious models in order to highlight the robustness of the normality characterization via parsimonious relationships to unseen contexts.",
+    "objectID": "digital_twins_zema.html#the-dataset",
+    "href": "digital_twins_zema.html#the-dataset",
+    "title": "Digital Twins",
+    "section": "1 The dataset",
+    "text": "1 The dataset\n\n\n\nZema Dataset\n\nThis is a public dataset that is available at UC Irvine Machine Learning Repository.\n\n\n\nThis system has been already encoutered in this documentation (see the g2sys module presentation and the introduction on the concept of graph for some examples and movies of identification relationships). In this section, we start from a set of already identified relationships and proceed for the presentation of the rationale of constructing the Digital Twin for this system1.\n| 7 sensors | 255,420 rows |\n\n\n\n\n\n\nCan we use the dataset representing time-series to quickly derive a dynamic simulator of the system (The above AI-generated photo is used for illustrative purpose and is not directly related to the dataset.)",
     "crumbs": [
       "Home",
-      "**Preliminaries**",
-      "Parsimony: Example 2"
+      "**Digital twins**",
+      "DT: First example"
     ]
   },
   {
-    "objectID": "parsimony_example_pol.html#the-protocol",
-    "href": "parsimony_example_pol.html#the-protocol",
-    "title": "Parsimonuous models are robust to context variation",
-    "section": "1 The protocol",
-    "text": "1 The protocol\nWe shall define a dataset that involves \\(n_x=3\\) features through a label that is an exact polynomial of degree deg=3 involving only \\(4\\) monomials.\n\n1.1 Training data\nThe training dataset is obtained by generating nSamples=10000 samples of features in the hypercube:\n\\[\n\\mathbb X_\\text{train} := [-1,1]^3\n\\]\nThe label is computed using the polynomial defined by the following powers and coefficients matrix and vector respectively1:\n\\[\nP := \\begin{bmatrix}\n2&1&0\\cr\n2&0&1\\cr\n1&0&0\\cr\n1&1&1\n\\end{bmatrix} \\quad ;\\quad c\\in [-1,1]^4\n\\]\nwhich leads to a relationships of the form:\n\\[\ny = c_1x_1^2x_2 + c_2x_1^2x_3 + c_3x_1 + c_4x_1x_2x_3\n\\tag{1}\\]\nThe label vector, denoted by \\(y_\\texttt{train}\\), associated to the matrix \\(X_\\text{train}\\in \\mathbb R^{\\texttt{nSamples}\\times 3}\\) is obtained by computing the value of the polynomial defined by \\((P,c)\\) at the 10000 samples (rows of X):\ny_train = poly_func(X_train) + np.random.normal(0, noise_level, size=nSamples)\nwhere noise_level is taked either equal to 0 or to 0.025 in order to check the robustness to noise of the fitted model.\n\n\n1.2 The compared models\nFive models are fitted using the pair of features matrix and label defined by \\((X_\\texttt{train},y_\\texttt{train})\\). Namely:\n\nThree Dnn models with different structures as shown in the following excerpt of the python code:\nlesDnn = [(8,8,2), (32,16,4), (128,128,32)]\nmodel_dnn = {i:None for i in range(len(lesDnn))}\ncpu = {i:None for i in range(len(lesDnn))}\n\niModel = 0\nfor iModel, ns in enumerate(lesDnn):\n    n1, n2, n3 = ns\n    model_dnn[iModel] = keras.Sequential()\n    model_dnn[iModel].add(layers.Dense(n2, activation='relu'))\n    model_dnn[iModel].add(layers.Dense(n3, activation='relu'))\n    model_dnn[iModel].add(layers.Dense(n1, activation='relu', input_shape=(nx,)))\n    model_dnn[iModel].add(layers.Dense(1))\n    model_dnn[iModel].compile(optimizer='adam', loss='mse')\n    t0 = time()\n    model_dnn[iModel].fit(Xtrain, ytrain, epochs=500, batch_size=32, validation_split=0.2, verbose=0)\nThese models involve an increasing number of neurons in order to show that the qualitative conclusion does not significantly depend on the structure.\n\n\n\n\n\n\n\nUse of validation subset\n\n\n\nNotice that following the good practice, the depth of the fit process is supervised though the use of a validation set which is here taked to be 20% of the training set in order to avoid the over-fitting phenomenon.\n\n\n\nOne model based on a Non parsimonious linear regression applied to the polynomial features generated from \\(X_\\text{train}\\) as it is shown in the following excerpt:\nfrom sklearn.preprocessing import PolynomialFeatures\nfrom sklearn.linear_model import RidgeCV\nfrom sklearn.pipeline import make_pipeline  \nmodel_ridge = make_pipeline(PolynomialFeatures(degree=deg), RidgeCV())\nt0 = time()\nmodel_ridge.fit(Xtrain, ytrain)\ncpu_ridge = time() - t0\nA last model that is obtained using the plars module of the MizoPol package which seeks a parsimonious multivariate polynomial:\nfrom plars import PLARS, predict, normalized_error\npl = PLARS(window=2000, deg=deg, nModels=20, nModes=20, eps=0.05)\nt0 = time()\nsol = pl.fit(Xtrain, ytrain)\ncpu_pl = time() - t0\n\n\n\n1.3 The test dataset\nThe test dataset is defined so that unseen regions in the training data are used in order to check the robustness of the normality characterization via the invariant relationships. In other words, we want to answer the question:\nDoes the relationship holds on the unseen regions that were absent from the training data?\nFor this reason, a new set of nSamples=10000 samples are randomly generated inside the hyper-cube:\n\\[\n\\mathbb X_\\text{test} := [-5,5]^3\n\\]\nso that many samples lie outside the training set domain \\(\\mathbb X_\\text{train}=[-1,1]^3\\).\nThis might be viewed as an instantiation of a new context in which the features visit regions that were not visited in the training dataset while the relationship is kept unchanged. Good models should not see any reason to raise alarms.",
+    "objectID": "digital_twins_zema.html#the-identified-relationships",
+    "href": "digital_twins_zema.html#the-identified-relationships",
+    "title": "Digital Twins",
+    "section": "2 The identified relationships",
+    "text": "2 The identified relationships\nThe g2sys module has been used (as shown previously) to derive a set of polynomial relationships that might be static (non recursive) or dynamic (recursive) that are each indexed by one of the sensors.\nThe fitting provided by these relationships is shown on the snapshots below which are extracted from the g2sys module. Notice that each screenshot shows an appropriate zoom on the predicted and the measured value, the head of the screenshot introduces the sensor indexing the relationship, the pickled file containing the solution, the number of parameters involved (card) and the type of relationship (static/dynamic). The right hand side dataframe shows the other sensors involved in the relationship, other than the sensor indexing the relationship.\n\n  Previous Next",
     "crumbs": [
       "Home",
-      "**Preliminaries**",
-      "Parsimony: Example 2"
+      "**Digital twins**",
+      "DT: First example"
     ]
   },
   {
-    "objectID": "parsimony_example_pol.html#results-comparison",
-    "href": "parsimony_example_pol.html#results-comparison",
-    "title": "Parsimonuous models are robust to context variation",
-    "section": "2 Results & comparison",
-    "text": "2 Results & comparison\n\n2.1 Extrapolation errors\nThe statistics on the extrapolation error (residual on the sample in the test dataset) are expressed in terms of normalized percentile, namely:\n\n\n\nRegression error: (For instance, \\(e_y=0.1\\) means that 95% of the errors are 10 times lower than the median of the norm of \\(y\\)).\n\n\n\nNormalized error’s | noise = 0Normalized error’s | noise = 0.025\n\n\n\n\n\n\n\n\n\nObviously, the above table show how bad is the generalization power of the DNN-based models. The non sparse solver remains quite good in the absence of noise and starts to seriously be affected as soon measurement noise is added. On the contrary, the sparse model resists in all circumstances.\n\n\n2.2 Residual vs regions\nIn order to better see how the errors spread in the training and the unseen domain, the following plots shows the errors as function of the \\(L_\\infty\\) norm of the features vector.\n\nnoise = 0|allnoise = 0|zoomnoise = 0.025|allnoise = 0.025|zoom\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThese results clearly show that the DNN models does not resist to unseen contexts in the training data and extrapolate very badly on these regions.\nOn the other hand, for both noise level, the parsimonious model extrapolates better than the full polynomial-Ridge, in particular in the presence of noise. This is because even with this small noise, the full model is slightly detuned because of the availability to fit, even a tiny part of the noise, while the parsimonious model does not possess this abusive power.\n\n\n2.3 Model’s cardinality\nThis section looks at the number of active coefficients in each of the models discussed above. Only one representative of the set of Dnn models is shown in order to underline that these models involved tens of thousands of non zero coefficients.\nAs for the Ridge-polynomial and the plars models, infinitely less coefficients are used and in particular, in the case of noise-free training, the exact four coefficients are found which fully explains why this plars-associated model keeps its quality far away from the training region which makes it context-independent.\n\nCoefficients of typical Dnn modelridge-polynomialplars\n\n\n\n\n\n\nNotice that the most important features are those shared with the plars solution and which correspond to the true four monomials being used in Equation 1. Nevertheless, the presence of the other coefficients leads to higher distorsion outside the training domain \\(\\mathbb X_\\texttt{train}\\).\n\n\n\n\n\n\nIn the next section, we dig a little bit deeper inside an equipment in order to understand what are the different reasons that induce ambiguity in the diagnosis of normality.",
+    "objectID": "digital_twins_zema.html#the-graph-of-the-system",
+    "href": "digital_twins_zema.html#the-graph-of-the-system",
+    "title": "Digital Twins",
+    "section": "3 The graph of the system",
+    "text": "3 The graph of the system\nBased on the above relationships, the following graph can also be displayed in the g2sys module:\n\n\n\nThe graph of relationships between the sensors present in the Zema dataset as shown in the g2sys module.\n\n\nNy only looking on the graph, the following information can be steered out:\n\nPS4 is not index of any relationship and therefore, it is an exogenous input to the simulator.\nPS6 is defined by a recursive relationship with the only input PS4 which means that it can be simulated alone independently of the other sensors.\nPS5 is defined completely from PS6.\nAll the remaining sensors, namely (PS1, PS2, PS3, EPS1) are coupled through circular chain of relationships that starts and end with PS2, namely:\n\\[\n\\small\n\\begin{align}\n(\\texttt{PS2}, \\texttt{PS4})&\\rightarrow \\Bigl(\\texttt{PS1}=F_1(\\texttt{PS2}, \\texttt{PS4})\\Bigr)\\rightarrow \\Bigl(\\texttt{EPS1}=F_e(\\texttt{PS1})=F_e\\circ F_1(\\texttt{PS2}, \\texttt{PS4})\\Bigr) \\\\\n&\\rightarrow \\texttt{PS3}=F_3(\\texttt{PS2}, \\texttt{EPS1})=F_3(\\texttt{PS2}, F_e\\circ F_1(\\texttt{PS2}, \\texttt{PS4}))\\\\\n&\\rightarrow \\texttt{PS2}=F_2(\\texttt{PS1},  \\texttt{PS3}, \\texttt{EPS1})\\\\\n&=F_2(F1(\\texttt{PS2}, \\texttt{PS4}),  F_3(\\texttt{PS2}, F_e\\circ F_1(\\texttt{PS2}, \\texttt{PS4})), F_e\\circ F_1(\\texttt{PS2}, \\texttt{PS4}))\n\\end{align}\n\\]\nWhich highlights the fact that, Given PS4, the value of PS2 is the solution of the following fixed-point equation:\n\\[\n\\begin{align}\n\\texttt{PS2}&=F_2(F1(\\texttt{PS2}, \\texttt{PS4}),  F_3(\\texttt{PS2}, F_e\\circ F_1(\\texttt{PS2}, \\texttt{PS4})), F_e\\circ F_1(\\texttt{PS2}, \\texttt{PS4}))\\\\\n&=:G(\\texttt{PS2}, \\texttt{PS4})\n\\end{align}\n\\]\nwhere the function \\(G\\) is given in terms of the function \\(F_1\\), \\(F_2\\), \\(F_3\\) and \\(F_e\\) which express the relationships indexed respectively by PS1, PS2, PS3 and EPS1.\n\nThe previous discussion can be summarized by the following functional representation of the simulator:\n\n\n\nFunctional view of the Digital Twin extracted (via g2sys) from the dataset containing the time-series of the sensors.\n\n\nThe expressions of the relationships (multi-variate polynomials) indexed by PS6, PS5, PS1, PS2, PS3 and EPS1 are detailed in the following section.",
     "crumbs": [
       "Home",
-      "**Preliminaries**",
-      "Parsimony: Example 2"
+      "**Digital twins**",
+      "DT: First example"
     ]
   },
   {
-    "objectID": "parsimony_example_pol.html#footnotes",
-    "href": "parsimony_example_pol.html#footnotes",
-    "title": "Parsimonuous models are robust to context variation",
+    "objectID": "digital_twins_zema.html#the-relationships-f_i-as-polynomials",
+    "href": "digital_twins_zema.html#the-relationships-f_i-as-polynomials",
+    "title": "Digital Twins",
+    "section": "4 The relationships \\(F_i\\) as polynomials",
+    "text": "4 The relationships \\(F_i\\) as polynomials\nRecall that g2sys module identifies relationships as sparse multi-variate polynomial in the sensors and possibly their delayed values. The polynomials have been defined in the dedicated section. Nevertheless, the definition is reported here for an easy reading:\n\\[\nP(x)=\\sum_{i=1}^{n_c} c_i\\phi_i(x)\\quad\\text{where}\\quad \\phi_i(x) = \\prod_{j=1}^{n}x_j^{p_{ij}}\n\\]\nwhich obviously highlights that a polynomial is defined by the definition of:\n\nThe vector of input argument \\(x\\)\nThe matrix of powers \\(P\\)\nThe vector of coefficients \\(c\\)\n\n\n\n\n\n\n\nFigure 1: Attributes of a monomial in a polynomial in \\(n\\) arguments\n\n\n\nThe different relationships \\(F_i\\) invoked above are quatitatively exposed below using the following script that uses the model object returned by the g2sys module:\nfor i in range(len(model)):\n    s = list(model[i].keys())[0]\n    print(f'Relationship indexed by {s}')\n    print('==================================')\n    print(f\"arguments: {model[i][s]['Lred']}\")\n    print('--------')\n    print(f\"powers \\n {model[i][s]['powers']}\")\n    print('--------')\n    print(f\"coefficients: \\n {model[i][s]['coefs']}\")\n    print('---')\n\nF1F2F3FeF6F5\n\n\nRelationship indexed by PS1\n==================================\narguments: ['PS2(k)', 'PS4(k)']\n--------\npowers \n [[1 0]\n [1 1]\n [1 2]\n [0 3]\n [0 0]\n [2 1]]\n--------\ncoefficients: \n [-4.84246973e+00  7.99740424e-01 -4.67676520e-02  8.21090988e-04\n  1.89816397e+02  9.66131922e-04]\n--------\n\n\nRelationship indexed by PS2\n==================================\narguments: ['PS1(k)', 'PS3(k)', 'EPS1(k)']\n--------\npowers \n [[1 0 0]\n [0 0 0]\n [0 1 0]\n [3 0 0]\n [0 3 0]\n [0 2 1]\n [0 0 3]\n [2 1 0]\n [1 1 0]]\n--------\ncoefficients: \n [-2.87731163e+00  4.21757215e+02 -1.96187950e+02  9.57650449e-06\n  7.31035037e-01 -5.17391969e-03  2.43389818e-09 -2.30772152e-03\n  2.01399466e+00]\n\n\nRelationship indexed by PS3\n==================================\narguments: ['PS2(k)', 'EPS1(k)']\n--------\npowers \n [[0 0]\n [5 0]\n [0 5]\n [0 3]\n [1 4]\n [0 4]]\n--------\ncoefficients: \n [-1.86823664e+00 -8.97436718e-11  3.86793042e-16  3.32470511e-09\n  1.09409733e-15 -2.24364110e-12]\n\n\nRelationship indexed by EPS1\n==================================\narguments: ['PS1(k)']\n--------\npowers \n [[1]\n [0]]\n--------\ncoefficients: \n [ 13.09598968 441.01619799]\n\n\nRelationship indexed by PS6\n==================================\narguments: ['PS6(k-4)', 'PS4(k)', 'PS4(k-4)']\n--------\npowers \n [[1 0 0]\n [0 1 0]\n [0 0 1]]\n--------\ncoefficients: \n [ 0.00348076 -0.77680475  0.77334424]\n\n\nRelationship indexed by PS5\n==================================\narguments: ['PS6(k)']\n--------\npowers \n [[1]]\n--------\ncoefficients: \n [1.01204197]",
+    "crumbs": [
+      "Home",
+      "**Digital twins**",
+      "DT: First example"
+    ]
+  },
+  {
+    "objectID": "digital_twins_zema.html#footnotes",
+    "href": "digital_twins_zema.html#footnotes",
+    "title": "Digital Twins",
     "section": "Footnotes",
-    "text": "Footnotes\n\n\nSee the section on the definition of multivariate polynomials.↩︎",
+    "text": "Footnotes\n\n\nAs it has been disclaimed earlier, this cannot always be successful, because of the non completness of the data. More precisely, if there are quantities that impact strongly the behavior of the system which are not present in the set of sensors, then it is rigorously impossible to design a dynamic simultator from the available information.↩︎",
+    "crumbs": [
+      "Home",
+      "**Digital twins**",
+      "DT: First example"
+    ]
+  },
+  {
+    "objectID": "pwp_intro.html",
+    "href": "pwp_intro.html",
+    "title": "Implicit Piece-wise polynomial relatiosnships",
+    "section": "",
+    "text": "The rationale behind the need for piece-wise polynomial representation has already be discussed and explained in piece-wise polynomials section.\nIn a nutshell, these relationships enable to handle non purely polynomial dependencies (trigonomic, rational fractions, exponential to cite but few ones), but more importantly, they enable to handle multiple context of use where the nature of relationships changes drastically.\nSearching for piece-wise multi-variate polynomials can be done using the pwpol module of the MizoPol suite of tools.\nNothing can be better than specific use-cases studies where instantiations of such circumstances are studied.\nIn the present section, we shall consider the following sets of use-cases:\n\n\n\n\nThe manipulator robot case\n\nWhere the precision of the residuals when standard multi-variate relationships are identified by the pwpol module and the ones that might be obtained used piece-wise polynomial are compared.\n\n\nThis use-case is detailed in the robot use-case\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe anaesthesia dataset\n\nWhere it is shown how the pwpol module can be used to characterize the normality over a large number of datasets coming from operation rooms enabling the detection of anomalous events during the surgery depsite the wide class of operations type and medical staff.\n\n\nThis use-case is detailed in the anaesthesie use-case",
+    "crumbs": [
+      "Home",
+      "**implicit pwpol**",
+      "pwpol: Intro"
+    ]
+  },
+  {
+    "objectID": "g2sys_valves.html",
+    "href": "g2sys_valves.html",
+    "title": "g2sys",
+    "section": "",
+    "text": "indus_focets Dataset\n\nThis is a true industrial dataset that is made anomymous to meet an industrial partner.\n\n\n\nThe data set addresses the problem of discovering relationhips between many sensors placed on industrial valves. Many physical sensors are involved such as: currents, voltages, torques, pressure and differential pressures.\n| 21 sensors | 870,000 rows |\n\n\n\n\n\n\nDetecting invariants and anomlay in an industrial valve system (The above AI-generated photo is used for illustrative purpose and is not directly related to the dataset.)\n\n\n\n\n\n\n\nYour browser does not support the video tag.",
+    "crumbs": [
+      "Home",
+      "**g2sys**",
+      "g2sys: Valves"
+    ]
+  },
+  {
+    "objectID": "plars_principle.html",
+    "href": "plars_principle.html",
+    "title": "plars",
+    "section": "",
+    "text": "It is uselful to understand the principle of the plars algorithm as this paves the way to a better understanding of the input arguments involved in the modules’ call.\nA more detailed presentation is provided in (Alamir, 2025).",
+    "crumbs": [
+      "Home",
+      "**plars**",
+      "plars: Principle"
+    ]
+  },
+  {
+    "objectID": "plars_principle.html#principle-of-the-plars-algorithm",
+    "href": "plars_principle.html#principle-of-the-plars-algorithm",
+    "title": "plars",
+    "section": "1 Principle of the plars algorithm",
+    "text": "1 Principle of the plars algorithm\n\nwindowPartial fitRepeatGroup modesFinal solution\n\n\n\n\n\nSelect randomly a window and extract the working data \\(X_w\\) and \\(y_w\\).\n\n\n\n\n\n\n\nThe solution extracts the nModes most aligned monomials with \\(y_w\\).\n\n\n\n\n\n\n\nRepeat the random window selection process nModels times.\n\n\n\n\n\n\n\nThis leads to at most nModels x nModes selected monomials\n\n\n\n\n\n\n\nSelect the ones that are relevant up to the precision defined by eps.\n\n\n\n\n\nThe following features come out directly from the principle sketched above:\n\n\n\n\n\n\nRandomness & scalability\n\n\n\nThe process inside plars involves an amount of randomness due to the randomly selected nModels windows. Consequently, the solution returned is never rigorously the same.\nNotice however that the random windowing process is in the heart of the scalability of plars.",
+    "crumbs": [
+      "Home",
+      "**plars**",
+      "plars: Principle"
+    ]
+  },
+  {
+    "objectID": "plars_principle.html#input-arguments",
+    "href": "plars_principle.html#input-arguments",
+    "title": "plars",
+    "section": "2 Input arguments",
+    "text": "2 Input arguments\nFrom the above principle, it comes clearly that the call of plars need the following arguments to be provided:\n\nX\n\nFeature matrix\n\ny\n\nLabel vector\n\nwindow\n\nThe size of the window (integer) representing the number of subsequent rows to be selected for the current partial fit.\n\ndeg\n\nThe degree of the polynomials used in the monomial selection process.\n\nnModes\n\nNumber of monomials to be extracted at each partial fit.\n\nnModels\n\nNumber of repeated rounds of random selection of working window.\n\neps\n\nTargeted precision impacting the number of monomials retained in the final solution.\n\n\nThese are the input arguments that directly follows from the principle of the plars modules, other arguments are also possible to use in order to orient the execution towards some specific objective.\nFurther description of the input arguments is provided in the example.",
+    "crumbs": [
+      "Home",
+      "**plars**",
+      "plars: Principle"
+    ]
+  },
+  {
+    "objectID": "plars_principle.html#returned-solution",
+    "href": "plars_principle.html#returned-solution",
+    "title": "plars",
+    "section": "3 Returned solution",
+    "text": "3 Returned solution\nNotice that according to the principle exposed above, the solution consists in the list of monomials with their associated coefficients. This is precisely what is needed to define the sparse multivariate polynomial, solution of the regression problem stated in Problem statement section.\nAs a matter of fact, the returned solution, say sol is a dictionary that contains many keys, among them, powers and coefs are available to represent the fitted polynomial.\nFurther description of the returned solution is provided in the next section that proposes a simple illustrative example.",
+    "crumbs": [
+      "Home",
+      "**plars**",
+      "plars: Principle"
+    ]
+  },
+  {
+    "objectID": "g2sys_zema.html",
+    "href": "g2sys_zema.html",
+    "title": "g2sys",
+    "section": "",
+    "text": "This is an introductory usecase for the g2sys GUI.\n\n\n\nThis first dataset is used to introduce the different options available in the user-friendly tool g2sys. In the movie representing the other use-cases, it is assumed that the user is familiar with these options which makes this movie a must to see!\n\n\n\n\n\nZema Dataset\n\nThis is a public dataset that is available at UC Irvine Machine Learning Repository.\n\n\n\nThe data set addresses the condition assessment of a hydraulic test rig based on multi sensor data.\nFour fault types are superimposed with several severity grades impeding selective quantification.\n| 7 sensors | 255,420 rows |\n\n\n\n\n\n\nDetecting invariants and anomalies in a hydraulic systems. (The above AI-generated photo is used for illustrative purpose and is not directly related to the dataset.)\n\n\n\n\n\n\n\nYour browser does not support the video tag.",
+    "crumbs": [
+      "Home",
+      "**g2sys**",
+      "g2sys: Hydraulic rig"
+    ]
+  },
+  {
+    "objectID": "graph_zema.html",
+    "href": "graph_zema.html",
+    "title": "Graph of a model",
+    "section": "",
+    "text": "In this section, a movie is proposed that shows how to build the graph of a system using the following steps:\nThese steps are shown in the following video that uses the publicly available Zema dataset that is available at UC Irvine Machine Learning Repository.",
+    "crumbs": [
+      "Home",
+      "**Graph of a model**",
+      "Graph: g2sys|Hydraulic rig"
+    ]
+  },
+  {
+    "objectID": "graph_zema.html#footnotes",
+    "href": "graph_zema.html#footnotes",
+    "title": "Graph of a model",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nSee for instance the movies of the g2sys used for the hydraulic rig system, the industrial valves and the compressor system.↩︎",
+    "crumbs": [
+      "Home",
+      "**Graph of a model**",
+      "Graph: g2sys|Hydraulic rig"
+    ]
+  },
+  {
+    "objectID": "rlars_twin.html#plars-explicit-polynomials",
+    "href": "rlars_twin.html#plars-explicit-polynomials",
+    "title": "rlars",
+    "section": "4.1 plars (explicit polynomials)",
+    "text": "4.1 plars (explicit polynomials)\nThe following script and dataframe showing the statistics of the normalized error when multi-variate polynomial’s identification is attempted via the plars module.\n\nPython script | cardinalityNormalized residuals\n\n\nfrom plars import PLARS, predict\nimport pandas as pd \nfrom sklearn.model_selection import train_test_split\n\n\nwindow=1000\ndeg=3\nnModels = 40\nnModes = 20\neps = 0.02\ntest_size=0.1\n\npl = PLARS(window=window, deg=deg, nModels=nModels, nModes=nModes, eps=eps)\n\npanel_plars = []\n\ni = 1\nfor z in [y1, y2, y3]:\n\n    Xid = (X-X.mean(axis=0))/X.std(axis=0)\n    Xtrain, Xtest, ytrain, ytest = train_test_split(Xid, z, test_size=test_size, shuffle=False)\n\n    solution  = pl.fit(Xtrain, ytrain)\n    print(f\"plars solution's cardinality for y{i} = {solution['card']}\")\n    dfi = solution['dfe_train']\n    dfi.columns = [f'Error on y{i}']\n    i += 1\n    panel_plars.append(dfi)\n\ndfRes_plars = pd.concat(panel_plars, axis=1)\ndfRes_plars\nplars solution's cardinality for y1 = 251\nplars solution's cardinality for y2 = 256\nplars solution's cardinality for y3 = 237\n\n\n\n\n\n\n\nThese results are those obtained on the train data. They are sufficiently bad to make the examination of the result on test data useless.",
+    "crumbs": [
+      "Home",
+      "**rlars**",
+      "rlars: Twin-pendulum"
+    ]
+  },
+  {
+    "objectID": "rlars_twin.html#rlars-labels-as-polynomials-roots",
+    "href": "rlars_twin.html#rlars-labels-as-polynomials-roots",
+    "title": "rlars",
+    "section": "4.2 rlars: (labels as polynomials’ roots)",
+    "text": "4.2 rlars: (labels as polynomials’ roots)\nIn this attemps, we use the same parameters except the degree that is reduced to deg=2 in order to emphasize the fact that the underlying strucutre is sufficiently rich for a lower order model to capture the relationships drastically better that the polynomial even with lower degree.\n\nPython script | cardinalityNormalized residuals\n\n\nfrom rlars import RLARS, compute_c_pol\nfrom plars import normalized_error\nimport pandas as pd \nfrom sklearn.model_selection import train_test_split\n\n\nwindow=1000\ndeg=2\nnModels = 40\nnModes = 20\neps = 0.02\ntest_size=0.4\n\nrl = RLARS(window=window, deg=deg, nModels=nModels, nModes=nModes, eps=eps)\n\npanel_rlars_train = []\npanel_rlars_test = []\n\ni = 1\nfor z in [y1, y2, y3]:\n\n    # prepare the train and test data\n    Xid = (X-X.mean(axis=0))/X.std(axis=0)\n    Xtrain, Xtest, ytrain, ytest = train_test_split(Xid, z, test_size=test_size, shuffle=False)\n\n    # fit the rlars instance\n    solution  = rl.fit(Xtrain, ytrain)\n    print(f\"rlars solution's cardinality for y{i} = {solution['card']}\")\n    dfi = solution['dfe_train']\n    dfi.columns = [f'Residual on y{i}']\n\n    # compute the residual on test data\n    c_pol = compute_c_pol(Xtest, solution)\n    ypred = np.array([np.polyval(c_pol[i,:][::-1], ytest[i]) \n                      for i in range(len(ytest))])\n    dfi_test = normalized_error(ytest, ypred)\n    dfi_test.columns = [f'Residual on y{i}']\n    panel_rlars_test.append(dfi_test)\n    i += 1\n    panel_rlars_train.append(dfi)\n\ndfRes_rlars_train = pd.concat(panel_rlars_train, axis=1)\ndfRes_rlars_test = pd.concat(panel_rlars_test, axis=1)\nrlars solution's cardinality for y1 = 97\nrlars solution's cardinality for y2 = 206\nrlars solution's cardinality for y3 = 5\n\n\n\n\n\n\n\n\n\n\nIn order to be able to appreciate the generalization power of the model that has been identified using quite small amount of data. It is important de recall the two following facts:\n\nThe train/test split has been performed without shuffle with \\(\\texttt{test\\_size}=0.4\\) meaning that the first 60% of the scenario is used for the train while the remaining 40% is used to test.\nThe following figures show the four different scenarios used:\n\n\nExperiment #1Experiment #2Experiment #3Experiment #4\n\n\n                        \n                                            \n\n\n\n                        \n                                            \n\n\n\n                        \n                                            \n\n\n\n                        \n                                            \n\n\n\n\n\n\n\n\n\n\nTrain & test among experiments\n\n\n\nIt comes from the observation of the length of each of the four scenarios that the training data concerns almost only the first two experiments while the last two experiments are part of the test data.",
+    "crumbs": [
+      "Home",
+      "**rlars**",
+      "rlars: Twin-pendulum"
+    ]
+  },
+  {
+    "objectID": "xpwpol_robot.html",
+    "href": "xpwpol_robot.html",
+    "title": "xpwpol",
+    "section": "",
+    "text": "In this section, we consider the same robot invoked in the plars use-case where we used a single multivariate polynomial to capture the realtionship between the torque and the kinematic features of a 4-axis manipulator robot.\nIn this section, comparisons are provided, in terms of the prediction error, between the explicit piece-wise polynomial structure and the following two modeling alternatives:\nThese comparisons are provided in order to assess the relevance of the piece-wise polynomial strucutre handled by the xpwpol module.\nFor the sake of easiness of reading, we repeat some of the information given in the above cited section.",
+    "crumbs": [
+      "Home",
+      "**explicit pwpol**",
+      "xpwpol: Robotic"
+    ]
+  },
+  {
+    "objectID": "xpwpol_robot.html#dataset",
+    "href": "xpwpol_robot.html#dataset",
+    "title": "xpwpol",
+    "section": "1 Dataset",
+    "text": "1 Dataset\nWe have the following dataframe representing the recording of kinematic variables and the torques at the axis joints:\n\\[\n\\{q_i\\}_{i=1}^4,\\quad \\{\\dot q_i\\}_{i=1}^4, \\quad\\{\\ddot q_i\\}_{i=1}^4,\\quad \\{T_i\\}_{i=1}^4\n\\]\nof a 4-axis manipulator robot.\n\n\n\nHead of the dataframe containing 1617936 rows and 16 columns",
+    "crumbs": [
+      "Home",
+      "**explicit pwpol**",
+      "xpwpol: Robotic"
+    ]
+  },
+  {
+    "objectID": "xpwpol_robot.html#problem-statement",
+    "href": "xpwpol_robot.html#problem-statement",
+    "title": "xpwpol",
+    "section": "2 Problem statement",
+    "text": "2 Problem statement\n\n\n\n\n\n\nThe regression problem\n\n\n\nFind a sparse explicit piece-wise polynomial relationship of the form given by Equation 1, that provides a prediction of the torque applied to axis \\(i\\in \\{1,\\dots,4\\}\\): \\[\nT_i \\approx P_{\\mathcal R(x)}\\Bigl(x\\Bigr)\\quad \\vert\\quad x:= \\begin{bmatrix}\nq\\cr \\dot q\\cr \\ddot q\n\\end{bmatrix}\\in \\mathbb R^{12}\n\\tag{1}\\] where \\(\\mathcal R(x): \\mathbb R^{12}\\rightarrow \\{1,\\dots, n_r\\}\\) is a region map associating to each value of the vector of features \\(x\\), a region number.\n\\(n_r\\) stands for the number of regions (and hence polynomials) involved in the explicit piece-wise solution.",
+    "crumbs": [
+      "Home",
+      "**explicit pwpol**",
+      "xpwpol: Robotic"
+    ]
+  },
+  {
+    "objectID": "xpwpol_robot.html#scripts-results",
+    "href": "xpwpol_robot.html#scripts-results",
+    "title": "xpwpol",
+    "section": "3 Scripts & results",
+    "text": "3 Scripts & results\nFor illustration purposes, the results concerning axis 3 and 4 are given with comparison to the plars and the DNN-GRU models.\n\n3.1 Results for axis 4\n\nData preparationFit the modelError statisticsComparisons\n\n\n\n# Choose the axis and the split ratio \naxe = 4\ntest_size=0.8\n\n# Compute Xtrain, Xtest, ytrain, ytest\nX = df[colX].values\ny = df[colY[axe-1]].values\n\nnTrain = int(len(X)*(1-test_size))\nXtrain = X[0:nTrain]\nytrain = y[0:nTrain]\nXtest = X[nTrain:]\nytest = y[nTrain:]\n\n\n# Parameter helping the design of the different regions \nnDiv = np.array([2,2,2,2])\n\n# Create an instance of the class Xpwpol\n# Notice the similarity with plars instantiation\n\nxpwpol = Xpwpol(window=2000, \n                deg=2, \n                nModels=20, \n                nModes=20, \n                eps=0.05, \n                nDiv=nDiv)\n\n# Fit the solution \nxpwpol.fit(Xtrain, ytrain)\n\n 1/16 |  0 |0.55 |ncoef =     10 | nrows =  21496 |avg-error = 0.55 | \n 2/16 |  1 |0.38 |ncoef =     16 | nrows =  16608 |avg-error = 0.47 | \n 3/16 |  2 |0.54 |ncoef =     29 | nrows =  18498 |avg-error = 0.50 | \n 4/16 |  3 |0.35 |ncoef =     38 | nrows =  19911 |avg-error = 0.46 | \n 5/16 |  4 |0.52 |ncoef =     50 | nrows =  18854 |avg-error = 0.47 | \n 6/16 |  5 |0.39 |ncoef =     64 | nrows =  19002 |avg-error = 0.46 | \n 7/16 |  6 |0.58 |ncoef =     77 | nrows =  21222 |avg-error = 0.48 | \n 8/16 |  7 |0.33 |ncoef =     82 | nrows =  26202 |avg-error = 0.45 | \n 9/16 |  8 |0.58 |ncoef =     89 | nrows =  26642 |avg-error = 0.47 | \n10/16 |  9 |0.55 |ncoef =    106 | nrows =  20341 |avg-error = 0.48 | \n11/16 | 10 |0.64 |ncoef =    116 | nrows =  17897 |avg-error = 0.49 | \n12/16 | 11 |0.39 |ncoef =    124 | nrows =  20400 |avg-error = 0.48 | \n13/16 | 12 |0.60 |ncoef =    131 | nrows =  20820 |avg-error = 0.49 | \n14/16 | 13 |0.44 |ncoef =    141 | nrows =  18030 |avg-error = 0.49 | \n15/16 | 14 |0.73 |ncoef =    150 | nrows =  16364 |avg-error = 0.50 | \n16/16 | 15 |0.40 |ncoef =    160 | nrows =  21300 |avg-error = 0.49 | \n\n\nfrom plars import normalized_error\n\nypred = xpwpol.predict(Xtest)\ndfTest = normalized_error(ytest, ypred)\n\nypred = xpwpol.predict(Xtrain)\ndfTrain = normalized_error(ytrain, ypred)\n\ndfResult = pd.concat([dfTrain, dfTest], axis=1)\ndfResult.columns = ['Err-Ttrain', 'Err-Test']\ndfResult\n\n    Err-Ttrain  Err-Test\n50% 0.132826    0.133281\n80% 0.267617    0.269011\n90% 0.366049    0.367497\n95% 0.474345    0.476682\n98% 0.673459    0.675066\n99% 0.884998    0.888047\n\n\npl = PLARS(window=2000, deg=3, nModels=20, nModes=20, eps=0.05)\nnTrain = int(len(X)*(1-test_size))\nsol = pl.fit(Xtrain, ytrain)\n\nyhat_pol_train = predict(Xtrain, sol)\ndfplars_train = normalized_error(ytrain, yhat_pol_train)\n\nyhat_pol_test = predict(Xtest, sol)\ndfplars_test = normalized_error(ytest, yhat_pol_test)\n\n\ndfResult = pd.concat([dfResult, dfplars_train, dfplars_test], axis=1)\ndfResult.columns = ['Err-Ttrain|xpwpol', \n                    'Err-Test|xpwpol', \n                    'Err-plars on train', \n                    'Err-plars on test']\ndfResult\n\n\n\nAxis 4: Comparison of the statistics of errors between the models provided by the plars and the xpwpol module of the MizoPol package.\n\n\nAs for the statistics of the DNN-GRU model (Alamir & Clavel (2025)), they are given in the figures below:\n\n\n\nStatistics of the error when using DNN-GRU strucutre with a hidden layer of 32 or 128 correponding respectively to 31224 and 235128 weights and computation time of respectively 3h27 and 3h40.\n\n\nNotice that the number of parameters used by the xpwpol module is equal to 160 parameters and the computation time is less than 60 sec. \n\n\n\n\n\n\nTo summarize\n\n\n\nThe precision of the model provided by xpwpol is largely better than the one provided by the plars and is slightly better than the one provided by the DNN-GRU model while the computation time is totally out of comparison.\nMoreover, the number of parameters involved clearly shows that we are in the presence of sparse and hence robust solution.\n\n\n\n\n\n\n\n3.2 Results for axis 3\n\nData preparationFit the modelError statisticsComparisons\n\n\n\n# Choose the axis and the split ratio \naxe = 3\ntest_size=0.25\n\n# Compute Xtrain, Xtest, ytrain, ytest\nX = df[colX].values\ny = df[colY[axe-1]].values\n\nnTrain = int(len(X)*(1-test_size))\nXtrain = X[0:nTrain]\nytrain = y[0:nTrain]\nXtest = X[nTrain:]\nytest = y[nTrain:]\n\n\n# Parameter helping the design of the different regions \nnDiv = np.array([2,2,2,2])\n\n# Create an instance of the class Xpwpol\n# Notice the similarity with plars instantiation\n\nxpwpol = Xpwpol(window=2000, \n                deg=4, \n                nModels=20, \n                nModes=20, \n                eps=0.05, \n                nDiv=nDiv)\n\n# Fit the solution \nxpwpol.fit(Xtrain, ytrain)\n\n from xpwpol import Xpwpol\n\nnDiv = np.array([2,2,2,2])\n\nxpwpol = Xpwpol(window=2000, \n                deg=4, \n                nModels=20, \n                nModes=20, \n                eps=0.05, \n                nDiv=nDiv)\n\nxpwpol.fit(Xtrain, \n           ytrain, \n           compute_contributions=True, \n           colNames=colX)\n\n 1/16 |  0 |0.36 |ncoef =    243 | nrows =  73252 |avg-error = 0.36 | \n 2/16 |  1 |0.90 |ncoef =    505 | nrows =  65127 |avg-error = 0.62 | \n 3/16 |  2 |0.38 |ncoef =    739 | nrows =  76105 |avg-error = 0.53 | \n 4/16 |  3 |0.89 |ncoef =    988 | nrows =  81846 |avg-error = 0.63 | \n 5/16 |  4 |0.37 |ncoef =   1230 | nrows =  75433 |avg-error = 0.58 | \n 6/16 |  5 |0.86 |ncoef =   1472 | nrows =  77318 |avg-error = 0.63 | \n 7/16 |  6 |0.38 |ncoef =   1726 | nrows =  74982 |avg-error = 0.59 | \n 8/16 |  7 |0.89 |ncoef =   1975 | nrows =  82663 |avg-error = 0.63 | \n 9/16 |  8 |0.39 |ncoef =   2236 | nrows =  84477 |avg-error = 0.60 | \n10/16 |  9 |0.84 |ncoef =   2487 | nrows =  73981 |avg-error = 0.62 | \n11/16 | 10 |0.40 |ncoef =   2746 | nrows =  73550 |avg-error = 0.60 | \n12/16 | 11 |0.90 |ncoef =   2993 | nrows =  78388 |avg-error = 0.63 | \n13/16 | 12 |0.39 |ncoef =   3249 | nrows =  82354 |avg-error = 0.61 | \n14/16 | 13 |0.91 |ncoef =   3486 | nrows =  74784 |avg-error = 0.63 | \n15/16 | 14 |0.42 |ncoef =   3722 | nrows =  66573 |avg-error = 0.62 | \n16/16 | 15 |0.92 |ncoef =   3979 | nrows =  72619 |avg-error = 0.64 | \n\n\nfrom plars import normalized_error\n\nypred = xpwpol.predict(Xtest)\ndfTest = normalized_error(ytest, ypred)\n\nypred = xpwpol.predict(Xtrain)\ndfTrain = normalized_error(ytrain, ypred)\n\ndfResult = pd.concat([dfTrain, dfTest], axis=1)\ndfResult.columns = ['Err-Ttrain', 'Err-Test']\ndfResult\n\n    Err-Ttrain  Err-Test\n50% 0.179445    0.189401\n80% 0.345648    0.359500\n90% 0.443848    0.457406\n95% 0.523262    0.540844\n98% 0.611879    0.648598\n99% 0.674233    0.755522\n\n\npl = PLARS(window=2000, deg=4, nModels=20, nModes=20, eps=0.05)\nnTrain = int(len(X)*(1-test_size))\nsol = pl.fit(Xtrain, ytrain)\n\nyhat_pol_train = predict(Xtrain, sol)\ndfplars_train = normalized_error(ytrain, yhat_pol_train)\n\nyhat_pol_test = predict(Xtest, sol)\ndfplars_test = normalized_error(ytest, yhat_pol_test)\n\n\ndfResult = pd.concat([dfResult, dfplars_train, dfplars_test], axis=1)\ndfResult.columns = ['Err-Ttrain|xpwpol', \n                    'Err-Test|xpwpol', \n                    'Err-plars on train', \n                    'Err-plars on test']\ndfResult\n\n\n\nAxis 3: Comparison of the error’s statistics between the models provided by the plars and the xpwpol module of the MizoPol package.\n\n\nAs for the statistics of the DNN-GRU model (Alamir & Clavel (2025)), they are given in the figures below:\n\n\n\nStatistics of the error when using DNN-GRU strucutre with a hidden layer of 32 or 128 correponding respectively to 31224 and 235128 weights and computation time of respectively 3h27 and 3h40.\n\n\nNotice that the number of parameters used by the xpwpol module is around 4000 parameters and the computation time is less than 180 sec.",
+    "crumbs": [
+      "Home",
+      "**explicit pwpol**",
+      "xpwpol: Robotic"
+    ]
+  },
+  {
+    "objectID": "polynomials.html",
+    "href": "polynomials.html",
+    "title": "Polynomials",
+    "section": "",
+    "text": "In this section, we recall some definitions related to multi-variate polynomials as the latter are in the heart of the mizopol package.",
     "crumbs": [
       "Home",
       "**Preliminaries**",
-      "Parsimony: Example 2"
+      "Polynomials"
     ]
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "MizoPol",
-    "section": "",
-    "text": "We’ll come back to these applications as we explain the different modules and their illustrative use-cases.",
+    "objectID": "polynomials.html#sec-poldef",
+    "href": "polynomials.html#sec-poldef",
+    "title": "Polynomials",
+    "section": "1 Definition",
+    "text": "1 Definition\n\nLet us assume that \\(x\\in \\mathbb R^n\\) is an \\(n\\)-dimensional vector of features.\nA multivariate1 polynomial in \\(x\\) is a scalar map \\(P(x)\\) that takes the following form:\n\n\\[\nP(x)=\\sum_{i=1}^{n_c} c_i\\phi_i(x)\\quad\\text{where}\\quad \\phi_i(x) = \\prod_{j=1}^{n}x_j^{p_{ij}}\n\\tag{1}\\]\nwhere each \\(\\phi_i\\) in Equation 1 is called a monomial.\n\nThe degree of monomial \\(\\phi_i\\) is defined by the sum of its powers, namely:\n\n\\[\n\\texttt{deg}(\\phi_i) = \\sum_{j=1}^{n}p_{ij}\n\\tag{2}\\]\n\nThe degree of the polynomial is the maximum degree of its monomial, namely:\n\n\\[\n\\texttt{deg}(P) = \\max_{i=1}^{n_c}\\Bigl[\\texttt{deg}(\\phi_i)\\Bigr]\n\\tag{3}\\]",
     "crumbs": [
       "Home",
-      "MizoPol"
+      "**Preliminaries**",
+      "Polynomials"
     ]
   },
   {
-    "objectID": "index.html#footnotes",
-    "href": "index.html#footnotes",
-    "title": "MizoPol",
+    "objectID": "polynomials.html#sec:polrepresentation",
+    "href": "polynomials.html#sec:polrepresentation",
+    "title": "Polynomials",
+    "section": "2 Representation",
+    "text": "2 Representation\nFrom the very definition of a monomial \\(\\phi_i\\), it comes out that its contribution to the expression of the polynomial \\(P\\) is entirely defined by the following attributes:\n\nThe vector of powers \\(p_{ij}\\) for \\(j\\in \\{1,\\dots,n\\}\\) (these are integers)\nThe coefficient \\(c_i\\) that is associated to the monomial\n\nIn other words, the information associated to \\(\\phi_i\\) takes the following form:\n\n\n\n\n\n\nFigure 1: Attributes of a monomial in a polynomial in \\(n\\) arguments\n\n\n\nNow since the polynomial \\(P\\) involves \\(n_c\\) monomials, it comes out that \\(P\\) is totally determined by its power matrix and its associated vectors of coefficients as it is shown in the following figure (see also Equation 1):\n\n\n\n\n\n\nFigure 2: The ‘powers’ and ‘coefs’ attributes of a polynomial \\(P\\) with \\(n_c\\) monomials and \\(n\\) variables",
+    "crumbs": [
+      "Home",
+      "**Preliminaries**",
+      "Polynomials"
+    ]
+  },
+  {
+    "objectID": "polynomials.html#example",
+    "href": "polynomials.html#example",
+    "title": "Polynomials",
+    "section": "3 Example",
+    "text": "3 Example\nThe following script shows the use of the above representation in defining a polynomial and evaluating its values on a matrix of features. This script uses the polyval function of the utilities module of mizopol.\nimport numpy as np \nfrom utilities import polyval\n\nnx = 6\nnt = 10000\n\n# Generate data \nX = np.random.rand(nt, nx)\ny = X[:,0]**2 -3*X[:,1] * X[:,3]**3 + 4 * X[:,5]**5-1\n\n# Define the powers and the coefficients of the polynomial \nP = [[2, 0, 0, 0, 0, 0], \n     [0, 1, 0, 3, 0, 0],\n     [0, 0, 0, 0, 0, 5], \n     [0, 0, 0, 0, 0, 0]\n     ]\n\nc = [1, -3, 4, -1]\n\n# Predict the value of the polynomial at X\n# and compare to the true value\nypred = polyval(X, P, c)\nprint(abs(y-ypred).max())\n\n&gt;&gt; 8.881784197001252e-16",
+    "crumbs": [
+      "Home",
+      "**Preliminaries**",
+      "Polynomials"
+    ]
+  },
+  {
+    "objectID": "polynomials.html#footnotes",
+    "href": "polynomials.html#footnotes",
+    "title": "Polynomials",
     "section": "Footnotes",
-    "text": "Footnotes\n\n\nMizoPol is not rigorously speaking a python package. This is the reason why it is referred to as a python suite or a set of modules. Nevertheless, it is possible that the work package is used here and there by mistake.↩︎",
+    "text": "Footnotes\n\n\nWe shall drop the word multivariate in the sequel.↩︎",
     "crumbs": [
       "Home",
-      "MizoPol"
+      "**Preliminaries**",
+      "Polynomials"
+    ]
+  },
+  {
+    "objectID": "plars_example.html#the-problem",
+    "href": "plars_example.html#the-problem",
+    "title": "plars",
+    "section": "1 The problem",
+    "text": "1 The problem\nIn order to better understand the parameters involved in the plars instantiation and use, it is worth working on a specific illustrative example so that the effect of changing each parameter value can be easily observed and explained.\nSo let us consider the following script that define a dataset that is associated to a known polynomial so that we can examine how the plars is able to recover the hidden truth from the pair \\((X,y)\\) of features matrix and label vector.\nLet us consider the relationship defined by\n\\[\ny = x_0^2-30x_1x_3^3+4x_5^5-1\n\\tag{1}\\]",
+    "crumbs": [
+      "Home",
+      "**plars**",
+      "plars: Example of use"
+    ]
+  },
+  {
+    "objectID": "plars_example.html#the-settings",
+    "href": "plars_example.html#the-settings",
+    "title": "plars",
+    "section": "2 The settings",
+    "text": "2 The settings\nWe shall consider three different settings in order to illustrate some of the capabilities of plars in orienting the solution of the problem, namely:\n\nSetting 1Setting 2Setting 3\n\n\nIn this setting, we use the exact number of variable \\(n_x=6\\) involved in Equation 1. Morover, we instantiate the solver with a slightly higher degree than the unknown hidden one involved in Equation 1, namely deg=6 instead of \\(5\\).\nNotice that in this case, the number of eligible monomials is equal to 924.\n\n\nIn this setting, we increase the number of variable \\(n_x=9\\). Morover, we instantiate the solver with a higher degree than the unknown hidden one involved in Equation 1, namely deg=7.\nNotice that in this case, the number of eligible monomial is equal to 11440.\n\n\nWe reuse the previous setting but we ask plars to select only nfeats=4 among the \\(n_x=9\\) variables to be involved in the polynomial expansion.\nNotice how this induces a reduction in the computation time. Moreover, notice that the nfeat attribute of the solution is still computed based on \\(n_x=9\\) while in fact, internally the truly used number of variables is nfeats=4 which explain the reduction in the computation time.",
+    "crumbs": [
+      "Home",
+      "**plars**",
+      "plars: Example of use"
+    ]
+  },
+  {
+    "objectID": "plars_example.html#the-results",
+    "href": "plars_example.html#the-results",
+    "title": "plars",
+    "section": "3 The results",
+    "text": "3 The results\n\nSetting 1Setting 2Setting 3\n\n\nimport numpy as np \nfrom plars import PLARS\n\nnx = 6\nnt = 100000\nX =  np.random.rand(nt, nx)\ny = X[:,0]**2 -30*X[:,1] * X[:,3]**3 + 4 * X[:,5]**5-1\n\npl = PLARS(window=500, deg=6, nModels=5, nModes=10, eps=1e-2)\nsol = pl.fit(X, y, compute_contributions=True)\n\nprint('number of eligible parameters', sol['nfeat'])\nprint(sol['dfe_train'])\nprint(sol['card'])\nprint(sol['df_sol'])\nprint(f'cpu = {sol[\"cpu\"]:3.2} sec')\nwhich results in\n\nnumber of eligible parameters 924\n         Error\n50%   0.003069\n80%   0.005694\n90%   0.006973\n95%   0.008930\n98%   0.010817\n99%   0.011353\n100%  0.012464\n13\n    x0  x1  x2  x3  x4  x5  Contribution       std      coefs\n0    0   1   0   3   0   0     -0.522762  0.038242 -29.997015\n1    0   0   0   0   0   0     -0.136881  0.000000  -0.977973\n2    0   0   0   0   0   5      0.092488  0.006196   3.948401\n3    5   0   0   0   0   0     -0.088545  0.005112  -3.756293\n4    3   0   0   0   0   0      0.084649  0.003616   2.447522\n5    6   0   0   0   0   0      0.045957  0.003128   2.288520\n6    3   0   0   0   0   2     -0.007943  0.000618  -0.680418\n7    2   0   0   0   0   3      0.007027  0.000576   0.609813\n8    4   0   0   0   0   2      0.006844  0.000667   0.749974\n9    3   0   0   0   0   3     -0.005838  0.000494  -0.651726\n10   0   0   0   0   0   6      0.000618  0.000035   0.031106\n11   0   0   0   1   0   0     -0.000247  0.000005  -0.003558\n12   2   0   0   1   0   0      0.000152  0.000008   0.006449\ncpu = 0.3 sec\n\n\n\nimport numpy as np \nfrom plars import PLARS\n\nnx = 9\nnt = 100000\nX =  np.random.rand(nt, nx)\ny = X[:,0]**2 -30*X[:,1] * X[:,3]**3 + 4 * X[:,5]**5-1\n\npl = PLARS(window=500, deg=7, nModels=5, nModes=10, eps=1e-2)\nsol = pl.fit(X, y, compute_contributions=True)\n\nprint('number of eligible parameters', sol['nfeat'])\nprint(sol['dfe_train'])\nprint(sol['card'])\nprint(sol['df_sol'])\nprint(f'cpu = {sol[\"cpu\"]:3.2} sec')\nwhich results in\n\nnumber of eligible parameters 11440\n         Error\n50%   0.000585\n80%   0.000912\n90%   0.001099\n95%   0.001274\n98%   0.001481\n99%   0.001661\n100%  0.003145\n11\n    x0  x1  x2  x3  x4  x5  x6  x7  x8  Contribution           std      coefs\n0    0   1   0   3   0   0   0   0   0     -0.630226  4.183679e-02 -29.994346\n1    0   0   0   0   0   0   0   0   0     -0.166666  1.853559e-17  -0.998278\n2    0   0   0   0   0   5   0   0   0      0.072542  4.441163e-03   2.634459\n3    2   0   0   0   0   0   0   0   0      0.055356  2.311301e-03   0.985651\n4    0   0   0   0   0   4   0   0   0      0.046204  2.754222e-03   1.379038\n5    0   0   0   0   0   3   0   0   0     -0.015762  6.486132e-04  -0.385597\n6    0   0   0   0   0   7   0   0   0      0.008070  7.056783e-04   0.375179\n7    3   0   0   0   0   0   0   0   0      0.002117  1.182423e-04   0.050505\n8    4   0   0   0   0   0   0   0   0     -0.002028  1.001263e-04  -0.061360\n9    5   0   0   0   0   0   0   0   0      0.000697  4.547199e-05   0.025390\n10   0   1   0   1   0   0   0   0   0     -0.000191  7.361118e-06  -0.004540\ncpu = 0.93 sec\n\n\n\nimport numpy as np \nfrom plars import PLARS\n\nnx = 9\nnt = 100000\nX =  np.random.rand(nt, nx)\ny = X[:,0]**2 -30*X[:,1] * X[:,3]**3 + 4 * X[:,5]**5-1\n\npl = PLARS(window=500, deg=7, nModels=5, nModes=10, eps=1e-2)\nsol = pl.fit(X, y, compute_contributions=True, nfeats=4)\n\nprint('number of eligible parameters', sol['nfeat'])\nprint(sol['dfe_train'])\nprint(sol['card'])\nprint(sol['df_sol'])\nprint(f'cpu = {sol[\"cpu\"]:3.2} sec')\nwhich results in\n\nnumber of eligible parameters 330\n         Error\n50%   0.000446\n80%   0.000795\n90%   0.001035\n95%   0.001326\n98%   0.001644\n99%   0.001769\n100%  0.002796\n12\n    x3  x1  x5  x0  Contribution       std      coefs\n0    3   1   0   0     -0.652083  0.050207 -29.998752\n1    0   0   0   0     -0.172005  0.000000  -1.001214\n2    0   0   5   0      0.106215  0.006788   3.722983\n3    0   0   0   2      0.056125  0.002432   0.984052\n4    0   0   4   0      0.005643  0.000364   0.164724\n5    0   0   0   3      0.002525  0.000092   0.058017\n6    0   0   7   0      0.002488  0.000244   0.117669\n7    0   0   0   4     -0.001779  0.000088  -0.051696\n8    0   0   0   6      0.000367  0.000022   0.014886\n9    0   0   2   3     -0.000363  0.000032  -0.025200\n10   0   0   3   4      0.000195  0.000017   0.023137\n11   0   0   0   5     -0.000111  0.000007  -0.003900\ncpu = 0.23 sec\n\n\n\n\nIn the next section, a simple GUI enables to smoothly using the plars algorithm by simply uploading the dataframes is described.",
+    "crumbs": [
+      "Home",
+      "**plars**",
+      "plars: Example of use"
+    ]
+  },
+  {
+    "objectID": "overview.html",
+    "href": "overview.html",
+    "title": "Overview",
+    "section": "",
+    "text": "The mizopol suite currently consists of the following modules that are presented in details through this documentation.\nThe presentation below aims at giving a brief and sketchy overview of the tools.",
+    "crumbs": [
+      "Home",
+      "**Preliminaries**",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "overview.html#footnotes",
+    "href": "overview.html#footnotes",
+    "title": "Overview",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nsee the polynomial page for a rigorous definition.↩︎",
+    "crumbs": [
+      "Home",
+      "**Preliminaries**",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "g2sys_principle.html#computation-architecture",
+    "href": "g2sys_principle.html#computation-architecture",
+    "title": "g2sys",
+    "section": "1 Computation architecture",
+    "text": "1 Computation architecture\nThe principle of the g2sys module is depicted in Figure 1 below\n\n\n\n\n\n\nFigure 1: Principle of g2sys: It is all about preparing the identification problem for the plars algorithm as described by the arguments shown in red.\n\n\n\nNotice the following fact:\n\nThe set of alignments between columns is reported in a dictionary of correlations. Only uncorrelated columns are used in the search for relationships. This reduces the computational burden by avoiding establishing easy-to-detect relationships.\nObviously, later on, the normality check must also investigate whether previously aligned columns remain to be so, otherwise a missing alignement flag should be raised.\nFor each of the remaining non aligned columns, a plars-compatible problem (see the introductory section for g2sys) and the associated regression problem is solved and the results are reported for the user’s convenience.\nNotice that the creation of the plars-compatible regression problem needs the parameters d, nd and recursive to be defined.\n\n\n\n\n\n\nrecursive=True -&gt; dynamic / otherwise static\n\n\n\nThe recursive parameters is used to designate whether it is a static or a dynamic relationship that is searched for. More precisely, setting recursive to true means that a dynamic relationship is searched for, otherwise, a static relationship is targeted.\n\n\nThe operation is repeated over the list of sensors to be investigated. This list is designated by the input argument list_of_c.",
+    "crumbs": [
+      "Home",
+      "**g2sys**",
+      "g2sys: Principle"
+    ]
+  },
+  {
+    "objectID": "g2sys_principle.html#sparsity-enhances-reliability-interpretability",
+    "href": "g2sys_principle.html#sparsity-enhances-reliability-interpretability",
+    "title": "g2sys",
+    "section": "2 Sparsity enhances reliability & interpretability",
+    "text": "2 Sparsity enhances reliability & interpretability\nWhile the crucial role of sparsity in addressing false alarm and anomaly detection has been previously underlined in the Parsimony-related chapter and the examples that follow. It is worth mentioning it again in this g2sys chapter by addressing more realistic examples while underlying a new advantage that is associated to the interpretability issue.\n\n2.1 Reliability\nIt is important to understand the role of sparsity in providing reliable and interpretable anomaly detection because sparsity lies in the very heart of the MizoPol set of tools.\n\n2.1.1 Real life example\nIn order to understand this key issue, we shall invoke the results shown in the use-case presented in the metro compressor section where a system representing a train’s compressor (15 sensors) is analyzed by means of the g2sys dedicated Graphical User Interface (GUI).\nAfter few clicks and iterations, it is shown that a tight static relationship can be found indexed by the sensor called Reservoir. The model has been fitted using only 12% of the learning data.\nThe following figure shows a screenshot of the GUI after these manipulations.\n\n\nThe bold title of the figure states the following fact:\n\nThe model involves only \\(5\\) monomials (hence, \\(5\\) coefficients).\nIt provides a very small regression error and an almost perfect alignment\n\n\n\n\n\n\n\nScreenshot of the g2sys GUI showing some information regarding the identified polynomial and the regression quality of the sensor/label \\(\\texttt{Reservoirs}\\).\n\n\n\n\nThe next figure show the examination by the GUI of the residual (the normalized regression error) between the truly measured value of the \\(\\texttt{Reservoir}\\) sensor and the one provided by the fitted sparse polynomial:\n\n\n\n\n\n\nFigure 2: Evolution of the residual, averaged over a rolling window of 5000 samples. Recall that the training has been performed using the first 30,000 samples.\n\n\n\nThis figure suggests the following observations:\n\nThe relationship that links the sensor defining the label, namely \\(\\texttt{Reservoirs}\\) to the two sensors: \\(\\texttt{H1}\\) and \\(\\texttt{Oil\\_temperature}\\) so that one can write:\n\n\\[\n\\texttt{Reservoir} = P\\Bigl(\\texttt{H1}, \\texttt{Oil\\_temperature}\\Bigr)\n\\tag{1}\\]\nwhere \\(P\\) is a polynomial with only \\(5\\) monomials as discussed above.\nBased on the previous fact, let us consider the following question:\n\n\n\n\n\n\nAbout normality detection\n\n\n\nWhat are the odds that a model with only 5 parameters fits with an error lower than 7% over almost all the 300,000 instances while reaching 20% consistently over a small interval (see Figure 2) without this interval representing one of following two possibilities affecting the triplet \\[(\\texttt{Reservoir}, \\texttt{H1}, \\texttt{Oil\\_temperature})\\]\n\nEither a context that is not seen in the training data\nOr a true anomaly affecting the compressor that disturbed the relationship between these three sensors?\n\nThe odds should be very small but the answer would not be so straightforward should the model be a Deep Neural Network with 200,000 parameters.\n\n\n\n\n2.1.2 A sketchy example\nIf this is not yet clear, the following two tabs hopefully might help:\n\nParsimoniousNon parsimonious\n\n\n\n\n\nSince the model (in Green) is parsimonious and still fits almost all points, the red one can be declared to be anomalous with high confidence.\n\n\n\n\n\n\n\nBecause the model (in Green) is not parsimonuous, the probability it outit the data is greater making the diagnosis of the red circle more difficult to assess with confidence.\n\n\n\n\n\n\n\n\n2.2 Interpretability\nThe discussion of the previous section was centered on reliability: sparsity makes decision reliable as the characterization of normality is less prone to overfitting and mis-representation.\nBut what about interpretability?\nLet us consider again the example of the train compressor system used in Section 2.1.1 above. Recall that our dataset involves 15 sensors meaning that if we use an anomaly detection method that provides a black-box like anomaly-related residual, it would be difficult to interpret this residual having high value1. One can just states that there is something wrong happening.\nOn the contrary, the fact that the residual is defined by the error on Equation 1 leads naturally to the following diagnosis:\n\n\n\n\n\n\nLocalisation of the anomaly source\n\n\n\nThere is an anomaly that is linked to the triplet:\n(\\(\\texttt{Reservoir}, \\texttt{H1}, \\texttt{Oil\\_tempoerature}\\)),\nnamely:\n\nEither at least one of these sensors is deficient (but this should therefore be seen in all sparse relationships that involves this sensor)\nOr their relationship is detuned for whatever reasons that the operator would recognize quite rapidly once she is notified that the default lies in this set of three sensors.\n\n\n\nAnother very speaking example showing the role of the sparsity in enhancing both the reliability of the diagnosis and its interpetability is given through the use-case of the section dedicated to the hydraulic system.",
+    "crumbs": [
+      "Home",
+      "**g2sys**",
+      "g2sys: Principle"
+    ]
+  },
+  {
+    "objectID": "g2sys_principle.html#footnotes",
+    "href": "g2sys_principle.html#footnotes",
+    "title": "g2sys",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nThere are some alternatives but franckly, they are not reliable nor trustworthy.↩︎",
+    "crumbs": [
+      "Home",
+      "**g2sys**",
+      "g2sys: Principle"
+    ]
+  },
+  {
+    "objectID": "rlars_intro.html#y-as-a-root-of-a-polynomial-with-x-dependent-polynomial-coefficients",
+    "href": "rlars_intro.html#y-as-a-root-of-a-polynomial-with-x-dependent-polynomial-coefficients",
+    "title": "rlars",
+    "section": "2.1 \\(y\\) as a root of a polynomial with \\(x\\)-dependent polynomial coefficients",
+    "text": "2.1 \\(y\\) as a root of a polynomial with \\(x\\)-dependent polynomial coefficients\nGiven,\n\na vector of features \\(x\\) and\na label \\(y\\),\n\nrlars looks for a set of multi-variate polynomials:\n\\[\nc_0(x),\\dots, c_r(x)\n\\]\nsuch that \\(y\\) is a root of the following scalar polyomial (in the unknown \\(z\\)):\n\\[\nc_r(x)z^r+\\dots+c_1(x)z+c_0(x)\n\\]\nMore precisely, the following can be viewed as a residual for the normality characterization of the pair \\((x,y)\\):\n\\[\nR(x,y):=c_r(x)y^r+\\dots+c_0(x)\n\\tag{2}\\]\nthat can be for instance used in anomaly detection.\nMoreover, as it is discussed in the previous section, when \\(r=1\\), the solution provides an explicit prediction formulae for the label \\(y\\) as a rational explicit function of the vector of features \\(x\\).",
+    "crumbs": [
+      "Home",
+      "**rlars**",
+      "rlars: Intro"
+    ]
+  },
+  {
+    "objectID": "rlars_intro.html#structure-of-the-relationships",
+    "href": "rlars_intro.html#structure-of-the-relationships",
+    "title": "rlars",
+    "section": "2.2 Structure of the relationships",
+    "text": "2.2 Structure of the relationships\nIn order to get a feeling regarding the class of relationships involved in the general case, some known facts are worth recalling.\nLet the polynomial be \\[\np(z) = c_{r}(x) z^{r} + c_{r-1} z^{r-1} + \\cdots + c_1(x)z + c_0,\n\\] and let its roots be \\(z_1, z_2, \\ldots, z_{r}\\) (which are generally complex numbers).\nThen Vieta’s formulas state that: \\[\n\\begin{aligned}\nz_1 + z_2 + \\cdots + z_{r} &= -\\frac{c_{r-1}(x)}{c_{r}(x)}, \\\\\n\\sum_{1 \\le i &lt; j \\le r} z_i z_j &= \\frac{c_{r-2}(x)}{c_{r}(x)}, \\\\\n\\sum_{1 \\le i &lt; j &lt; k \\le r} z_i z_j z_k &= -\\frac{c_{r-3}(x)}{c_{r}(x)}, \\\\\n&\\quad \\vdots \\\\\nz_1 z_2 \\cdots z_{r} &= (-1)^{r} \\frac{c_0(x)}{c_{r}(x)}.\n\\end{aligned}\n\\]\nThis equations underlines the fact that the relationships are mainly composed transformations of rational relationships. This makes them quite rich compared to simple polynomial be it multivariate, and hence suggests that sparser relationships might be so expressed.\nAt least, this discussion suggests that the two possibly implicit characterization provided by the pwpol and the rlars modules are complementary.",
+    "crumbs": [
+      "Home",
+      "**rlars**",
+      "rlars: Intro"
+    ]
+  },
+  {
+    "objectID": "rlars_intro.html#footnotes",
+    "href": "rlars_intro.html#footnotes",
+    "title": "rlars",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nMeaning single multi-variate polynomials and not explicit piece-wise polynomials class which can be viewed as universal and complete class of relationships.↩︎",
+    "crumbs": [
+      "Home",
+      "**rlars**",
+      "rlars: Intro"
+    ]
+  },
+  {
+    "objectID": "digital_twins_intro.html",
+    "href": "digital_twins_intro.html",
+    "title": "Digital Twins",
+    "section": "",
+    "text": "Before any discussion let us recall the following fact:\nThis being said, the following illustration summarizes the steps involved in using MizoPol (in particular the g2sys module already discussed in the introduction to g2sys section) to help building the digital twin.\nThis picture gives the ideal case where the task is perfectly achieved.\nAn example of such a complete process is shown in the section dedicated to the nasa turbofan ageing example.\nNotice that the process is mainly based on the decomposition of the set of sensors into three subsets, which are:",
+    "crumbs": [
+      "Home",
+      "**Digital twins**",
+      "DT: Introduction"
+    ]
+  },
+  {
+    "objectID": "digital_twins_intro.html#footnotes",
+    "href": "digital_twins_intro.html#footnotes",
+    "title": "Digital Twins",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nNotice that, rigorously speaking, there is no difference in nature between these sensors and those who would have been eliminated through the search for aligned sensors step. All of them can be expressed in terms of static relationships involving the other sensors. It is only their position in the process that distinguished them.↩︎",
+    "crumbs": [
+      "Home",
+      "**Digital twins**",
+      "DT: Introduction"
+    ]
+  },
+  {
+    "objectID": "plars_gui.html",
+    "href": "plars_gui.html",
+    "title": "User Graphical Interface for plars",
+    "section": "",
+    "text": "The datasets used in the video bellow are described in the KAGGLE repository dedicated to the Machine Learning nonlinear state estimator design.\nThe dataset contains two examples where the features are represented by the past measurements instances over a so called observation horizon while the label is the value of the state at the present instant.\n\n\nYour browser does not support the video tag.",
+    "crumbs": [
+      "Home",
+      "**plars**",
+      "plars: GUI"
     ]
   },
   {
@@ -490,411 +888,73 @@
     ]
   },
   {
-    "objectID": "plars_gui.html",
-    "href": "plars_gui.html",
-    "title": "User Graphical Interface for plars",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "MizoPol",
     "section": "",
-    "text": "The datasets used in the video bellow are described in the KAGGLE repository dedicated to the Machine Learning nonlinear state estimator design.\nThe dataset contains two examples where the features are represented by the past measurements instances over a so called observation horizon while the label is the value of the state at the present instant.\n\n\nYour browser does not support the video tag.",
+    "text": "We’ll come back to these applications as we explain the different modules and their illustrative use-cases.",
     "crumbs": [
       "Home",
-      "**plars**",
-      "plars: GUI"
+      "MizoPol"
     ]
   },
   {
-    "objectID": "digital_twins_intro.html",
-    "href": "digital_twins_intro.html",
-    "title": "Digital Twins",
-    "section": "",
-    "text": "Before any discussion let us recall the following fact:\nThis being said, the following illustration summarizes the steps involved in using MizoPol (in particular the g2sys module already discussed in the introduction to g2sys section) to help building the digital twin.\nThis picture gives the ideal case where the task is perfectly achieved.\nAn example of such a complete process is shown in the section dedicated to the nasa turbofan ageing example.\nNotice that the process is mainly based on the decomposition of the set of sensors into three subsets, which are:",
-    "crumbs": [
-      "Home",
-      "**Digital twins**",
-      "DT: Introduction"
-    ]
-  },
-  {
-    "objectID": "digital_twins_intro.html#footnotes",
-    "href": "digital_twins_intro.html#footnotes",
-    "title": "Digital Twins",
+    "objectID": "index.html#footnotes",
+    "href": "index.html#footnotes",
+    "title": "MizoPol",
     "section": "Footnotes",
-    "text": "Footnotes\n\n\nNotice that, rigorously speaking, there is no difference in nature between these sensors and those who would have been eliminated through the search for aligned sensors step. All of them can be expressed in terms of static relationships involving the other sensors. It is only their position in the process that distinguished them.↩︎",
+    "text": "Footnotes\n\n\nMizoPol is not rigorously speaking a python package. This is the reason why it is referred to as a python suite or a set of modules. Nevertheless, it is possible that the work package is used here and there by mistake.↩︎",
     "crumbs": [
       "Home",
-      "**Digital twins**",
-      "DT: Introduction"
+      "MizoPol"
     ]
   },
   {
-    "objectID": "rlars_intro.html#y-as-a-root-of-a-polynomial-with-x-dependent-polynomial-coefficients",
-    "href": "rlars_intro.html#y-as-a-root-of-a-polynomial-with-x-dependent-polynomial-coefficients",
-    "title": "rlars",
-    "section": "2.1 \\(y\\) as a root of a polynomial with \\(x\\)-dependent polynomial coefficients",
-    "text": "2.1 \\(y\\) as a root of a polynomial with \\(x\\)-dependent polynomial coefficients\nGiven,\n\na vector of features \\(x\\) and\na label \\(y\\),\n\nrlars looks for a set of multi-variate polynomials:\n\\[\nc_0(x),\\dots, c_r(x)\n\\]\nsuch that \\(y\\) is a root of the following scalar polyomial (in the unknown \\(z\\)):\n\\[\nc_r(x)z^r+\\dots+c_1(x)z+c_0(x)\n\\]\nMore precisely, the following can be viewed as a residual for the normality characterization of the pair \\((x,y)\\):\n\\[\nR(x,y):=c_r(x)y^r+\\dots+c_0(x)\n\\tag{2}\\]\nthat can be for instance used in anomaly detection.\nMoreover, as it is discussed in the previous section, when \\(r=1\\), the solution provides an explicit prediction formulae for the label \\(y\\) as a rational explicit function of the vector of features \\(x\\).",
+    "objectID": "parsimony_example_pol.html",
+    "href": "parsimony_example_pol.html",
+    "title": "Parsimonuous models are robust to context variation",
+    "section": "",
+    "text": "In this section, we consider a very simple example of the comparison between the behavior of a parsimonious model and several non parsimonious models in order to highlight the robustness of the normality characterization via parsimonious relationships to unseen contexts.",
     "crumbs": [
       "Home",
-      "**rlars**",
-      "rlars: Intro"
+      "**Preliminaries**",
+      "Parsimony: Example 2"
     ]
   },
   {
-    "objectID": "rlars_intro.html#structure-of-the-relationships",
-    "href": "rlars_intro.html#structure-of-the-relationships",
-    "title": "rlars",
-    "section": "2.2 Structure of the relationships",
-    "text": "2.2 Structure of the relationships\nIn order to get a feeling regarding the class of relationships involved in the general case, some known facts are worth recalling.\nLet the polynomial be \\[\np(z) = c_{r}(x) z^{r} + c_{r-1} z^{r-1} + \\cdots + c_1(x)z + c_0,\n\\] and let its roots be \\(z_1, z_2, \\ldots, z_{r}\\) (which are generally complex numbers).\nThen Vieta’s formulas state that: \\[\n\\begin{aligned}\nz_1 + z_2 + \\cdots + z_{r} &= -\\frac{c_{r-1}(x)}{c_{r}(x)}, \\\\\n\\sum_{1 \\le i &lt; j \\le r} z_i z_j &= \\frac{c_{r-2}(x)}{c_{r}(x)}, \\\\\n\\sum_{1 \\le i &lt; j &lt; k \\le r} z_i z_j z_k &= -\\frac{c_{r-3}(x)}{c_{r}(x)}, \\\\\n&\\quad \\vdots \\\\\nz_1 z_2 \\cdots z_{r} &= (-1)^{r} \\frac{c_0(x)}{c_{r}(x)}.\n\\end{aligned}\n\\]\nThis equations underlines the fact that the relationships are mainly composed transformations of rational relationships. This makes them quite rich compared to simple polynomial be it multivariate, and hence suggests that sparser relationships might be so expressed.\nAt least, this discussion suggests that the two possibly implicit characterization provided by the pwpol and the rlars modules are complementary.",
+    "objectID": "parsimony_example_pol.html#the-protocol",
+    "href": "parsimony_example_pol.html#the-protocol",
+    "title": "Parsimonuous models are robust to context variation",
+    "section": "1 The protocol",
+    "text": "1 The protocol\nWe shall define a dataset that involves \\(n_x=3\\) features through a label that is an exact polynomial of degree deg=3 involving only \\(4\\) monomials.\n\n1.1 Training data\nThe training dataset is obtained by generating nSamples=10000 samples of features in the hypercube:\n\\[\n\\mathbb X_\\text{train} := [-1,1]^3\n\\]\nThe label is computed using the polynomial defined by the following powers and coefficients matrix and vector respectively1:\n\\[\nP := \\begin{bmatrix}\n2&1&0\\cr\n2&0&1\\cr\n1&0&0\\cr\n1&1&1\n\\end{bmatrix} \\quad ;\\quad c\\in [-1,1]^4\n\\]\nwhich leads to a relationships of the form:\n\\[\ny = c_1x_1^2x_2 + c_2x_1^2x_3 + c_3x_1 + c_4x_1x_2x_3\n\\tag{1}\\]\nThe label vector, denoted by \\(y_\\texttt{train}\\), associated to the matrix \\(X_\\text{train}\\in \\mathbb R^{\\texttt{nSamples}\\times 3}\\) is obtained by computing the value of the polynomial defined by \\((P,c)\\) at the 10000 samples (rows of X):\ny_train = poly_func(X_train) + np.random.normal(0, noise_level, size=nSamples)\nwhere noise_level is taked either equal to 0 or to 0.025 in order to check the robustness to noise of the fitted model.\n\n\n1.2 The compared models\nFive models are fitted using the pair of features matrix and label defined by \\((X_\\texttt{train},y_\\texttt{train})\\). Namely:\n\nThree Dnn models with different structures as shown in the following excerpt of the python code:\nlesDnn = [(8,8,2), (32,16,4), (128,128,32)]\nmodel_dnn = {i:None for i in range(len(lesDnn))}\ncpu = {i:None for i in range(len(lesDnn))}\n\niModel = 0\nfor iModel, ns in enumerate(lesDnn):\n    n1, n2, n3 = ns\n    model_dnn[iModel] = keras.Sequential()\n    model_dnn[iModel].add(layers.Dense(n2, activation='relu'))\n    model_dnn[iModel].add(layers.Dense(n3, activation='relu'))\n    model_dnn[iModel].add(layers.Dense(n1, activation='relu', input_shape=(nx,)))\n    model_dnn[iModel].add(layers.Dense(1))\n    model_dnn[iModel].compile(optimizer='adam', loss='mse')\n    t0 = time()\n    model_dnn[iModel].fit(Xtrain, ytrain, epochs=500, batch_size=32, validation_split=0.2, verbose=0)\nThese models involve an increasing number of neurons in order to show that the qualitative conclusion does not significantly depend on the structure.\n\n\n\n\n\n\n\nUse of validation subset\n\n\n\nNotice that following the good practice, the depth of the fit process is supervised though the use of a validation set which is here taked to be 20% of the training set in order to avoid the over-fitting phenomenon.\n\n\n\nOne model based on a Non parsimonious linear regression applied to the polynomial features generated from \\(X_\\text{train}\\) as it is shown in the following excerpt:\nfrom sklearn.preprocessing import PolynomialFeatures\nfrom sklearn.linear_model import RidgeCV\nfrom sklearn.pipeline import make_pipeline  \nmodel_ridge = make_pipeline(PolynomialFeatures(degree=deg), RidgeCV())\nt0 = time()\nmodel_ridge.fit(Xtrain, ytrain)\ncpu_ridge = time() - t0\nA last model that is obtained using the plars module of the MizoPol package which seeks a parsimonious multivariate polynomial:\nfrom plars import PLARS, predict, normalized_error\npl = PLARS(window=2000, deg=deg, nModels=20, nModes=20, eps=0.05)\nt0 = time()\nsol = pl.fit(Xtrain, ytrain)\ncpu_pl = time() - t0\n\n\n\n1.3 The test dataset\nThe test dataset is defined so that unseen regions in the training data are used in order to check the robustness of the normality characterization via the invariant relationships. In other words, we want to answer the question:\nDoes the relationship holds on the unseen regions that were absent from the training data?\nFor this reason, a new set of nSamples=10000 samples are randomly generated inside the hyper-cube:\n\\[\n\\mathbb X_\\text{test} := [-5,5]^3\n\\]\nso that many samples lie outside the training set domain \\(\\mathbb X_\\text{train}=[-1,1]^3\\).\nThis might be viewed as an instantiation of a new context in which the features visit regions that were not visited in the training dataset while the relationship is kept unchanged. Good models should not see any reason to raise alarms.",
     "crumbs": [
       "Home",
-      "**rlars**",
-      "rlars: Intro"
+      "**Preliminaries**",
+      "Parsimony: Example 2"
     ]
   },
   {
-    "objectID": "rlars_intro.html#footnotes",
-    "href": "rlars_intro.html#footnotes",
-    "title": "rlars",
+    "objectID": "parsimony_example_pol.html#results-comparison",
+    "href": "parsimony_example_pol.html#results-comparison",
+    "title": "Parsimonuous models are robust to context variation",
+    "section": "2 Results & comparison",
+    "text": "2 Results & comparison\n\n2.1 Extrapolation errors\nThe statistics on the extrapolation error (residual on the sample in the test dataset) are expressed in terms of normalized percentile, namely:\n\n\n\nRegression error: (For instance, \\(e_y=0.1\\) means that 95% of the errors are 10 times lower than the median of the norm of \\(y\\)).\n\n\n\nNormalized error’s | noise = 0Normalized error’s | noise = 0.025\n\n\n\n\n\n\n\n\n\nObviously, the above table show how bad is the generalization power of the DNN-based models. The non sparse solver remains quite good in the absence of noise and starts to seriously be affected as soon measurement noise is added. On the contrary, the sparse model resists in all circumstances.\n\n\n2.2 Residual vs regions\nIn order to better see how the errors spread in the training and the unseen domain, the following plots shows the errors as function of the \\(L_\\infty\\) norm of the features vector.\n\nnoise = 0|allnoise = 0|zoomnoise = 0.025|allnoise = 0.025|zoom\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThese results clearly show that the DNN models does not resist to unseen contexts in the training data and extrapolate very badly on these regions.\nOn the other hand, for both noise level, the parsimonious model extrapolates better than the full polynomial-Ridge, in particular in the presence of noise. This is because even with this small noise, the full model is slightly detuned because of the availability to fit, even a tiny part of the noise, while the parsimonious model does not possess this abusive power.\n\n\n2.3 Model’s cardinality\nThis section looks at the number of active coefficients in each of the models discussed above. Only one representative of the set of Dnn models is shown in order to underline that these models involved tens of thousands of non zero coefficients.\nAs for the Ridge-polynomial and the plars models, infinitely less coefficients are used and in particular, in the case of noise-free training, the exact four coefficients are found which fully explains why this plars-associated model keeps its quality far away from the training region which makes it context-independent.\n\nCoefficients of typical Dnn modelridge-polynomialplars\n\n\n\n\n\n\nNotice that the most important features are those shared with the plars solution and which correspond to the true four monomials being used in Equation 1. Nevertheless, the presence of the other coefficients leads to higher distorsion outside the training domain \\(\\mathbb X_\\texttt{train}\\).\n\n\n\n\n\n\nIn the next section, we dig a little bit deeper inside an equipment in order to understand what are the different reasons that induce ambiguity in the diagnosis of normality.",
+    "crumbs": [
+      "Home",
+      "**Preliminaries**",
+      "Parsimony: Example 2"
+    ]
+  },
+  {
+    "objectID": "parsimony_example_pol.html#footnotes",
+    "href": "parsimony_example_pol.html#footnotes",
+    "title": "Parsimonuous models are robust to context variation",
     "section": "Footnotes",
-    "text": "Footnotes\n\n\nMeaning single multi-variate polynomials and not explicit piece-wise polynomials class which can be viewed as universal and complete class of relationships.↩︎",
-    "crumbs": [
-      "Home",
-      "**rlars**",
-      "rlars: Intro"
-    ]
-  },
-  {
-    "objectID": "g2sys_principle.html#computation-architecture",
-    "href": "g2sys_principle.html#computation-architecture",
-    "title": "g2sys",
-    "section": "1 Computation architecture",
-    "text": "1 Computation architecture\nThe principle of the g2sys module is depicted in Figure 1 below\n\n\n\n\n\n\nFigure 1: Principle of g2sys: It is all about preparing the identification problem for the plars algorithm as described by the arguments shown in red.\n\n\n\nNotice the following fact:\n\nThe set of alignments between columns is reported in a dictionary of correlations. Only uncorrelated columns are used in the search for relationships. This reduces the computational burden by avoiding establishing easy-to-detect relationships.\nObviously, later on, the normality check must also investigate whether previously aligned columns remain to be so, otherwise a missing alignement flag should be raised.\nFor each of the remaining non aligned columns, a plars-compatible problem (see the introductory section for g2sys) and the associated regression problem is solved and the results are reported for the user’s convenience.\nNotice that the creation of the plars-compatible regression problem needs the parameters d, nd and recursive to be defined.\n\n\n\n\n\n\nrecursive=True -&gt; dynamic / otherwise static\n\n\n\nThe recursive parameters is used to designate whether it is a static or a dynamic relationship that is searched for. More precisely, setting recursive to true means that a dynamic relationship is searched for, otherwise, a static relationship is targeted.\n\n\nThe operation is repeated over the list of sensors to be investigated. This list is designated by the input argument list_of_c.",
-    "crumbs": [
-      "Home",
-      "**g2sys**",
-      "g2sys: Principle"
-    ]
-  },
-  {
-    "objectID": "g2sys_principle.html#sparsity-enhances-reliability-interpretability",
-    "href": "g2sys_principle.html#sparsity-enhances-reliability-interpretability",
-    "title": "g2sys",
-    "section": "2 Sparsity enhances reliability & interpretability",
-    "text": "2 Sparsity enhances reliability & interpretability\nWhile the crucial role of sparsity in addressing false alarm and anomaly detection has been previously underlined in the Parsimony-related chapter and the examples that follow. It is worth mentioning it again in this g2sys chapter by addressing more realistic examples while underlying a new advantage that is associated to the interpretability issue.\n\n2.1 Reliability\nIt is important to understand the role of sparsity in providing reliable and interpretable anomaly detection because sparsity lies in the very heart of the MizoPol set of tools.\n\n2.1.1 Real life example\nIn order to understand this key issue, we shall invoke the results shown in the use-case presented in the metro compressor section where a system representing a train’s compressor (15 sensors) is analyzed by means of the g2sys dedicated Graphical User Interface (GUI).\nAfter few clicks and iterations, it is shown that a tight static relationship can be found indexed by the sensor called Reservoir. The model has been fitted using only 12% of the learning data.\nThe following figure shows a screenshot of the GUI after these manipulations.\n\n\nThe bold title of the figure states the following fact:\n\nThe model involves only \\(5\\) monomials (hence, \\(5\\) coefficients).\nIt provides a very small regression error and an almost perfect alignment\n\n\n\n\n\n\n\nScreenshot of the g2sys GUI showing some information regarding the identified polynomial and the regression quality of the sensor/label \\(\\texttt{Reservoirs}\\).\n\n\n\n\nThe next figure show the examination by the GUI of the residual (the normalized regression error) between the truly measured value of the \\(\\texttt{Reservoir}\\) sensor and the one provided by the fitted sparse polynomial:\n\n\n\n\n\n\nFigure 2: Evolution of the residual, averaged over a rolling window of 5000 samples. Recall that the training has been performed using the first 30,000 samples.\n\n\n\nThis figure suggests the following observations:\n\nThe relationship that links the sensor defining the label, namely \\(\\texttt{Reservoirs}\\) to the two sensors: \\(\\texttt{H1}\\) and \\(\\texttt{Oil\\_temperature}\\) so that one can write:\n\n\\[\n\\texttt{Reservoir} = P\\Bigl(\\texttt{H1}, \\texttt{Oil\\_temperature}\\Bigr)\n\\tag{1}\\]\nwhere \\(P\\) is a polynomial with only \\(5\\) monomials as discussed above.\nBased on the previous fact, let us consider the following question:\n\n\n\n\n\n\nAbout normality detection\n\n\n\nWhat are the odds that a model with only 5 parameters fits with an error lower than 7% over almost all the 300,000 instances while reaching 20% consistently over a small interval (see Figure 2) without this interval representing one of following two possibilities affecting the triplet \\[(\\texttt{Reservoir}, \\texttt{H1}, \\texttt{Oil\\_temperature})\\]\n\nEither a context that is not seen in the training data\nOr a true anomaly affecting the compressor that disturbed the relationship between these three sensors?\n\nThe odds should be very small but the answer would not be so straightforward should the model be a Deep Neural Network with 200,000 parameters.\n\n\n\n\n2.1.2 A sketchy example\nIf this is not yet clear, the following two tabs hopefully might help:\n\nParsimoniousNon parsimonious\n\n\n\n\n\nSince the model (in Green) is parsimonious and still fits almost all points, the red one can be declared to be anomalous with high confidence.\n\n\n\n\n\n\n\nBecause the model (in Green) is not parsimonuous, the probability it outit the data is greater making the diagnosis of the red circle more difficult to assess with confidence.\n\n\n\n\n\n\n\n\n2.2 Interpretability\nThe discussion of the previous section was centered on reliability: sparsity makes decision reliable as the characterization of normality is less prone to overfitting and mis-representation.\nBut what about interpretability?\nLet us consider again the example of the train compressor system used in Section 2.1.1 above. Recall that our dataset involves 15 sensors meaning that if we use an anomaly detection method that provides a black-box like anomaly-related residual, it would be difficult to interpret this residual having high value1. One can just states that there is something wrong happening.\nOn the contrary, the fact that the residual is defined by the error on Equation 1 leads naturally to the following diagnosis:\n\n\n\n\n\n\nLocalisation of the anomaly source\n\n\n\nThere is an anomaly that is linked to the triplet:\n(\\(\\texttt{Reservoir}, \\texttt{H1}, \\texttt{Oil\\_tempoerature}\\)),\nnamely:\n\nEither at least one of these sensors is deficient (but this should therefore be seen in all sparse relationships that involves this sensor)\nOr their relationship is detuned for whatever reasons that the operator would recognize quite rapidly once she is notified that the default lies in this set of three sensors.\n\n\n\nAnother very speaking example showing the role of the sparsity in enhancing both the reliability of the diagnosis and its interpetability is given through the use-case of the section dedicated to the hydraulic system.",
-    "crumbs": [
-      "Home",
-      "**g2sys**",
-      "g2sys: Principle"
-    ]
-  },
-  {
-    "objectID": "g2sys_principle.html#footnotes",
-    "href": "g2sys_principle.html#footnotes",
-    "title": "g2sys",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nThere are some alternatives but franckly, they are not reliable nor trustworthy.↩︎",
-    "crumbs": [
-      "Home",
-      "**g2sys**",
-      "g2sys: Principle"
-    ]
-  },
-  {
-    "objectID": "overview.html",
-    "href": "overview.html",
-    "title": "Overview",
-    "section": "",
-    "text": "The mizopol suite currently consists of the following modules that are presented in details through this documentation.\nThe presentation below aims at giving a brief and sketchy overview of the tools.",
+    "text": "Footnotes\n\n\nSee the section on the definition of multivariate polynomials.↩︎",
     "crumbs": [
       "Home",
       "**Preliminaries**",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "overview.html#footnotes",
-    "href": "overview.html#footnotes",
-    "title": "Overview",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nsee the polynomial page for a rigorous definition.↩︎",
-    "crumbs": [
-      "Home",
-      "**Preliminaries**",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "plars_example.html#the-problem",
-    "href": "plars_example.html#the-problem",
-    "title": "plars",
-    "section": "1 The problem",
-    "text": "1 The problem\nIn order to better understand the parameters involved in the plars instantiation and use, it is worth working on a specific illustrative example so that the effect of changing each parameter value can be easily observed and explained.\nSo let us consider the following script that define a dataset that is associated to a known polynomial so that we can examine how the plars is able to recover the hidden truth from the pair \\((X,y)\\) of features matrix and label vector.\nLet us consider the relationship defined by\n\\[\ny = x_0^2-30x_1x_3^3+4x_5^5-1\n\\tag{1}\\]",
-    "crumbs": [
-      "Home",
-      "**plars**",
-      "plars: Example of use"
-    ]
-  },
-  {
-    "objectID": "plars_example.html#the-settings",
-    "href": "plars_example.html#the-settings",
-    "title": "plars",
-    "section": "2 The settings",
-    "text": "2 The settings\nWe shall consider three different settings in order to illustrate some of the capabilities of plars in orienting the solution of the problem, namely:\n\nSetting 1Setting 2Setting 3\n\n\nIn this setting, we use the exact number of variable \\(n_x=6\\) involved in Equation 1. Morover, we instantiate the solver with a slightly higher degree than the unknown hidden one involved in Equation 1, namely deg=6 instead of \\(5\\).\nNotice that in this case, the number of eligible monomials is equal to 924.\n\n\nIn this setting, we increase the number of variable \\(n_x=9\\). Morover, we instantiate the solver with a higher degree than the unknown hidden one involved in Equation 1, namely deg=7.\nNotice that in this case, the number of eligible monomial is equal to 11440.\n\n\nWe reuse the previous setting but we ask plars to select only nfeats=4 among the \\(n_x=9\\) variables to be involved in the polynomial expansion.\nNotice how this induces a reduction in the computation time. Moreover, notice that the nfeat attribute of the solution is still computed based on \\(n_x=9\\) while in fact, internally the truly used number of variables is nfeats=4 which explain the reduction in the computation time.",
-    "crumbs": [
-      "Home",
-      "**plars**",
-      "plars: Example of use"
-    ]
-  },
-  {
-    "objectID": "plars_example.html#the-results",
-    "href": "plars_example.html#the-results",
-    "title": "plars",
-    "section": "3 The results",
-    "text": "3 The results\n\nSetting 1Setting 2Setting 3\n\n\nimport numpy as np \nfrom plars import PLARS\n\nnx = 6\nnt = 100000\nX =  np.random.rand(nt, nx)\ny = X[:,0]**2 -30*X[:,1] * X[:,3]**3 + 4 * X[:,5]**5-1\n\npl = PLARS(window=500, deg=6, nModels=5, nModes=10, eps=1e-2)\nsol = pl.fit(X, y, compute_contributions=True)\n\nprint('number of eligible parameters', sol['nfeat'])\nprint(sol['dfe_train'])\nprint(sol['card'])\nprint(sol['df_sol'])\nprint(f'cpu = {sol[\"cpu\"]:3.2} sec')\nwhich results in\n\nnumber of eligible parameters 924\n         Error\n50%   0.003069\n80%   0.005694\n90%   0.006973\n95%   0.008930\n98%   0.010817\n99%   0.011353\n100%  0.012464\n13\n    x0  x1  x2  x3  x4  x5  Contribution       std      coefs\n0    0   1   0   3   0   0     -0.522762  0.038242 -29.997015\n1    0   0   0   0   0   0     -0.136881  0.000000  -0.977973\n2    0   0   0   0   0   5      0.092488  0.006196   3.948401\n3    5   0   0   0   0   0     -0.088545  0.005112  -3.756293\n4    3   0   0   0   0   0      0.084649  0.003616   2.447522\n5    6   0   0   0   0   0      0.045957  0.003128   2.288520\n6    3   0   0   0   0   2     -0.007943  0.000618  -0.680418\n7    2   0   0   0   0   3      0.007027  0.000576   0.609813\n8    4   0   0   0   0   2      0.006844  0.000667   0.749974\n9    3   0   0   0   0   3     -0.005838  0.000494  -0.651726\n10   0   0   0   0   0   6      0.000618  0.000035   0.031106\n11   0   0   0   1   0   0     -0.000247  0.000005  -0.003558\n12   2   0   0   1   0   0      0.000152  0.000008   0.006449\ncpu = 0.3 sec\n\n\n\nimport numpy as np \nfrom plars import PLARS\n\nnx = 9\nnt = 100000\nX =  np.random.rand(nt, nx)\ny = X[:,0]**2 -30*X[:,1] * X[:,3]**3 + 4 * X[:,5]**5-1\n\npl = PLARS(window=500, deg=7, nModels=5, nModes=10, eps=1e-2)\nsol = pl.fit(X, y, compute_contributions=True)\n\nprint('number of eligible parameters', sol['nfeat'])\nprint(sol['dfe_train'])\nprint(sol['card'])\nprint(sol['df_sol'])\nprint(f'cpu = {sol[\"cpu\"]:3.2} sec')\nwhich results in\n\nnumber of eligible parameters 11440\n         Error\n50%   0.000585\n80%   0.000912\n90%   0.001099\n95%   0.001274\n98%   0.001481\n99%   0.001661\n100%  0.003145\n11\n    x0  x1  x2  x3  x4  x5  x6  x7  x8  Contribution           std      coefs\n0    0   1   0   3   0   0   0   0   0     -0.630226  4.183679e-02 -29.994346\n1    0   0   0   0   0   0   0   0   0     -0.166666  1.853559e-17  -0.998278\n2    0   0   0   0   0   5   0   0   0      0.072542  4.441163e-03   2.634459\n3    2   0   0   0   0   0   0   0   0      0.055356  2.311301e-03   0.985651\n4    0   0   0   0   0   4   0   0   0      0.046204  2.754222e-03   1.379038\n5    0   0   0   0   0   3   0   0   0     -0.015762  6.486132e-04  -0.385597\n6    0   0   0   0   0   7   0   0   0      0.008070  7.056783e-04   0.375179\n7    3   0   0   0   0   0   0   0   0      0.002117  1.182423e-04   0.050505\n8    4   0   0   0   0   0   0   0   0     -0.002028  1.001263e-04  -0.061360\n9    5   0   0   0   0   0   0   0   0      0.000697  4.547199e-05   0.025390\n10   0   1   0   1   0   0   0   0   0     -0.000191  7.361118e-06  -0.004540\ncpu = 0.93 sec\n\n\n\nimport numpy as np \nfrom plars import PLARS\n\nnx = 9\nnt = 100000\nX =  np.random.rand(nt, nx)\ny = X[:,0]**2 -30*X[:,1] * X[:,3]**3 + 4 * X[:,5]**5-1\n\npl = PLARS(window=500, deg=7, nModels=5, nModes=10, eps=1e-2)\nsol = pl.fit(X, y, compute_contributions=True, nfeats=4)\n\nprint('number of eligible parameters', sol['nfeat'])\nprint(sol['dfe_train'])\nprint(sol['card'])\nprint(sol['df_sol'])\nprint(f'cpu = {sol[\"cpu\"]:3.2} sec')\nwhich results in\n\nnumber of eligible parameters 330\n         Error\n50%   0.000446\n80%   0.000795\n90%   0.001035\n95%   0.001326\n98%   0.001644\n99%   0.001769\n100%  0.002796\n12\n    x3  x1  x5  x0  Contribution       std      coefs\n0    3   1   0   0     -0.652083  0.050207 -29.998752\n1    0   0   0   0     -0.172005  0.000000  -1.001214\n2    0   0   5   0      0.106215  0.006788   3.722983\n3    0   0   0   2      0.056125  0.002432   0.984052\n4    0   0   4   0      0.005643  0.000364   0.164724\n5    0   0   0   3      0.002525  0.000092   0.058017\n6    0   0   7   0      0.002488  0.000244   0.117669\n7    0   0   0   4     -0.001779  0.000088  -0.051696\n8    0   0   0   6      0.000367  0.000022   0.014886\n9    0   0   2   3     -0.000363  0.000032  -0.025200\n10   0   0   3   4      0.000195  0.000017   0.023137\n11   0   0   0   5     -0.000111  0.000007  -0.003900\ncpu = 0.23 sec\n\n\n\n\nIn the next section, a simple GUI enables to smoothly using the plars algorithm by simply uploading the dataframes is described.",
-    "crumbs": [
-      "Home",
-      "**plars**",
-      "plars: Example of use"
-    ]
-  },
-  {
-    "objectID": "polynomials.html",
-    "href": "polynomials.html",
-    "title": "Polynomials",
-    "section": "",
-    "text": "In this section, we recall some definitions related to multi-variate polynomials as the latter are in the heart of the mizopol package.",
-    "crumbs": [
-      "Home",
-      "**Preliminaries**",
-      "Polynomials"
-    ]
-  },
-  {
-    "objectID": "polynomials.html#sec-poldef",
-    "href": "polynomials.html#sec-poldef",
-    "title": "Polynomials",
-    "section": "1 Definition",
-    "text": "1 Definition\n\nLet us assume that \\(x\\in \\mathbb R^n\\) is an \\(n\\)-dimensional vector of features.\nA multivariate1 polynomial in \\(x\\) is a scalar map \\(P(x)\\) that takes the following form:\n\n\\[\nP(x)=\\sum_{i=1}^{n_c} c_i\\phi_i(x)\\quad\\text{where}\\quad \\phi_i(x) = \\prod_{j=1}^{n}x_j^{p_{ij}}\n\\tag{1}\\]\nwhere each \\(\\phi_i\\) in Equation 1 is called a monomial.\n\nThe degree of monomial \\(\\phi_i\\) is defined by the sum of its powers, namely:\n\n\\[\n\\texttt{deg}(\\phi_i) = \\sum_{j=1}^{n}p_{ij}\n\\tag{2}\\]\n\nThe degree of the polynomial is the maximum degree of its monomial, namely:\n\n\\[\n\\texttt{deg}(P) = \\max_{i=1}^{n_c}\\Bigl[\\texttt{deg}(\\phi_i)\\Bigr]\n\\tag{3}\\]",
-    "crumbs": [
-      "Home",
-      "**Preliminaries**",
-      "Polynomials"
-    ]
-  },
-  {
-    "objectID": "polynomials.html#sec:polrepresentation",
-    "href": "polynomials.html#sec:polrepresentation",
-    "title": "Polynomials",
-    "section": "2 Representation",
-    "text": "2 Representation\nFrom the very definition of a monomial \\(\\phi_i\\), it comes out that its contribution to the expression of the polynomial \\(P\\) is entirely defined by the following attributes:\n\nThe vector of powers \\(p_{ij}\\) for \\(j\\in \\{1,\\dots,n\\}\\) (these are integers)\nThe coefficient \\(c_i\\) that is associated to the monomial\n\nIn other words, the information associated to \\(\\phi_i\\) takes the following form:\n\n\n\n\n\n\nFigure 1: Attributes of a monomial in a polynomial in \\(n\\) arguments\n\n\n\nNow since the polynomial \\(P\\) involves \\(n_c\\) monomials, it comes out that \\(P\\) is totally determined by its power matrix and its associated vectors of coefficients as it is shown in the following figure (see also Equation 1):\n\n\n\n\n\n\nFigure 2: The ‘powers’ and ‘coefs’ attributes of a polynomial \\(P\\) with \\(n_c\\) monomials and \\(n\\) variables",
-    "crumbs": [
-      "Home",
-      "**Preliminaries**",
-      "Polynomials"
-    ]
-  },
-  {
-    "objectID": "polynomials.html#example",
-    "href": "polynomials.html#example",
-    "title": "Polynomials",
-    "section": "3 Example",
-    "text": "3 Example\nThe following script shows the use of the above representation in defining a polynomial and evaluating its values on a matrix of features. This script uses the polyval function of the utilities module of mizopol.\nimport numpy as np \nfrom utilities import polyval\n\nnx = 6\nnt = 10000\n\n# Generate data \nX = np.random.rand(nt, nx)\ny = X[:,0]**2 -3*X[:,1] * X[:,3]**3 + 4 * X[:,5]**5-1\n\n# Define the powers and the coefficients of the polynomial \nP = [[2, 0, 0, 0, 0, 0], \n     [0, 1, 0, 3, 0, 0],\n     [0, 0, 0, 0, 0, 5], \n     [0, 0, 0, 0, 0, 0]\n     ]\n\nc = [1, -3, 4, -1]\n\n# Predict the value of the polynomial at X\n# and compare to the true value\nypred = polyval(X, P, c)\nprint(abs(y-ypred).max())\n\n&gt;&gt; 8.881784197001252e-16",
-    "crumbs": [
-      "Home",
-      "**Preliminaries**",
-      "Polynomials"
-    ]
-  },
-  {
-    "objectID": "polynomials.html#footnotes",
-    "href": "polynomials.html#footnotes",
-    "title": "Polynomials",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nWe shall drop the word multivariate in the sequel.↩︎",
-    "crumbs": [
-      "Home",
-      "**Preliminaries**",
-      "Polynomials"
-    ]
-  },
-  {
-    "objectID": "xpwpol_robot.html",
-    "href": "xpwpol_robot.html",
-    "title": "xpwpol",
-    "section": "",
-    "text": "In this section, we consider the same robot invoked in the plars use-case where we used a single multivariate polynomial to capture the realtionship between the torque and the kinematic features of a 4-axis manipulator robot.\nIn this section, comparisons are provided, in terms of the prediction error, between the explicit piece-wise polynomial structure and the following two modeling alternatives:\nThese comparisons are provided in order to assess the relevance of the piece-wise polynomial strucutre handled by the xpwpol module.\nFor the sake of easiness of reading, we repeat some of the information given in the above cited section.",
-    "crumbs": [
-      "Home",
-      "**explicit pwpol**",
-      "xpwpol: Robotic"
-    ]
-  },
-  {
-    "objectID": "xpwpol_robot.html#dataset",
-    "href": "xpwpol_robot.html#dataset",
-    "title": "xpwpol",
-    "section": "1 Dataset",
-    "text": "1 Dataset\nWe have the following dataframe representing the recording of kinematic variables and the torques at the axis joints:\n\\[\n\\{q_i\\}_{i=1}^4,\\quad \\{\\dot q_i\\}_{i=1}^4, \\quad\\{\\ddot q_i\\}_{i=1}^4,\\quad \\{T_i\\}_{i=1}^4\n\\]\nof a 4-axis manipulator robot.\n\n\n\nHead of the dataframe containing 1617936 rows and 16 columns",
-    "crumbs": [
-      "Home",
-      "**explicit pwpol**",
-      "xpwpol: Robotic"
-    ]
-  },
-  {
-    "objectID": "xpwpol_robot.html#problem-statement",
-    "href": "xpwpol_robot.html#problem-statement",
-    "title": "xpwpol",
-    "section": "2 Problem statement",
-    "text": "2 Problem statement\n\n\n\n\n\n\nThe regression problem\n\n\n\nFind a sparse explicit piece-wise polynomial relationship of the form given by Equation 1, that provides a prediction of the torque applied to axis \\(i\\in \\{1,\\dots,4\\}\\): \\[\nT_i \\approx P_{\\mathcal R(x)}\\Bigl(x\\Bigr)\\quad \\vert\\quad x:= \\begin{bmatrix}\nq\\cr \\dot q\\cr \\ddot q\n\\end{bmatrix}\\in \\mathbb R^{12}\n\\tag{1}\\] where \\(\\mathcal R(x): \\mathbb R^{12}\\rightarrow \\{1,\\dots, n_r\\}\\) is a region map associating to each value of the vector of features \\(x\\), a region number.\n\\(n_r\\) stands for the number of regions (and hence polynomials) involved in the explicit piece-wise solution.",
-    "crumbs": [
-      "Home",
-      "**explicit pwpol**",
-      "xpwpol: Robotic"
-    ]
-  },
-  {
-    "objectID": "xpwpol_robot.html#scripts-results",
-    "href": "xpwpol_robot.html#scripts-results",
-    "title": "xpwpol",
-    "section": "3 Scripts & results",
-    "text": "3 Scripts & results\nFor illustration purposes, the results concerning axis 3 and 4 are given with comparison to the plars and the DNN-GRU models.\n\n3.1 Results for axis 4\n\nData preparationFit the modelError statisticsComparisons\n\n\n\n# Choose the axis and the split ratio \naxe = 4\ntest_size=0.8\n\n# Compute Xtrain, Xtest, ytrain, ytest\nX = df[colX].values\ny = df[colY[axe-1]].values\n\nnTrain = int(len(X)*(1-test_size))\nXtrain = X[0:nTrain]\nytrain = y[0:nTrain]\nXtest = X[nTrain:]\nytest = y[nTrain:]\n\n\n# Parameter helping the design of the different regions \nnDiv = np.array([2,2,2,2])\n\n# Create an instance of the class Xpwpol\n# Notice the similarity with plars instantiation\n\nxpwpol = Xpwpol(window=2000, \n                deg=2, \n                nModels=20, \n                nModes=20, \n                eps=0.05, \n                nDiv=nDiv)\n\n# Fit the solution \nxpwpol.fit(Xtrain, ytrain)\n\n 1/16 |  0 |0.55 |ncoef =     10 | nrows =  21496 |avg-error = 0.55 | \n 2/16 |  1 |0.38 |ncoef =     16 | nrows =  16608 |avg-error = 0.47 | \n 3/16 |  2 |0.54 |ncoef =     29 | nrows =  18498 |avg-error = 0.50 | \n 4/16 |  3 |0.35 |ncoef =     38 | nrows =  19911 |avg-error = 0.46 | \n 5/16 |  4 |0.52 |ncoef =     50 | nrows =  18854 |avg-error = 0.47 | \n 6/16 |  5 |0.39 |ncoef =     64 | nrows =  19002 |avg-error = 0.46 | \n 7/16 |  6 |0.58 |ncoef =     77 | nrows =  21222 |avg-error = 0.48 | \n 8/16 |  7 |0.33 |ncoef =     82 | nrows =  26202 |avg-error = 0.45 | \n 9/16 |  8 |0.58 |ncoef =     89 | nrows =  26642 |avg-error = 0.47 | \n10/16 |  9 |0.55 |ncoef =    106 | nrows =  20341 |avg-error = 0.48 | \n11/16 | 10 |0.64 |ncoef =    116 | nrows =  17897 |avg-error = 0.49 | \n12/16 | 11 |0.39 |ncoef =    124 | nrows =  20400 |avg-error = 0.48 | \n13/16 | 12 |0.60 |ncoef =    131 | nrows =  20820 |avg-error = 0.49 | \n14/16 | 13 |0.44 |ncoef =    141 | nrows =  18030 |avg-error = 0.49 | \n15/16 | 14 |0.73 |ncoef =    150 | nrows =  16364 |avg-error = 0.50 | \n16/16 | 15 |0.40 |ncoef =    160 | nrows =  21300 |avg-error = 0.49 | \n\n\nfrom plars import normalized_error\n\nypred = xpwpol.predict(Xtest)\ndfTest = normalized_error(ytest, ypred)\n\nypred = xpwpol.predict(Xtrain)\ndfTrain = normalized_error(ytrain, ypred)\n\ndfResult = pd.concat([dfTrain, dfTest], axis=1)\ndfResult.columns = ['Err-Ttrain', 'Err-Test']\ndfResult\n\n    Err-Ttrain  Err-Test\n50% 0.132826    0.133281\n80% 0.267617    0.269011\n90% 0.366049    0.367497\n95% 0.474345    0.476682\n98% 0.673459    0.675066\n99% 0.884998    0.888047\n\n\npl = PLARS(window=2000, deg=3, nModels=20, nModes=20, eps=0.05)\nnTrain = int(len(X)*(1-test_size))\nsol = pl.fit(Xtrain, ytrain)\n\nyhat_pol_train = predict(Xtrain, sol)\ndfplars_train = normalized_error(ytrain, yhat_pol_train)\n\nyhat_pol_test = predict(Xtest, sol)\ndfplars_test = normalized_error(ytest, yhat_pol_test)\n\n\ndfResult = pd.concat([dfResult, dfplars_train, dfplars_test], axis=1)\ndfResult.columns = ['Err-Ttrain|xpwpol', \n                    'Err-Test|xpwpol', \n                    'Err-plars on train', \n                    'Err-plars on test']\ndfResult\n\n\n\nAxis 4: Comparison of the statistics of errors between the models provided by the plars and the xpwpol module of the MizoPol package.\n\n\nAs for the statistics of the DNN-GRU model (Alamir & Clavel (2025)), they are given in the figures below:\n\n\n\nStatistics of the error when using DNN-GRU strucutre with a hidden layer of 32 or 128 correponding respectively to 31224 and 235128 weights and computation time of respectively 3h27 and 3h40.\n\n\nNotice that the number of parameters used by the xpwpol module is equal to 160 parameters and the computation time is less than 60 sec. \n\n\n\n\n\n\nTo summarize\n\n\n\nThe precision of the model provided by xpwpol is largely better than the one provided by the plars and is slightly better than the one provided by the DNN-GRU model while the computation time is totally out of comparison.\nMoreover, the number of parameters involved clearly shows that we are in the presence of sparse and hence robust solution.\n\n\n\n\n\n\n\n3.2 Results for axis 3\n\nData preparationFit the modelError statisticsComparisons\n\n\n\n# Choose the axis and the split ratio \naxe = 3\ntest_size=0.25\n\n# Compute Xtrain, Xtest, ytrain, ytest\nX = df[colX].values\ny = df[colY[axe-1]].values\n\nnTrain = int(len(X)*(1-test_size))\nXtrain = X[0:nTrain]\nytrain = y[0:nTrain]\nXtest = X[nTrain:]\nytest = y[nTrain:]\n\n\n# Parameter helping the design of the different regions \nnDiv = np.array([2,2,2,2])\n\n# Create an instance of the class Xpwpol\n# Notice the similarity with plars instantiation\n\nxpwpol = Xpwpol(window=2000, \n                deg=4, \n                nModels=20, \n                nModes=20, \n                eps=0.05, \n                nDiv=nDiv)\n\n# Fit the solution \nxpwpol.fit(Xtrain, ytrain)\n\n from xpwpol import Xpwpol\n\nnDiv = np.array([2,2,2,2])\n\nxpwpol = Xpwpol(window=2000, \n                deg=4, \n                nModels=20, \n                nModes=20, \n                eps=0.05, \n                nDiv=nDiv)\n\nxpwpol.fit(Xtrain, \n           ytrain, \n           compute_contributions=True, \n           colNames=colX)\n\n 1/16 |  0 |0.36 |ncoef =    243 | nrows =  73252 |avg-error = 0.36 | \n 2/16 |  1 |0.90 |ncoef =    505 | nrows =  65127 |avg-error = 0.62 | \n 3/16 |  2 |0.38 |ncoef =    739 | nrows =  76105 |avg-error = 0.53 | \n 4/16 |  3 |0.89 |ncoef =    988 | nrows =  81846 |avg-error = 0.63 | \n 5/16 |  4 |0.37 |ncoef =   1230 | nrows =  75433 |avg-error = 0.58 | \n 6/16 |  5 |0.86 |ncoef =   1472 | nrows =  77318 |avg-error = 0.63 | \n 7/16 |  6 |0.38 |ncoef =   1726 | nrows =  74982 |avg-error = 0.59 | \n 8/16 |  7 |0.89 |ncoef =   1975 | nrows =  82663 |avg-error = 0.63 | \n 9/16 |  8 |0.39 |ncoef =   2236 | nrows =  84477 |avg-error = 0.60 | \n10/16 |  9 |0.84 |ncoef =   2487 | nrows =  73981 |avg-error = 0.62 | \n11/16 | 10 |0.40 |ncoef =   2746 | nrows =  73550 |avg-error = 0.60 | \n12/16 | 11 |0.90 |ncoef =   2993 | nrows =  78388 |avg-error = 0.63 | \n13/16 | 12 |0.39 |ncoef =   3249 | nrows =  82354 |avg-error = 0.61 | \n14/16 | 13 |0.91 |ncoef =   3486 | nrows =  74784 |avg-error = 0.63 | \n15/16 | 14 |0.42 |ncoef =   3722 | nrows =  66573 |avg-error = 0.62 | \n16/16 | 15 |0.92 |ncoef =   3979 | nrows =  72619 |avg-error = 0.64 | \n\n\nfrom plars import normalized_error\n\nypred = xpwpol.predict(Xtest)\ndfTest = normalized_error(ytest, ypred)\n\nypred = xpwpol.predict(Xtrain)\ndfTrain = normalized_error(ytrain, ypred)\n\ndfResult = pd.concat([dfTrain, dfTest], axis=1)\ndfResult.columns = ['Err-Ttrain', 'Err-Test']\ndfResult\n\n    Err-Ttrain  Err-Test\n50% 0.179445    0.189401\n80% 0.345648    0.359500\n90% 0.443848    0.457406\n95% 0.523262    0.540844\n98% 0.611879    0.648598\n99% 0.674233    0.755522\n\n\npl = PLARS(window=2000, deg=4, nModels=20, nModes=20, eps=0.05)\nnTrain = int(len(X)*(1-test_size))\nsol = pl.fit(Xtrain, ytrain)\n\nyhat_pol_train = predict(Xtrain, sol)\ndfplars_train = normalized_error(ytrain, yhat_pol_train)\n\nyhat_pol_test = predict(Xtest, sol)\ndfplars_test = normalized_error(ytest, yhat_pol_test)\n\n\ndfResult = pd.concat([dfResult, dfplars_train, dfplars_test], axis=1)\ndfResult.columns = ['Err-Ttrain|xpwpol', \n                    'Err-Test|xpwpol', \n                    'Err-plars on train', \n                    'Err-plars on test']\ndfResult\n\n\n\nAxis 3: Comparison of the error’s statistics between the models provided by the plars and the xpwpol module of the MizoPol package.\n\n\nAs for the statistics of the DNN-GRU model (Alamir & Clavel (2025)), they are given in the figures below:\n\n\n\nStatistics of the error when using DNN-GRU strucutre with a hidden layer of 32 or 128 correponding respectively to 31224 and 235128 weights and computation time of respectively 3h27 and 3h40.\n\n\nNotice that the number of parameters used by the xpwpol module is around 4000 parameters and the computation time is less than 180 sec.",
-    "crumbs": [
-      "Home",
-      "**explicit pwpol**",
-      "xpwpol: Robotic"
-    ]
-  },
-  {
-    "objectID": "rlars_twin.html#plars-explicit-polynomials",
-    "href": "rlars_twin.html#plars-explicit-polynomials",
-    "title": "rlars",
-    "section": "4.1 plars (explicit polynomials)",
-    "text": "4.1 plars (explicit polynomials)\nThe following script and dataframe showing the statistics of the normalized error when multi-variate polynomial’s identification is attempted via the plars module.\n\nPython script | cardinalityNormalized residuals\n\n\nfrom plars import PLARS, predict\nimport pandas as pd \nfrom sklearn.model_selection import train_test_split\n\n\nwindow=1000\ndeg=3\nnModels = 40\nnModes = 20\neps = 0.02\ntest_size=0.1\n\npl = PLARS(window=window, deg=deg, nModels=nModels, nModes=nModes, eps=eps)\n\npanel_plars = []\n\ni = 1\nfor z in [y1, y2, y3]:\n\n    Xid = (X-X.mean(axis=0))/X.std(axis=0)\n    Xtrain, Xtest, ytrain, ytest = train_test_split(Xid, z, test_size=test_size, shuffle=False)\n\n    solution  = pl.fit(Xtrain, ytrain)\n    print(f\"plars solution's cardinality for y{i} = {solution['card']}\")\n    dfi = solution['dfe_train']\n    dfi.columns = [f'Error on y{i}']\n    i += 1\n    panel_plars.append(dfi)\n\ndfRes_plars = pd.concat(panel_plars, axis=1)\ndfRes_plars\nplars solution's cardinality for y1 = 251\nplars solution's cardinality for y2 = 256\nplars solution's cardinality for y3 = 237\n\n\n\n\n\n\n\nThese results are those obtained on the train data. They are sufficiently bad to make the examination of the result on test data useless.",
-    "crumbs": [
-      "Home",
-      "**rlars**",
-      "rlars: Twin-pendulum"
-    ]
-  },
-  {
-    "objectID": "rlars_twin.html#rlars-labels-as-polynomials-roots",
-    "href": "rlars_twin.html#rlars-labels-as-polynomials-roots",
-    "title": "rlars",
-    "section": "4.2 rlars: (labels as polynomials’ roots)",
-    "text": "4.2 rlars: (labels as polynomials’ roots)\nIn this attemps, we use the same parameters except the degree that is reduced to deg=2 in order to emphasize the fact that the underlying strucutre is sufficiently rich for a lower order model to capture the relationships drastically better that the polynomial even with lower degree.\n\nPython script | cardinalityNormalized residuals\n\n\nfrom rlars import RLARS, compute_c_pol\nfrom plars import normalized_error\nimport pandas as pd \nfrom sklearn.model_selection import train_test_split\n\n\nwindow=1000\ndeg=2\nnModels = 40\nnModes = 20\neps = 0.02\ntest_size=0.4\n\nrl = RLARS(window=window, deg=deg, nModels=nModels, nModes=nModes, eps=eps)\n\npanel_rlars_train = []\npanel_rlars_test = []\n\ni = 1\nfor z in [y1, y2, y3]:\n\n    # prepare the train and test data\n    Xid = (X-X.mean(axis=0))/X.std(axis=0)\n    Xtrain, Xtest, ytrain, ytest = train_test_split(Xid, z, test_size=test_size, shuffle=False)\n\n    # fit the rlars instance\n    solution  = rl.fit(Xtrain, ytrain)\n    print(f\"rlars solution's cardinality for y{i} = {solution['card']}\")\n    dfi = solution['dfe_train']\n    dfi.columns = [f'Residual on y{i}']\n\n    # compute the residual on test data\n    c_pol = compute_c_pol(Xtest, solution)\n    ypred = np.array([np.polyval(c_pol[i,:][::-1], ytest[i]) \n                      for i in range(len(ytest))])\n    dfi_test = normalized_error(ytest, ypred)\n    dfi_test.columns = [f'Residual on y{i}']\n    panel_rlars_test.append(dfi_test)\n    i += 1\n    panel_rlars_train.append(dfi)\n\ndfRes_rlars_train = pd.concat(panel_rlars_train, axis=1)\ndfRes_rlars_test = pd.concat(panel_rlars_test, axis=1)\nrlars solution's cardinality for y1 = 97\nrlars solution's cardinality for y2 = 206\nrlars solution's cardinality for y3 = 5\n\n\n\n\n\n\n\n\n\n\nIn order to be able to appreciate the generalization power of the model that has been identified using quite small amount of data. It is important de recall the two following facts:\n\nThe train/test split has been performed without shuffle with \\(\\texttt{test\\_size}=0.4\\) meaning that the first 60% of the scenario is used for the train while the remaining 40% is used to test.\nThe following figures show the four different scenarios used:\n\n\nExperiment #1Experiment #2Experiment #3Experiment #4\n\n\n                        \n                                            \n\n\n\n                        \n                                            \n\n\n\n                        \n                                            \n\n\n\n                        \n                                            \n\n\n\n\n\n\n\n\n\n\nTrain & test among experiments\n\n\n\nIt comes from the observation of the length of each of the four scenarios that the training data concerns almost only the first two experiments while the last two experiments are part of the test data.",
-    "crumbs": [
-      "Home",
-      "**rlars**",
-      "rlars: Twin-pendulum"
-    ]
-  },
-  {
-    "objectID": "graph_zema.html",
-    "href": "graph_zema.html",
-    "title": "Graph of a model",
-    "section": "",
-    "text": "In this section, a movie is proposed that shows how to build the graph of a system using the following steps:\nThese steps are shown in the following video that uses the publicly available Zema dataset that is available at UC Irvine Machine Learning Repository.",
-    "crumbs": [
-      "Home",
-      "**Graph of a model**",
-      "Graph: g2sys|Hydraulic rig"
-    ]
-  },
-  {
-    "objectID": "graph_zema.html#footnotes",
-    "href": "graph_zema.html#footnotes",
-    "title": "Graph of a model",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nSee for instance the movies of the g2sys used for the hydraulic rig system, the industrial valves and the compressor system.↩︎",
-    "crumbs": [
-      "Home",
-      "**Graph of a model**",
-      "Graph: g2sys|Hydraulic rig"
-    ]
-  },
-  {
-    "objectID": "g2sys_zema.html",
-    "href": "g2sys_zema.html",
-    "title": "g2sys",
-    "section": "",
-    "text": "This is an introductory usecase for the g2sys GUI.\n\n\n\nThis first dataset is used to introduce the different options available in the user-friendly tool g2sys. In the movie representing the other use-cases, it is assumed that the user is familiar with these options which makes this movie a must to see!\n\n\n\n\n\nZema Dataset\n\nThis is a public dataset that is available at UC Irvine Machine Learning Repository.\n\n\n\nThe data set addresses the condition assessment of a hydraulic test rig based on multi sensor data.\nFour fault types are superimposed with several severity grades impeding selective quantification.\n| 7 sensors | 255,420 rows |\n\n\n\n\n\n\nDetecting invariants and anomalies in a hydraulic systems. (The above AI-generated photo is used for illustrative purpose and is not directly related to the dataset.)\n\n\n\n\n\n\n\nYour browser does not support the video tag.",
-    "crumbs": [
-      "Home",
-      "**g2sys**",
-      "g2sys: Hydraulic rig"
-    ]
-  },
-  {
-    "objectID": "plars_principle.html",
-    "href": "plars_principle.html",
-    "title": "plars",
-    "section": "",
-    "text": "It is uselful to understand the principle of the plars algorithm as this paves the way to a better understanding of the input arguments involved in the modules’ call.\nA more detailed presentation is provided in (Alamir, 2025).",
-    "crumbs": [
-      "Home",
-      "**plars**",
-      "plars: Principle"
-    ]
-  },
-  {
-    "objectID": "plars_principle.html#principle-of-the-plars-algorithm",
-    "href": "plars_principle.html#principle-of-the-plars-algorithm",
-    "title": "plars",
-    "section": "1 Principle of the plars algorithm",
-    "text": "1 Principle of the plars algorithm\n\nwindowPartial fitRepeatGroup modesFinal solution\n\n\n\n\n\nSelect randomly a window and extract the working data \\(X_w\\) and \\(y_w\\).\n\n\n\n\n\n\n\nThe solution extracts the nModes most aligned monomials with \\(y_w\\).\n\n\n\n\n\n\n\nRepeat the random window selection process nModels times.\n\n\n\n\n\n\n\nThis leads to at most nModels x nModes selected monomials\n\n\n\n\n\n\n\nSelect the ones that are relevant up to the precision defined by eps.\n\n\n\n\n\nThe following features come out directly from the principle sketched above:\n\n\n\n\n\n\nRandomness & scalability\n\n\n\nThe process inside plars involves an amount of randomness due to the randomly selected nModels windows. Consequently, the solution returned is never rigorously the same.\nNotice however that the random windowing process is in the heart of the scalability of plars.",
-    "crumbs": [
-      "Home",
-      "**plars**",
-      "plars: Principle"
-    ]
-  },
-  {
-    "objectID": "plars_principle.html#input-arguments",
-    "href": "plars_principle.html#input-arguments",
-    "title": "plars",
-    "section": "2 Input arguments",
-    "text": "2 Input arguments\nFrom the above principle, it comes clearly that the call of plars need the following arguments to be provided:\n\nX\n\nFeature matrix\n\ny\n\nLabel vector\n\nwindow\n\nThe size of the window (integer) representing the number of subsequent rows to be selected for the current partial fit.\n\ndeg\n\nThe degree of the polynomials used in the monomial selection process.\n\nnModes\n\nNumber of monomials to be extracted at each partial fit.\n\nnModels\n\nNumber of repeated rounds of random selection of working window.\n\neps\n\nTargeted precision impacting the number of monomials retained in the final solution.\n\n\nThese are the input arguments that directly follows from the principle of the plars modules, other arguments are also possible to use in order to orient the execution towards some specific objective.\nFurther description of the input arguments is provided in the example.",
-    "crumbs": [
-      "Home",
-      "**plars**",
-      "plars: Principle"
-    ]
-  },
-  {
-    "objectID": "plars_principle.html#returned-solution",
-    "href": "plars_principle.html#returned-solution",
-    "title": "plars",
-    "section": "3 Returned solution",
-    "text": "3 Returned solution\nNotice that according to the principle exposed above, the solution consists in the list of monomials with their associated coefficients. This is precisely what is needed to define the sparse multivariate polynomial, solution of the regression problem stated in Problem statement section.\nAs a matter of fact, the returned solution, say sol is a dictionary that contains many keys, among them, powers and coefs are available to represent the fitted polynomial.\nFurther description of the returned solution is provided in the next section that proposes a simple illustrative example.",
-    "crumbs": [
-      "Home",
-      "**plars**",
-      "plars: Principle"
-    ]
-  },
-  {
-    "objectID": "g2sys_valves.html",
-    "href": "g2sys_valves.html",
-    "title": "g2sys",
-    "section": "",
-    "text": "indus_focets Dataset\n\nThis is a true industrial dataset that is made anomymous to meet an industrial partner.\n\n\n\nThe data set addresses the problem of discovering relationhips between many sensors placed on industrial valves. Many physical sensors are involved such as: currents, voltages, torques, pressure and differential pressures.\n| 21 sensors | 870,000 rows |\n\n\n\n\n\n\nDetecting invariants and anomlay in an industrial valve system (The above AI-generated photo is used for illustrative purpose and is not directly related to the dataset.)\n\n\n\n\n\n\n\nYour browser does not support the video tag.",
-    "crumbs": [
-      "Home",
-      "**g2sys**",
-      "g2sys: Valves"
-    ]
-  },
-  {
-    "objectID": "pwp_intro.html",
-    "href": "pwp_intro.html",
-    "title": "Implicit Piece-wise polynomial relatiosnships",
-    "section": "",
-    "text": "The rationale behind the need for piece-wise polynomial representation has already be discussed and explained in piece-wise polynomials section.\nIn a nutshell, these relationships enable to handle non purely polynomial dependencies (trigonomic, rational fractions, exponential to cite but few ones), but more importantly, they enable to handle multiple context of use where the nature of relationships changes drastically.\nSearching for piece-wise multi-variate polynomials can be done using the pwpol module of the MizoPol suite of tools.\nNothing can be better than specific use-cases studies where instantiations of such circumstances are studied.\nIn the present section, we shall consider the following sets of use-cases:\n\n\n\n\nThe manipulator robot case\n\nWhere the precision of the residuals when standard multi-variate relationships are identified by the pwpol module and the ones that might be obtained used piece-wise polynomial are compared.\n\n\nThis use-case is detailed in the robot use-case\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe anaesthesia dataset\n\nWhere it is shown how the pwpol module can be used to characterize the normality over a large number of datasets coming from operation rooms enabling the detection of anomalous events during the surgery depsite the wide class of operations type and medical staff.\n\n\nThis use-case is detailed in the anaesthesie use-case",
-    "crumbs": [
-      "Home",
-      "**implicit pwpol**",
-      "pwpol: Intro"
+      "Parsimony: Example 2"
     ]
   },
   {
@@ -1098,6 +1158,18 @@
       "Home",
       "**Preliminaries**",
       "Parsimony: Intro"
+    ]
+  },
+  {
+    "objectID": "digital_twins_zema.html#construction-of-the-digital-twin",
+    "href": "digital_twins_zema.html#construction-of-the-digital-twin",
+    "title": "Digital Twins",
+    "section": "5 Construction of the Digital Twin",
+    "text": "5 Construction of the Digital Twin",
+    "crumbs": [
+      "Home",
+      "**Digital twins**",
+      "DT: First example"
     ]
   }
 ]

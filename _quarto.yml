@@ -115,6 +115,8 @@ website:
         contents:
           - text: "DT: Introduction"
             href: digital_twins_intro.qmd
+          - text: "DT: First example"
+            href: digital_twins_zema.qmd
       - about.qmd
 
 format:
@@ -131,6 +133,7 @@ resources:
   - images/sparsity_osc_*.png
   - images/anomalies_detection_pbstat_*.png
   - images/sources_of_anomalies_*.png
+  - images/zema_*.png
 
 
 
