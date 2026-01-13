@@ -99,7 +99,7 @@ Ny only looking on the graph, the following information can be steered out:
     \texttt{PS2}&=F_2(F1(\texttt{PS2}, \texttt{PS4}),  F_3(\texttt{PS2}, F_e\circ F_1(\texttt{PS2}, \texttt{PS4})), F_e\circ F_1(\texttt{PS2}, \texttt{PS4}))\\
     &=:G(\texttt{PS2}, \texttt{PS4})
     \end{align}
-    $$
+    $${#eq-defdeG}
 
     where the function $G$ is given in terms of the function $F_1$, $F_2$, $F_3$ and $F_e$ which express the relationships indexed respectively by `PS1`, `PS2`, `PS3` and `EPS1`.
 
@@ -256,7 +256,53 @@ coefficients:
 
 ## Construction of the Digital Twin
 
+Let first defne the functions $F_i$ as defined above using the following script 
 
+```python
+import numpy as np
+from plars import predict
+
+def F1(PS2, PS4):
+    x = np.array([PS2, PS4]).reshape(-1,1)
+    val = predict(x, model[0]['PS1'])
+    return val[0]
+
+def F2(PS1, PS3, EPS1):
+    x = np.array([PS1, PS3, EPS1]).reshape(-1,1)
+    val = predict(x, model[1]['PS2'])
+    return val[0]   
+
+def F3(PS2, EPS1):
+    x = np.array([PS2, EPS1]).reshape(-1,1)
+    val = predict(x, model[2]['PS3'])
+    return val[0]   
+
+def Fe(PS1):
+    x = np.array([PS1]).reshape(-1,1)
+    val = predict(x, model[4]['EPS1'])
+    return val[0]
+
+def F5(PS6):
+    x = np.array([PS6]).reshape(-1,1)
+    val = predict(x, model[3]['PS5'])
+    return val[0]
+
+def F6(PS6_past, PS4, PS4_past):
+    x = np.array([PS6_past, PS4, PS4_past]).reshape(-1,1)
+    val = predict(x, model[5]['PS6'])
+    return val[0]   
+```
+
+The first four function enable to define the **fixed-point map $\textbf{G}$** defined by @eq-defdeG using the following script: 
+
+```python
+def G(PS2, PS4):
+    PS1 = F1(PS2, PS4)
+    EPS1 = Fe(PS1)
+    PS3 = F3(PS2, EPS1)
+    PS2_new = F2(PS1, PS3, EPS1)
+    return PS2_new
+```
 
 
 [^possibility]: As it has been disclaimed earlier, this cannot always be successful, because of the non completness of the data. More precisely, if there are quantities that impact strongly the behavior of the system which are not present in the set of sensors, then it is rigorously impossible to design a dynamic simultator from the available information. 

@@ -629,12 +629,12 @@ This is a public dataset that is available at <a href="https://archive.ics.uci.e
 \end{align}
 \]</span></p>
 <p>Which highlights the fact that, <strong>Given <code>PS4</code></strong>, the value of <code>PS2</code> is the solution of the following fixed-point equation:</p>
-<p><span class="math display">\[
+<p><span id="eq-defdeG"><span class="math display">\[
 \begin{align}
 \texttt{PS2}&amp;=F_2(F1(\texttt{PS2}, \texttt{PS4}),  F_3(\texttt{PS2}, F_e\circ F_1(\texttt{PS2}, \texttt{PS4})), F_e\circ F_1(\texttt{PS2}, \texttt{PS4}))\\
 &amp;=:G(\texttt{PS2}, \texttt{PS4})
 \end{align}
-\]</span></p>
+  \tag{1}\]</span></span></p>
 <p>where the function <span class="math inline">\(G\)</span> is given in terms of the function <span class="math inline">\(F_1\)</span>, <span class="math inline">\(F_2\)</span>, <span class="math inline">\(F_3\)</span> and <span class="math inline">\(F_e\)</span> which express the relationships indexed respectively by <code>PS1</code>, <code>PS2</code>, <code>PS3</code> and <code>EPS1</code>.</p></li>
 </ol>
 <p>The previous discussion can be summarized by the following functional representation of the simulator:</p>
@@ -779,6 +779,46 @@ coefficients:
 </section>
 <section id="construction-of-the-digital-twin" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="construction-of-the-digital-twin"><span class="header-section-number">5</span> Construction of the Digital Twin</h2>
+<p>Let first defne the functions <span class="math inline">\(F_i\)</span> as defined above using the following script</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plars <span class="im">import</span> predict</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> F1(PS2, PS4):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.array([PS2, PS4]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">0</span>][<span class="st">'PS1'</span>])</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val[<span class="dv">0</span>]</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> F2(PS1, PS3, EPS1):</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.array([PS1, PS3, EPS1]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">1</span>][<span class="st">'PS2'</span>])</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val[<span class="dv">0</span>]   </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> F3(PS2, EPS1):</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.array([PS2, EPS1]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">2</span>][<span class="st">'PS3'</span>])</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val[<span class="dv">0</span>]   </span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Fe(PS1):</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.array([PS1]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">4</span>][<span class="st">'EPS1'</span>])</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val[<span class="dv">0</span>]</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> F5(PS6):</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.array([PS6]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">3</span>][<span class="st">'PS5'</span>])</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val[<span class="dv">0</span>]</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> F6(PS6_past, PS4, PS4_past):</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.array([PS6_past, PS4, PS4_past]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">5</span>][<span class="st">'PS6'</span>])</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val[<span class="dv">0</span>]   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The first four function enable to define the <strong>fixed-point map <span class="math inline">\(\textbf{G}\)</span></strong> defined by <a href="#eq-defdeG" class="quarto-xref">Equation&nbsp;1</a> using the following script:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> G(PS2, PS4):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    PS1 <span class="op">=</span> F1(PS2, PS4)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    EPS1 <span class="op">=</span> Fe(PS1)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    PS3 <span class="op">=</span> F3(PS2, EPS1)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    PS2_new <span class="op">=</span> F2(PS1, PS3, EPS1)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> PS2_new</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
