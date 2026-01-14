@@ -902,15 +902,36 @@ Important
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        e_past <span class="op">=</span> np.linalg.norm(zact<span class="op">-</span>H(zact, PS4, c), <span class="dv">1</span>)</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>            zact_new <span class="op">=</span> lam <span class="op">*</span> H(zact, PS4, c) <span class="op">+</span>(<span class="dv">1</span><span class="op">-</span>lam)<span class="op">*</span>zact</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>            zact_new[<span class="dv">1</span>] <span class="op">=</span> zact_new[<span class="dv">2</span>] <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>            e <span class="op">=</span> np.linalg.norm(zact_new<span class="op">-</span>H(zact_new,PS4,c), <span class="dv">1</span>)</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>            zact <span class="op">=</span> <span class="fl">1.0</span> <span class="op">*</span> zact_new</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        efinal <span class="op">=</span> np.linalg.norm(zact<span class="op">-</span>H(zact, PS4, c), <span class="dv">1</span>)</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        Z[c].append(zact)</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.mod(iz,<span class="dv">100</span>):</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(iz, c, efinal)</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    Z[c] <span class="op">=</span> np.array(Z[c])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>            e <span class="op">=</span> np.linalg.norm(zact_new<span class="op">-</span>H(zact_new,PS4,c), <span class="dv">1</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>            zact <span class="op">=</span> <span class="fl">1.0</span> <span class="op">*</span> zact_new</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        efinal <span class="op">=</span> np.linalg.norm(zact<span class="op">-</span>H(zact, PS4, c), <span class="dv">1</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        Z[c].append(zact)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.mod(iz,<span class="dv">100</span>):</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(iz, c, efinal)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    Z[c] <span class="op">=</span> np.array(Z[c])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This leads to the look-up table representing the relationships shown below</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true"><span class="math inline">\(\texttt{c}=1\)</span></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false"><span class="math inline">\(\texttt{c}=0\)</span></a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/lookup1.png" class="img-fluid figure-img"></p>
+<figcaption>Variations of <code>PS1</code>, <code>PS2</code>, <code>PS3</code> and <code>EPS1</code> as functions of the exogenous input <code>PS4</code> when the context variable is set to <span class="math inline">\(\texttt{c}=1\)</span></figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/lookup0.png" class="img-fluid figure-img"></p>
+<figcaption>Variations of <code>PS1</code>, <code>PS2</code>, <code>PS3</code> and <code>EPS1</code> as functions of the exogenous input <code>PS4</code> when the context variable is set to <span class="math inline">\(\texttt{c}=0\)</span></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
 
 
 </section>
