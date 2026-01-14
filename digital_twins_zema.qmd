@@ -293,6 +293,8 @@ coefficients:
 
 ## Construction of the Digital Twin
 
+### The elementary functions
+
 Let first defne the functions $F_i$ as defined above using the following script 
 
 ```python
@@ -330,6 +332,8 @@ def F6(PS6_past, PS4, PS4_past):
     return val[0]   
 ```
 
+### The fixed-point map
+
 The first four functions enable to define the **fixed-point map $H_c$** defined by @eq-H0  and @eq-H1 using the following script[^indexasarg]: 
 
 ```python
@@ -346,6 +350,48 @@ def H(z, PS4, c):
                 Fe(PS1)])
     return zNew
 ```
+
+:::{.callout-important}
+It goes without saying that the fixed-point equation $z=H_c(z,\texttt{PS4})$ should not be solved on-line. It is more efficient to solve the fixed-point equation for a densed grid spanning the interval of variation (for instance $[9,11]$) for both values of the context variable $\texttt{c}\in \{0,1\}$ so that simple spline evaluation can be performed on-line.
+:::
+
+This is done in the next sections.
+
+### Look-up tables
+
+Let us first create a dictionary `Z` with keys: `PS4`, `0` and `1` such that: 
+
+- `Z['PS4']` is a vector of values of `PS4` spanning [9,11]
+- `Z[0]` is a for columns matrix provinding the associated values of `PS1`, `PS2`, `PS3` and `EPS1` when $\texttt{c}=0$
+- `Z[1]` is a for columns matrix provinding the associated values of `PS1`, `PS2`, `PS3` and `EPS1` when $\texttt{c}=1$
+
+Such a dictionary, used later to create the interpolation spline to be used on-line, can be viewed a a **context-dependent set of look-up tables**. It can be created using the above defined function through the following script: 
+
+```python
+set_of_PS4 = np.linspace(9, 11, 1000)
+
+Z = {'PS4': set_of_PS4}
+for c in [0,1]:
+    Z[c] = []
+    for iz, PS4 in enumerate(set_of_PS4):
+
+        zact = np.array([150,0,0,2500])
+        lam = 0.5
+        e_past = np.linalg.norm(zact-H(zact, PS4, c), 1)
+        for i in range(1000):
+            zact_new = lam * H(zact, PS4, c) +(1-lam)*zact
+            zact_new[1] = zact_new[2] = 0
+            e = np.linalg.norm(zact_new-H(zact_new,PS4,c), 1)
+            zact = 1.0 * zact_new
+
+        efinal = np.linalg.norm(zact-H(zact, PS4, c), 1)
+        Z[c].append(zact)
+        if np.mod(iz,100):
+            print(iz, c, efinal)
+    Z[c] = np.array(Z[c])
+```
+
+
 
 
 [^possibility]: As it has been disclaimed earlier, this cannot always be successful, because of the non completness of the data. More precisely, if there are quantities that impact strongly the behavior of the system which are not present in the set of sensors, then it is rigorously impossible to design a dynamic simultator from the available information. 

@@ -523,7 +523,12 @@ window.Quarto = {
   <li><a href="#the-identified-relationships" id="toc-the-identified-relationships" class="nav-link" data-scroll-target="#the-identified-relationships"><span class="header-section-number">2</span> The identified relationships</a></li>
   <li><a href="#the-graph-of-the-system" id="toc-the-graph-of-the-system" class="nav-link" data-scroll-target="#the-graph-of-the-system"><span class="header-section-number">3</span> The graph of the system</a></li>
   <li><a href="#the-relationships-f_i-as-polynomials" id="toc-the-relationships-f_i-as-polynomials" class="nav-link" data-scroll-target="#the-relationships-f_i-as-polynomials"><span class="header-section-number">4</span> The relationships <span class="math inline">\(F_i\)</span> as polynomials</a></li>
-  <li><a href="#construction-of-the-digital-twin" id="toc-construction-of-the-digital-twin" class="nav-link" data-scroll-target="#construction-of-the-digital-twin"><span class="header-section-number">5</span> Construction of the Digital Twin</a></li>
+  <li><a href="#construction-of-the-digital-twin" id="toc-construction-of-the-digital-twin" class="nav-link" data-scroll-target="#construction-of-the-digital-twin"><span class="header-section-number">5</span> Construction of the Digital Twin</a>
+  <ul class="collapse">
+  <li><a href="#the-elementary-functions" id="toc-the-elementary-functions" class="nav-link" data-scroll-target="#the-elementary-functions"><span class="header-section-number">5.1</span> The elementary functions</a></li>
+  <li><a href="#the-fixed-point-map" id="toc-the-fixed-point-map" class="nav-link" data-scroll-target="#the-fixed-point-map"><span class="header-section-number">5.2</span> The fixed-point map</a></li>
+  <li><a href="#look-up-tables" id="toc-look-up-tables" class="nav-link" data-scroll-target="#look-up-tables"><span class="header-section-number">5.3</span> Look-up tables</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -810,6 +815,8 @@ coefficients:
 </section>
 <section id="construction-of-the-digital-twin" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="construction-of-the-digital-twin"><span class="header-section-number">5</span> Construction of the Digital Twin</h2>
+<section id="the-elementary-functions" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="the-elementary-functions"><span class="header-section-number">5.1</span> The elementary functions</h3>
 <p>Let first defne the functions <span class="math inline">\(F_i\)</span> as defined above using the following script</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plars <span class="im">import</span> predict</span>
@@ -843,6 +850,9 @@ coefficients:
 <span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.array([PS6_past, PS4, PS4_past]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
 <span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">5</span>][<span class="st">'PS6'</span>])</span>
 <span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val[<span class="dv">0</span>]   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="the-fixed-point-map" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="the-fixed-point-map"><span class="header-section-number">5.2</span> The fixed-point map</h3>
 <p>The first four functions enable to define the <strong>fixed-point map <span class="math inline">\(H_c\)</span></strong> defined by <a href="#eq-H0" class="quarto-xref">Equation&nbsp;3</a> and <a href="#eq-H1" class="quarto-xref">Equation&nbsp;2</a> using the following script<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> H(z, PS4, c):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    PS1, PS2, PS3, EPS1 <span class="op">=</span> z</span>
@@ -856,8 +866,54 @@ coefficients:
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">0</span>,</span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>                Fe(PS1)])</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> zNew</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It goes without saying that the fixed-point equation <span class="math inline">\(z=H_c(z,\texttt{PS4})\)</span> should not be solved on-line. It is more efficient to solve the fixed-point equation for a densed grid spanning the interval of variation (for instance <span class="math inline">\([9,11]\)</span>) for both values of the context variable <span class="math inline">\(\texttt{c}\in \{0,1\}\)</span> so that simple spline evaluation can be performed on-line.</p>
+</div>
+</div>
+<p>This is done in the next sections.</p>
+</section>
+<section id="look-up-tables" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="look-up-tables"><span class="header-section-number">5.3</span> Look-up tables</h3>
+<p>Let us first create a dictionary <code>Z</code> with keys: <code>PS4</code>, <code>0</code> and <code>1</code> such that:</p>
+<ul>
+<li><code>Z['PS4']</code> is a vector of values of <code>PS4</code> spanning [9,11]</li>
+<li><code>Z[0]</code> is a for columns matrix provinding the associated values of <code>PS1</code>, <code>PS2</code>, <code>PS3</code> and <code>EPS1</code> when <span class="math inline">\(\texttt{c}=0\)</span></li>
+<li><code>Z[1]</code> is a for columns matrix provinding the associated values of <code>PS1</code>, <code>PS2</code>, <code>PS3</code> and <code>EPS1</code> when <span class="math inline">\(\texttt{c}=1\)</span></li>
+</ul>
+<p>Such a dictionary, used later to create the interpolation spline to be used on-line, can be viewed a a <strong>context-dependent set of look-up tables</strong>. It can be created using the above defined function through the following script:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>set_of_PS4 <span class="op">=</span> np.linspace(<span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">1000</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> {<span class="st">'PS4'</span>: set_of_PS4}</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> [<span class="dv">0</span>,<span class="dv">1</span>]:</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    Z[c] <span class="op">=</span> []</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> iz, PS4 <span class="kw">in</span> <span class="bu">enumerate</span>(set_of_PS4):</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        zact <span class="op">=</span> np.array([<span class="dv">150</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">2500</span>])</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        lam <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        e_past <span class="op">=</span> np.linalg.norm(zact<span class="op">-</span>H(zact, PS4, c), <span class="dv">1</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>            zact_new <span class="op">=</span> lam <span class="op">*</span> H(zact, PS4, c) <span class="op">+</span>(<span class="dv">1</span><span class="op">-</span>lam)<span class="op">*</span>zact</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>            zact_new[<span class="dv">1</span>] <span class="op">=</span> zact_new[<span class="dv">2</span>] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>            e <span class="op">=</span> np.linalg.norm(zact_new<span class="op">-</span>H(zact_new,PS4,c), <span class="dv">1</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>            zact <span class="op">=</span> <span class="fl">1.0</span> <span class="op">*</span> zact_new</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        efinal <span class="op">=</span> np.linalg.norm(zact<span class="op">-</span>H(zact, PS4, c), <span class="dv">1</span>)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        Z[c].append(zact)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.mod(iz,<span class="dv">100</span>):</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(iz, c, efinal)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    Z[c] <span class="op">=</span> np.array(Z[c])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
+</section>
 </section>
 
 
