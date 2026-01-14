@@ -618,33 +618,43 @@ This is a public dataset that is available at <a href="https://archive.ics.uci.e
 <li><p><code>PS4</code> is not index of any relationship and therefore, it is <strong>an exogenous input</strong> to the simulator.</p></li>
 <li><p><code>PS6</code> is defined by a recursive relationship with the only input <code>PS4</code> which means that it can be simulated alone independently of the other sensors.</p></li>
 <li><p><code>PS5</code> is defined completely from <code>PS6</code>.</p></li>
-<li><p>All the remaining sensors, namely (<code>PS1</code>, <code>PS2</code>, <code>PS3</code>, <code>EPS1</code>) are coupled through circular chain of relationships that starts and end with <code>PS2</code>, namely:</p>
+<li><p>As the remaining sensors, namely <span class="math inline">\(\texttt{PS1}, \texttt{PS2}, \texttt{PS3}, \texttt{EPS1}\)</span> are related through an <strong>implicit and coupled set of relationships</strong> for each given value of the exogenous variable <span class="math inline">\(\texttt{PS4}\)</span>, they can be obtained by solving a fixed-point relationship of the form: <span id="eq-Fixed-Point"><span class="math display">\[
+  z = H_1(z, \texttt{PS4})
+   \tag{1}\]</span></span> where: <span id="eq-H1"><span class="math display">\[
+  z=\begin{bmatrix}
+  \texttt{PS1}\cr \texttt{PS2}\cr \texttt{PS3}\cr \texttt{EPS1}
+  \end{bmatrix} \quad,\quad H_1(z, \texttt{PS4}):= \begin{bmatrix}
+  \begin{array}{l}
+  F_1(\texttt{PS2}, \texttt{PS4})\cr
+  F_2(\texttt{PS1}, \texttt{PS3}, \texttt{EPS1})\cr
+  F_3(\texttt{PS2}, \texttt{EPS1})\cr
+  F_e(\texttt{PS1})
+  \end{array}
+  \end{bmatrix}
+   \tag{2}\]</span></span></p>
+<p>where the values can be restricted to the hypercube <span class="math inline">\(\mathbb Z\)</span> given the training data.</p>
 <p><span class="math display">\[
-\small
-\begin{align}
-(\texttt{PS2}, \texttt{PS4})&amp;\rightarrow \Bigl(\texttt{PS1}=F_1(\texttt{PS2}, \texttt{PS4})\Bigr)\rightarrow \Bigl(\texttt{EPS1}=F_e(\texttt{PS1})=F_e\circ F_1(\texttt{PS2}, \texttt{PS4})\Bigr) \\
-&amp;\rightarrow \texttt{PS3}=F_3(\texttt{PS2}, \texttt{EPS1})=F_3(\texttt{PS2}, F_e\circ F_1(\texttt{PS2}, \texttt{PS4}))\\
-&amp;\rightarrow \texttt{PS2}=F_2(\texttt{PS1},  \texttt{PS3}, \texttt{EPS1})\\
-&amp;=F_2(F1(\texttt{PS2}, \texttt{PS4}),  F_3(\texttt{PS2}, F_e\circ F_1(\texttt{PS2}, \texttt{PS4})), F_e\circ F_1(\texttt{PS2}, \texttt{PS4}))
-\end{align}
-\]</span></p>
-<p>Which highlights the fact that, <strong>Given <code>PS4</code></strong>, the value of <code>PS2</code> is the solution of the following fixed-point equation:</p>
-<p><span id="eq-defdeG"><span class="math display">\[
-\begin{align}
-\texttt{PS2}&amp;=F_2(F1(\texttt{PS2}, \texttt{PS4}),  F_3(\texttt{PS2}, F_e\circ F_1(\texttt{PS2}, \texttt{PS4})), F_e\circ F_1(\texttt{PS2}, \texttt{PS4}))\\
-&amp;=:G(\texttt{PS2}, \texttt{PS4})
-\end{align}
-  \tag{1}\]</span></span></p>
-<p>where the function <span class="math inline">\(G\)</span> is given in terms of the function <span class="math inline">\(F_1\)</span>, <span class="math inline">\(F_2\)</span>, <span class="math inline">\(F_3\)</span> and <span class="math inline">\(F_e\)</span> which express the relationships indexed respectively by <code>PS1</code>, <code>PS2</code>, <code>PS3</code> and <code>EPS1</code>.</p></li>
+\mathbb Z=[100,200]\times [0,150]\times [0,10]\times [2000,3000]
+\]</span></p></li>
+<li><p>Finally, by observing the time-series of <code>PS2</code> and <code>PS3</code>, it seems that there is a context exogenous variable that forces both to be <span class="math inline">\(0\)</span> as it can be observed on the figure below:</p>
+<p><img src="images/zema_PS2_0.png" class="img-fluid" style="width:70.0%"> <img src="images/zema_PS3_0.png" class="img-fluid" style="width:70.0%"></p>
+<p>This suggests that there are two different fixed-point equations to use depending on the value of this context variable, denoted hereafter by <span class="math inline">\(\texttt{c}\)</span>: The first is to be used when <span class="math inline">\(\texttt{c}=1\)</span> which precisely given by <a href="#eq-Fixed-Point" class="quarto-xref">Equation&nbsp;1</a> while the other is to be used when <span class="math inline">\(\texttt{c}=0\)</span> which is a fixed-point in the pair <span class="math inline">\((\texttt{PS1}, \texttt{EPS1})\)</span> that can be given by: <span id="eq-H0"><span class="math display">\[
+z = H_0(z, \texttt{PS4})\quad ;\quad H_0(z, \texttt{PS4}):= \begin{bmatrix}
+  \begin{array}{c}
+  F_1(\texttt{PS2}, \texttt{PS4})\cr
+  0\cr 0\cr
+  F_e(\texttt{PS1})
+  \end{array}
+  \end{bmatrix}
+  \tag{3}\]</span></span></p></li>
 </ol>
-<p>The previous discussion can be summarized by the following functional representation of the simulator:</p>
+<p>The whole above discussion can be summarized by the following Digital Twin schematic</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/zema_DT_simulator.png" class="img-fluid figure-img"></p>
-<figcaption>Functional view of the <strong>Digital Twin</strong> extracted (via <strong>g2sys</strong>) from the dataset containing the time-series of the sensors.</figcaption>
+<figcaption>Functional view of the Digital Twin involving the exogenous signals <span class="math inline">\(\texttt{PS4}\)</span> and <span class="math inline">\(\texttt{c}\in \{0,1\}\)</span> where <span class="math inline">\(H_c\)</span> is defined by <a href="#eq-H1" class="quarto-xref">Equation&nbsp;2</a> and <a href="#eq-H0" class="quarto-xref">Equation&nbsp;3</a></figcaption>
 </figure>
 </div>
-<p>The expressions of the relationships (multi-variate polynomials) indexed by <code>PS6</code>, <code>PS5</code>, <code>PS1</code>, <code>PS2</code>, <code>PS3</code> and <code>EPS1</code> are detailed in the following section.</p>
 </section>
 <section id="the-relationships-f_i-as-polynomials" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="the-relationships-f_i-as-polynomials"><span class="header-section-number">4</span> The relationships <span class="math inline">\(F_i\)</span> as polynomials</h2>
@@ -671,7 +681,7 @@ Figure&nbsp;1: Attributes of a monomial in a polynomial in <span class="math inl
 <p>The different relationships <span class="math inline">\(F_i\)</span> invoked above are quatitatively exposed below using the following script that uses the <code>model</code> object returned by the <strong>g2sys</strong> module:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(model)):</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> <span class="bu">list</span>(model[i].keys())[<span class="dv">0</span>]</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Relationship indexed by </span><span class="sc">{</span>s<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> Relationship indexed by </span><span class="sc">{</span>s<span class="sc">}</span><span class="ss">'</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'=================================='</span>)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"arguments: </span><span class="sc">{</span>model[i][s][<span class="st">'Lred'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'--------'</span>)</span>
@@ -680,10 +690,10 @@ Figure&nbsp;1: Attributes of a monomial in a polynomial in <span class="math inl
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"coefficients: </span><span class="ch">\n</span><span class="ss"> </span><span class="sc">{</span>model[i][s][<span class="st">'coefs'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'---'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">F1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">F2</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">F3</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Fe</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">F6</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false">F5</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">F1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">F2</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">F3</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Fe</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">F5</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false">F6</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<pre class="terminal"><code>Relationship indexed by PS1
+<pre class="terminal"><code>0 Relationship indexed by PS1
 ==================================
 arguments: ['PS2(k)', 'PS4(k)']
 --------
@@ -701,28 +711,49 @@ coefficients:
 --------</code></pre>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<pre class="terminal"><code>Relationship indexed by PS2
+<pre class="terminal"><code>4 Relationship indexed by PS2
 ==================================
-arguments: ['PS1(k)', 'PS3(k)', 'EPS1(k)']
+arguments: ['PS3(k)', 'EPS1(k)']
 --------
 powers 
- [[1 0 0]
- [0 0 0]
- [0 1 0]
- [3 0 0]
- [0 3 0]
- [0 2 1]
- [0 0 3]
- [2 1 0]
- [1 1 0]]
+ [[3 4]
+ [1 0]
+ [0 0]
+ [2 5]
+ [0 7]
+ [2 0]
+ [3 0]
+ [1 2]
+ [1 3]
+ [1 4]
+ [7 0]
+ [1 1]
+ [0 2]
+ [0 3]
+ [4 0]
+ [0 4]
+ [6 0]
+ [0 6]
+ [3 1]
+ [1 6]
+ [4 3]
+ [0 1]
+ [5 0]
+ [0 5]
+ [1 5]
+ [2 2]]
 --------
 coefficients: 
- [-2.87731163e+00  4.21757215e+02 -1.96187950e+02  9.57650449e-06
-  7.31035037e-01 -5.17391969e-03  2.43389818e-09 -2.30772152e-03
-  2.01399466e+00]</code></pre>
+ [-3.12130423e-13 -1.07959665e-03  3.41523096e-05  5.83443081e-16
+  8.71061363e-21  3.23647969e+00  6.05878291e+00 -1.08097761e-03
+  2.09467899e-06 -1.14464575e-09  3.82493985e-03 -5.05785044e-01
+  7.39024508e-03 -1.02165834e-05 -2.11840294e+01  5.08421439e-09
+ -1.52476316e-01  3.01101643e-17  4.21948897e-02 -2.23320449e-17
+ -2.12960283e-11  2.28246328e-02  2.50079061e+00 -1.00227759e-12
+  2.63678559e-13 -4.87624150e-05]</code></pre>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<pre class="terminal"><code>Relationship indexed by PS3
+<pre class="terminal"><code>1 Relationship indexed by PS3
 ==================================
 arguments: ['PS2(k)', 'EPS1(k)']
 --------
@@ -739,7 +770,7 @@ coefficients:
   1.09409733e-15 -2.24364110e-12]</code></pre>
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-<pre class="terminal"><code>Relationship indexed by EPS1
+<pre class="terminal"><code>3 Relationship indexed by EPS1
 ==================================
 arguments: ['PS1(k)']
 --------
@@ -751,7 +782,18 @@ coefficients:
  [ 13.09598968 441.01619799]</code></pre>
 </div>
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
-<pre class="terminal"><code>Relationship indexed by PS6
+<pre class="terminal"><code>2 Relationship indexed by PS5
+==================================
+arguments: ['PS6(k)']
+--------
+powers 
+ [[1]]
+--------
+coefficients: 
+ [1.01204197]</code></pre>
+</div>
+<div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
+<pre class="terminal"><code>5 Relationship indexed by PS6
 ==================================
 arguments: ['PS6(k-4)', 'PS4(k)', 'PS4(k-4)']
 --------
@@ -762,17 +804,6 @@ powers
 --------
 coefficients: 
  [ 0.00348076 -0.77680475  0.77334424]</code></pre>
-</div>
-<div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
-<pre class="terminal"><code>Relationship indexed by PS5
-==================================
-arguments: ['PS6(k)']
---------
-powers 
- [[1]]
---------
-coefficients: 
- [1.01204197]</code></pre>
 </div>
 </div>
 </div>
@@ -788,37 +819,43 @@ coefficients:
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">0</span>][<span class="st">'PS1'</span>])</span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val[<span class="dv">0</span>]</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> F2(PS1, PS3, EPS1):</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.array([PS1, PS3, EPS1]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">1</span>][<span class="st">'PS2'</span>])</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> F2(PS3, EPS1):</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.array([PS3, EPS1]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">4</span>][<span class="st">'PS2'</span>])</span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val[<span class="dv">0</span>]   </span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> F3(PS2, EPS1):</span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.array([PS2, EPS1]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">2</span>][<span class="st">'PS3'</span>])</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">1</span>][<span class="st">'PS3'</span>])</span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val[<span class="dv">0</span>]   </span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Fe(PS1):</span>
 <span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.array([PS1]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">4</span>][<span class="st">'EPS1'</span>])</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">3</span>][<span class="st">'EPS1'</span>])</span>
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val[<span class="dv">0</span>]</span>
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> F5(PS6):</span>
 <span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.array([PS6]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">3</span>][<span class="st">'PS5'</span>])</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">2</span>][<span class="st">'PS5'</span>])</span>
 <span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val[<span class="dv">0</span>]</span>
 <span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> F6(PS6_past, PS4, PS4_past):</span>
 <span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.array([PS6_past, PS4, PS4_past]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
 <span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> predict(x, model[<span class="dv">5</span>][<span class="st">'PS6'</span>])</span>
 <span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val[<span class="dv">0</span>]   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The first four function enable to define the <strong>fixed-point map <span class="math inline">\(\textbf{G}\)</span></strong> defined by <a href="#eq-defdeG" class="quarto-xref">Equation&nbsp;1</a> using the following script:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> G(PS2, PS4):</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    PS1 <span class="op">=</span> F1(PS2, PS4)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    EPS1 <span class="op">=</span> Fe(PS1)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    PS3 <span class="op">=</span> F3(PS2, EPS1)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    PS2_new <span class="op">=</span> F2(PS1, PS3, EPS1)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> PS2_new</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The first four functions enable to define the <strong>fixed-point map <span class="math inline">\(H_c\)</span></strong> defined by <a href="#eq-H0" class="quarto-xref">Equation&nbsp;3</a> and <a href="#eq-H1" class="quarto-xref">Equation&nbsp;2</a> using the following script<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> H(z, PS4, c):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    PS1, PS2, PS3, EPS1 <span class="op">=</span> z</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> c <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        zNew <span class="op">=</span> np.array([F1(PS2, PS4), </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                F2(PS3, EPS1), </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                F3(PS2, EPS1), </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                Fe(PS1)])</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        zNew <span class="op">=</span> np.array([F1(PS2, PS4), </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>                Fe(PS1)])</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> zNew</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
@@ -828,6 +865,7 @@ coefficients:
 
 <ol>
 <li id="fn1"><p>As it has been disclaimed earlier, this cannot always be successful, because of the non completness of the data. More precisely, if there are quantities that impact strongly the behavior of the system which are not present in the set of sensors, then it is rigorously impossible to design a dynamic simultator from the available information.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Notice that the index in <span class="math inline">\(H_c\)</span> is transformed into an argument of the function <span class="math inline">\(H\)</span> so that the same function can be used to evaluate <span class="math inline">\(H_0(z, \texttt{PS4})\)</span> and <span class="math inline">\(H_1(z, \texttt{PS4})\)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
