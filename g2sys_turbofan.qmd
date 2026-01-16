@@ -23,15 +23,17 @@ This use case involves the [dataset provided by Nasa](https://www.kaggle.com/dat
 :::{.callout-note title="Objective"}
 The original objective of this Nasa Datasets is to estimate the **R**emaining **U**seful **L**ife (**RUL**) which is not our objective in this usecase as we aim at showing **how the sensors relate to each other** and what are the invariant relationships that hold depsite of the aging so that one can only focus on non redundant information. 
 
-Suprisingly enough, the deep investigation undertaked without the **RUL issue** in mind gave rise to an astonishing result that can provide a breakthrough regarding the **RUL** issue although some further investigation is still needed. 
 ::: 
 
-The following movie shows how technically the relationships discussed in the following section have been obtained using the **g2sys** module. You might skip immediately towards the discussion below without visualizing the movie. 
+The following movie shows how some invariant relationships that are present in the nasa dateset can be rapidly obtained using the **g2sys** module. 
 
 <video controls width="100%" style="border: 3px solid #3f7086ff; border-radius: 4px;">
   <source src="https://www.mazenalamir.fr/videos/graph_nasa_2.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
+
+For those who are interested in the pre-processing of the $\texttt{kaggle}$ data set, the following section might be helpful.
+
 
 # Dataset preparation for g2sys 
 
@@ -61,17 +63,13 @@ for iexp in [1, 2, 3, 4]:
 
 :::{.callout-tip title='The dataset used for illustration'}
 This leads to four datasets among which, only the second one, namely `nasa_2.csv` is used here for the sake of illustration. 
-
-Similar results can be obtained for the other datasets.
 :::
 
 # Results & Discussion
 
-Let us first of all show the **graph[^graph] of the system** as it can be discovered using the context of the `nasa_2.csv` dataset.
-
-After standard **15 minutes manipulations** of the dataset using the **g2sys** utilities, one comes out with the following graph relative to the 20 sensors involved in the dataset: 
-
 ## System's graph 
+
+The following graph of connexion between sensors is obtained (see [the section](graph_intro.qmd)) dedicated to the presentation of the graph of connexion between sensors for more details: 
 
 ![Graph representing the relationships as discovered using the **g2sys** module from the `nasa_2.csv` dataset. Notice that the nodes with thick boundaries refer to sensors indexing dynamic relationships while the other refer to sensors that can be represented through static raltionsips (expressing them as functions of the sets of sensors that send arrows to them).](images/nasa2_graph.png){width=60% #fig-graph_nasa_2}
 
@@ -79,62 +77,6 @@ After standard **15 minutes manipulations** of the dataset using the **g2sys** u
 Notice that as it is shown in the screenshot below, only 15% of the data is used for discovering the relationships while the residuals shown after are computed for the whole datasets. 
 
 ![Screenshot of the **g2sys** module showing the amount of training data (15%) used in the discovery of the relationships. As the successive portions of the dataset represents different turbofans recordings, The persistency of the smalleness of the residuals as shown hereafter witnesses in favour of the relevance of these invariant relationships over the whole set of engines.](images/screenshot_train_nasa_2.png){#fig-screenshot}
-
-## Exploiting the graph
-
-Before we examine the quality of the fit of the relationships leading to the graph of @fig-graph_nasa_2, let us state the following facts that give an example of the type of information contained in the associated graph of the system: 
-
-The screenshot shown in @fig-screenshot shows that 15 sensors have been eliminated during the study based on the created correlation dictionary as they are highly aligned with one of the five sensors: 
-
-$$
-\texttt{c3, c8, c13, c18, c17}
-$$
-
-Hence in the remainder of the analysis, these representative sensors are used together with those sensors that are not aligned with any other sensors.
-
-1. There are 5 sensors that appear as labels in **dynamic/recursive** relationships[^dynamicrec] which are $\texttt{c3, c4, c8, c19, c21}$. This means that we can consider the following state vector definition: 
-
-$$
-x := \begin{bmatrix} 
-c_3\cr c_4\cr c_8\cr c_{19}\cr c_{21}
-\end{bmatrix} 
-$$
-
-2. Four sensors appear in static relationships which are $\texttt{c13, c15, c17, c24}$. We can then define the vector $z$ as follows:
-
-$$
-z := \begin{bmatrix} 
-c_{13}\cr c_{15}\cr c_{17}\cr c_{24}
-\end{bmatrix} 
-$$
-
-and examining the graph of the system enables to explicitly see that: 
-
-\begin{align}
-c_{15} &= \texttt{Function}(x)\\
-c_{24} &= \texttt{Function}(x)\\
-c_{17} &= \texttt{Function}(x, c_{15})\\
-c_{13} &= \texttt{Function}(c_{17}, c_{24}) \\
-\end{align}
-
-which is obviously equivalent to: 
-
-$$
-z = h(x)
-$$
-
-On the other hand, the evolution of $x$ depends only on the previous values of $x$ leading to the complete definition of a sort of autonomous dynamical system of the form: 
-
-$$
-x_{k+1} = \texttt{Function}(x_k, x_{k-3}, x_{k-4})
-$${#eq-ageing}
-
-
-:::{.callout-tip title="Is this an Ageing dynamic equation?"}
-@eq-ageing is quite exciting autonomous equation as it seems to be the dynamic equation of the ageing of a Nasa Turbofan. Recall that this relationship has been identified using a tiny subset of the available subset of all the turbofans and despite of that, it seem to hold true for all the engines. 
-
-Since this is an autonomous dynamics, it can be simulated to predict how the *internal state* $x$ of each turbofan is *getting older* along time. More precisely, this relationship gives an idea of what would be the value of all the sensors after any desired number of flights in the future! 
-:::
 
 ## Viewing residuals 
 

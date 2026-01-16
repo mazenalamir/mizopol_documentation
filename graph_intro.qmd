@@ -40,6 +40,18 @@ Notice also that the distinction into **recursive** (or dynamic) and static rela
 
 For a video showing the creation of such a graph on the hydraulic rig system, please refer to the [graph on the hydraulic rig system](graph_zema.qmd) section. 
 
-It is also shown later on that the graph of models built up using **g2sys** might facilitate the design of an associated **digital twin** as it is discussed in details in the [digital twins](digital_twins_intro.qmd) section.
+It is also shown later on that the graph of models built up using **g2sys** might facilitate the design of an associated **digital twin**. Nevertheless, the following should be kept in mind: 
+
+:::{.callout-warning title='Be extremely careful about Unicity & Open-loop simulation'}
+There are two major facts regarding the use of MizoPol in designing digital twins: 
+
+1. **The danger of open-loop simulations**
+
+    It should be kept in mind that when dynamic relationships are involved, it is unrealistic tous the simulation model in **open-loop** as small identification errors might propagate along the simulation leading to totally erronous results. The dgital-twin is however useful in closed-loop mode as it gives the dependence (approximately) of the derivatices of some of the sensors in terms of other sensors.
+
+2. **The non-unicity of representation**
+
+    Recall that MizoPol is about finging invariant relationships in the data. But the same relationship can be viewed in an infinite number of forms depending on the use of delays, the use of recursive vs non recursive form. Some invariance might be relevant in a rather poor training data which does not represent real dynamical/static laws. The use of non consistent relationship in a digital twin might lead to erronous prediction. 
+:::
 
 [^rigseelater]: See the [graph on the hydraulic rig system](graph_zema.qmd) section for a detailed explanation. 

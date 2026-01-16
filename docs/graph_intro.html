@@ -435,7 +435,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./digital_twins_zema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DT: First example</span></a>
+ <span class="menu-text">DT: Example 1</span></a>
   </div>
 </li>
       </ul>
@@ -523,7 +523,26 @@ Precaution of use during graph generation
 </div>
 <p>Notice also that the distinction into <strong>recursive</strong> (or dynamic) and static relationships holds only for the graph of models that are designed using the <strong>g2sys</strong> module. Those built up using the <strong>pwpol</strong> module does not show this distinction.</p>
 <p>For a video showing the creation of such a graph on the hydraulic rig system, please refer to the <a href="./graph_zema.html">graph on the hydraulic rig system</a> section.</p>
-<p>It is also shown later on that the graph of models built up using <strong>g2sys</strong> might facilitate the design of an associated <strong>digital twin</strong> as it is discussed in details in the <a href="./digital_twins_intro.html">digital twins</a> section.</p>
+<p>It is also shown later on that the graph of models built up using <strong>g2sys</strong> might facilitate the design of an associated <strong>digital twin</strong>. Nevertheless, the following should be kept in mind:</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Be extremely careful about Unicity &amp; Open-loop simulation">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Be extremely careful about Unicity &amp; Open-loop simulation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are two major facts regarding the use of MizoPol in designing digital twins:</p>
+<ol type="1">
+<li><p><strong>The danger of open-loop simulations</strong></p>
+<p>It should be kept in mind that when dynamic relationships are involved, it is unrealistic tous the simulation model in <strong>open-loop</strong> as small identification errors might propagate along the simulation leading to totally erronous results. The dgital-twin is however useful in closed-loop mode as it gives the dependence (approximately) of the derivatices of some of the sensors in terms of other sensors.</p></li>
+<li><p><strong>The non-unicity of representation</strong></p>
+<p>Recall that MizoPol is about finging invariant relationships in the data. But the same relationship can be viewed in an infinite number of forms depending on the use of delays, the use of recursive vs non recursive form. Some invariance might be relevant in a rather poor training data which does not represent real dynamical/static laws. The use of non consistent relationship in a digital twin might lead to erronous prediction.</p></li>
+</ol>
+</div>
+</div>
 
 
 

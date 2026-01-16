@@ -498,7 +498,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./digital_twins_zema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DT: First example</span></a>
+ <span class="menu-text">DT: Example 1</span></a>
   </div>
 </li>
       </ul>
@@ -524,8 +524,7 @@ window.Quarto = {
   <li><a href="#results-discussion" id="toc-results-discussion" class="nav-link" data-scroll-target="#results-discussion"><span class="header-section-number">3</span> Results &amp; Discussion</a>
   <ul class="collapse">
   <li><a href="#systems-graph" id="toc-systems-graph" class="nav-link" data-scroll-target="#systems-graph"><span class="header-section-number">3.1</span> System’s graph</a></li>
-  <li><a href="#exploiting-the-graph" id="toc-exploiting-the-graph" class="nav-link" data-scroll-target="#exploiting-the-graph"><span class="header-section-number">3.2</span> Exploiting the graph</a></li>
-  <li><a href="#viewing-residuals" id="toc-viewing-residuals" class="nav-link" data-scroll-target="#viewing-residuals"><span class="header-section-number">3.3</span> Viewing residuals</a></li>
+  <li><a href="#viewing-residuals" id="toc-viewing-residuals" class="nav-link" data-scroll-target="#viewing-residuals"><span class="header-section-number">3.2</span> Viewing residuals</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -576,14 +575,14 @@ Objective
 </div>
 <div class="callout-body-container callout-body">
 <p>The original objective of this Nasa Datasets is to estimate the <strong>R</strong>emaining <strong>U</strong>seful <strong>L</strong>ife (<strong>RUL</strong>) which is not our objective in this usecase as we aim at showing <strong>how the sensors relate to each other</strong> and what are the invariant relationships that hold depsite of the aging so that one can only focus on non redundant information.</p>
-<p>Suprisingly enough, the deep investigation undertaked without the <strong>RUL issue</strong> in mind gave rise to an astonishing result that can provide a breakthrough regarding the <strong>RUL</strong> issue although some further investigation is still needed.</p>
 </div>
 </div>
-<p>The following movie shows how technically the relationships discussed in the following section have been obtained using the <strong>g2sys</strong> module. You might skip immediately towards the discussion below without visualizing the movie.</p>
+<p>The following movie shows how some invariant relationships that are present in the nasa dateset can be rapidly obtained using the <strong>g2sys</strong> module.</p>
 <video controls="" width="100%" style="border: 3px solid #3f7086ff; border-radius: 4px;">
 <source src="https://www.mazenalamir.fr/videos/graph_nasa_2.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video>
+<p>For those who are interested in the pre-processing of the <span class="math inline">\(\texttt{kaggle}\)</span> data set, the following section might be helpful.</p>
 </section>
 <section id="dataset-preparation-for-g2sys" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Dataset preparation for g2sys</h1>
@@ -617,16 +616,14 @@ The dataset used for illustration
 </div>
 <div class="callout-body-container callout-body">
 <p>This leads to four datasets among which, only the second one, namely <code>nasa_2.csv</code> is used here for the sake of illustration.</p>
-<p>Similar results can be obtained for the other datasets.</p>
 </div>
 </div>
 </section>
 <section id="results-discussion" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Results &amp; Discussion</h1>
-<p>Let us first of all show the <strong>graph<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> of the system</strong> as it can be discovered using the context of the <code>nasa_2.csv</code> dataset.</p>
-<p>After standard <strong>15 minutes manipulations</strong> of the dataset using the <strong>g2sys</strong> utilities, one comes out with the following graph relative to the 20 sensors involved in the dataset:</p>
 <section id="systems-graph" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="systems-graph"><span class="header-section-number">3.1</span> System’s graph</h2>
+<p>The following graph of connexion between sensors is obtained (see <a href="./graph_intro.html">the section</a>) dedicated to the presentation of the graph of connexion between sensors for more details:</p>
 <div id="fig-graph_nasa_2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-graph_nasa_2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -649,62 +646,8 @@ Figure&nbsp;2: Screenshot of the <strong>g2sys</strong> module showing the amoun
 </figure>
 </div>
 </section>
-<section id="exploiting-the-graph" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="exploiting-the-graph"><span class="header-section-number">3.2</span> Exploiting the graph</h2>
-<p>Before we examine the quality of the fit of the relationships leading to the graph of <a href="#fig-graph_nasa_2" class="quarto-xref">Figure&nbsp;1</a>, let us state the following facts that give an example of the type of information contained in the associated graph of the system:</p>
-<p>The screenshot shown in <a href="#fig-screenshot" class="quarto-xref">Figure&nbsp;2</a> shows that 15 sensors have been eliminated during the study based on the created correlation dictionary as they are highly aligned with one of the five sensors:</p>
-<p><span class="math display">\[
-\texttt{c3, c8, c13, c18, c17}
-\]</span></p>
-<p>Hence in the remainder of the analysis, these representative sensors are used together with those sensors that are not aligned with any other sensors.</p>
-<ol type="1">
-<li>There are 5 sensors that appear as labels in <strong>dynamic/recursive</strong> relationships<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> which are <span class="math inline">\(\texttt{c3, c4, c8, c19, c21}\)</span>. This means that we can consider the following state vector definition:</li>
-</ol>
-<p><span class="math display">\[
-x := \begin{bmatrix}
-c_3\cr c_4\cr c_8\cr c_{19}\cr c_{21}
-\end{bmatrix}
-\]</span></p>
-<ol start="2" type="1">
-<li>Four sensors appear in static relationships which are <span class="math inline">\(\texttt{c13, c15, c17, c24}\)</span>. We can then define the vector <span class="math inline">\(z\)</span> as follows:</li>
-</ol>
-<p><span class="math display">\[
-z := \begin{bmatrix}
-c_{13}\cr c_{15}\cr c_{17}\cr c_{24}
-\end{bmatrix}
-\]</span></p>
-<p>and examining the graph of the system enables to explicitly see that:</p>
-<p><span class="math display">\[\begin{align}
-c_{15} &amp;= \texttt{Function}(x)\\
-c_{24} &amp;= \texttt{Function}(x)\\
-c_{17} &amp;= \texttt{Function}(x, c_{15})\\
-c_{13} &amp;= \texttt{Function}(c_{17}, c_{24}) \\
-\end{align}\]</span></p>
-<p>which is obviously equivalent to:</p>
-<p><span class="math display">\[
-z = h(x)
-\]</span></p>
-<p>On the other hand, the evolution of <span class="math inline">\(x\)</span> depends only on the previous values of <span class="math inline">\(x\)</span> leading to the complete definition of a sort of autonomous dynamical system of the form:</p>
-<p><span id="eq-ageing"><span class="math display">\[
-x_{k+1} = \texttt{Function}(x_k, x_{k-3}, x_{k-4})
-\tag{1}\]</span></span></p>
-<div class="callout callout-style-default callout-tip callout-titled" title="Is this an Ageing dynamic equation?">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Is this an Ageing dynamic equation?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><a href="#eq-ageing" class="quarto-xref">Equation&nbsp;1</a> is quite exciting autonomous equation as it seems to be the dynamic equation of the ageing of a Nasa Turbofan. Recall that this relationship has been identified using a tiny subset of the available subset of all the turbofans and despite of that, it seem to hold true for all the engines.</p>
-<p>Since this is an autonomous dynamics, it can be simulated to predict how the <em>internal state</em> <span class="math inline">\(x\)</span> of each turbofan is <em>getting older</em> along time. More precisely, this relationship gives an idea of what would be the value of all the sensors after any desired number of flights in the future!</p>
-</div>
-</div>
-</section>
-<section id="viewing-residuals" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="viewing-residuals"><span class="header-section-number">3.3</span> Viewing residuals</h2>
+<section id="viewing-residuals" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="viewing-residuals"><span class="header-section-number">3.2</span> Viewing residuals</h2>
 <p>Recall that the residual is expressed by the normalized expression:</p>
 <p><span class="math display">\[
 \dfrac{\texttt{percentile}(y-\hat y, 95)}{\texttt{median}(\vert y\vert )}
@@ -727,7 +670,7 @@ About the residual’s legend
 <ul>
 <li><span class="math inline">\(\texttt{sensor}\)</span> is the sensor’s name.</li>
 <li><span class="math inline">\(\texttt{card}\)</span> is the number of active monomials (number of active coefficients)</li>
-<li><span class="math inline">\(\texttt{d}\)</span> is the elementary delay used in the solution<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
+<li><span class="math inline">\(\texttt{d}\)</span> is the elementary delay used in the solution<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
 <li><span class="math inline">\(\texttt{nd}\)</span> is the the number of delays</li>
 </ul>
 </div>
@@ -743,9 +686,7 @@ About the residual’s legend
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>See the section dedicated to the presentation of the concept of <a href="./graph_intro.html">graph of system</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>See the <a href="./overview.html">Overview</a> section for a description of these concepts.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>If <span class="math inline">\(\texttt{d}=0\)</span>, the parameter <span class="math inline">\(\texttt{nd}\)</span> has no effect.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>If <span class="math inline">\(\texttt{d}=0\)</span>, the parameter <span class="math inline">\(\texttt{nd}\)</span> has no effect.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

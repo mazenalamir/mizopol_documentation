@@ -28,8 +28,8 @@ website:
         href: rlars_intro.qmd
       - text: Graph
         href: graph_intro.qmd
-      - text: Digital twins
-        href: digital_twins_intro.qmd
+      # - text: Digital twins
+      #   href: digital_twins_intro.qmd
       - text: About
         href: about.qmd
 
@@ -111,12 +111,12 @@ website:
             href: graph_intro.qmd
           - text: "Graph: g2sys|Hydraulic rig"
             href: graph_zema.qmd
-      - section: "**Digital twins**"
-        contents:
-          - text: "DT: Introduction"
-            href: digital_twins_intro.qmd
-          - text: "DT: First example"
-            href: digital_twins_zema.qmd
+      # - section: "**Digital twins**"
+      #   contents:
+      #     - text: "DT: Introduction"
+      #       href: digital_twins_intro.qmd
+      #     - text: "DT: Example 1"
+      #       href: digital_twins_zema.qmd
       - about.qmd
 
 format:

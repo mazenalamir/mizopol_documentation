@@ -43,3 +43,15 @@ Notice that the process is mainly based on the decomposition of the set of senso
     **These are the components of the state vector $x$** of the equipment in the above schema. 
 
 [^notonly]: Notice that, rigorously speaking, there is no difference in nature between these sensors and those who would have been eliminated through the search for aligned sensors step. All of them can be expressed in terms of static relationships involving the other sensors. It is only their position in the process that distinguished them. 
+
+:::{.callout-warning title='Be extremely careful about Unicity & Open-loop simulation'}
+There are two major facts regarding the use of MizoPol in designing digital twins: 
+
+1. **The danger of open-loop simulations**
+
+    It should be kept in mind that when dynamic relationships are involved, it is unrealistic tous the simulation model in **open-loop** as small identification errors might propagate along the simulation leading to totally erronous results. The dgital-twin is however useful in closed-loop mode as it gives the dependence (approximately) of the derivatices of some of the sensors in terms of other sensors.
+
+2. **The non-unicity of representation**
+
+    Recall that MizoPol is about finging invariant relationships in the data. But the same relationship can be viewed in an infinite number of forms depending on the use of delays, the use of recursive vs non recursive form. Some invariance might be relevant in a rather poor training data which does not represent real dynamical/static laws. The use of non consistent relationship in a digital twin might lead to erronous prediction. 
+:::
