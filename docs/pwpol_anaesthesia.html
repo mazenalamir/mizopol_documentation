@@ -174,10 +174,6 @@ window.Quarto = {
 <span class="menu-text">Graph</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./digital_twins_intro.html"> 
-<span class="menu-text">Digital twins</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -466,29 +462,6 @@ window.Quarto = {
 </li>
       </ul>
   </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>Digital twins</strong></span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./digital_twins_intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DT: Introduction</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./digital_twins_zema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DT: Example 1</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
@@ -700,10 +673,7 @@ End-Tidal Carbon Dioxide (ETCO2).
 </section>
 <section id="event-detection-results" class="level2" data-number="6">
 <h2 data-number="6" class="anchored" data-anchor-id="event-detection-results"><span class="header-section-number">6</span> Event detection results</h2>
-<p>The previously defined normality characterization might be used to fire alarms in the operation rooms. The following figures show the resulting events detection statistics for different levels of acceptable false alarm rates.</p>
-<p>Notice that there are different columns corresponding each to a level of precision so that each one can be used alone to fire alarm signals. The threshold used for each individual <em>worker</em> is the one written in purple at the top right corners of each table.</p>
-<p>The last column corresponds to the case where an alarm is raised as soon as one of the workers fires an alarm.</p>
-<p>The effective false alarm is the one associated to the last row in the tables. This differs from the previously mentioned one (in purple) which is used by each worker to fire the alarm.</p>
+<p>The previously defined normality characterization might be used to fire alarms in the operation rooms. The following figures show the resulting events detection statistics for different levels of acceptable false alarm rates and different decision window’s size.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -718,16 +688,19 @@ Tip
 </div>
 </div>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">admissible FA=10</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">admissible FA=15</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">admissible FA=20</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">window= 2min</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">window = 1min</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">window = 30 sec</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" role="tab" aria-controls="tabset-3-4" aria-selected="false">window = 10 sec</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<p><img src="images/FA10_medical.png" class="img-fluid"></p>
+<p><img src="images/health_w120.png" class="img-fluid"></p>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<p><img src="images/FA15_medical.png" class="img-fluid"></p>
+<p><img src="images/health_w60.png" class="img-fluid"></p>
 </div>
 <div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
-<p><img src="images/FA20_medical.png" class="img-fluid"></p>
+<p><img src="images/health_w30.png" class="img-fluid"></p>
+</div>
+<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+<p><img src="images/health_w10.png" class="img-fluid"></p>
 </div>
 </div>
 </div>

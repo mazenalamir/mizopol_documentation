@@ -292,7 +292,7 @@
     "href": "pwpol_anaesthesia.html#event-detection-results",
     "title": "Piece-wise polynomial invariants",
     "section": "6 Event detection results",
-    "text": "6 Event detection results\nThe previously defined normality characterization might be used to fire alarms in the operation rooms. The following figures show the resulting events detection statistics for different levels of acceptable false alarm rates.\nNotice that there are different columns corresponding each to a level of precision so that each one can be used alone to fire alarm signals. The threshold used for each individual worker is the one written in purple at the top right corners of each table.\nThe last column corresponds to the case where an alarm is raised as soon as one of the workers fires an alarm.\nThe effective false alarm is the one associated to the last row in the tables. This differs from the previously mentioned one (in purple) which is used by each worker to fire the alarm.\n\n\n\n\n\n\nTip\n\n\n\nThe events-related intervals have been annotated by doctors from the CHU-Grenoble on the recordings of 19 patients.\n\n\n\nadmissible FA=10admissible FA=15admissible FA=20",
+    "text": "6 Event detection results\nThe previously defined normality characterization might be used to fire alarms in the operation rooms. The following figures show the resulting events detection statistics for different levels of acceptable false alarm rates and different decision window’s size.\n\n\n\n\n\n\nTip\n\n\n\nThe events-related intervals have been annotated by doctors from the CHU-Grenoble on the recordings of 19 patients.\n\n\n\nwindow= 2minwindow = 1minwindow = 30 secwindow = 10 sec",
     "crumbs": [
       "Home",
       "**implicit pwpol**",
@@ -340,84 +340,35 @@
     "href": "digital_twins_zema.html#the-dataset",
     "title": "Digital Twins",
     "section": "1 The dataset",
-    "text": "1 The dataset\n\n\n\nZema Dataset\n\nThis is a public dataset that is available at UC Irvine Machine Learning Repository.\n\n\n\nThis system has been already encoutered in this documentation (see the g2sys module presentation and the introduction on the concept of graph for some examples and movies of identification relationships). In this section, we start from a set of already identified relationships and proceed for the presentation of the rationale of constructing the Digital Twin for this system1.\n| 7 sensors | 255,420 rows |\n\n\n\n\n\n\nCan we use the dataset representing time-series to quickly derive a dynamic simulator of the system (The above AI-generated photo is used for illustrative purpose and is not directly related to the dataset.)",
-    "crumbs": [
-      "Home",
-      "**Digital twins**",
-      "DT: First example"
-    ]
+    "text": "1 The dataset\n\n\n\nZema Dataset\n\nThis is a public dataset that is available at UC Irvine Machine Learning Repository.\n\n\n\nThis system has been already encoutered in this documentation (see the g2sys module presentation and the introduction on the concept of graph for some examples and movies of identification relationships). In this section, we start from a set of already identified relationships and proceed for the presentation of the rationale of constructing the Digital Twin for this system1.\n| 7 sensors | 255,420 rows |\n\n\n\n\n\n\nCan we use the dataset representing time-series to quickly derive a dynamic simulator of the system (The above AI-generated photo is used for illustrative purpose and is not directly related to the dataset.)"
   },
   {
     "objectID": "digital_twins_zema.html#the-identified-relationships",
     "href": "digital_twins_zema.html#the-identified-relationships",
     "title": "Digital Twins",
     "section": "2 The identified relationships",
-    "text": "2 The identified relationships\nThe g2sys module has been used (as shown previously) to derive a set of polynomial relationships that might be static (non recursive) or dynamic (recursive) that are each indexed by one of the sensors.\nThe fitting provided by these relationships is shown on the snapshots below which are extracted from the g2sys module. Notice that each screenshot shows an appropriate zoom on the predicted and the measured value, the head of the screenshot introduces the sensor indexing the relationship, the pickled file containing the solution, the number of parameters involved (card) and the type of relationship (static/dynamic). The right hand side dataframe shows the other sensors involved in the relationship, other than the sensor indexing the relationship.\n\n  Previous Next",
-    "crumbs": [
-      "Home",
-      "**Digital twins**",
-      "DT: First example"
-    ]
+    "text": "2 The identified relationships\nThe g2sys module has been used (as shown previously) to derive a set of polynomial relationships that might be static (non recursive) or dynamic (recursive) that are each indexed by one of the sensors.\nThe fitting provided by these relationships is shown on the snapshots below which are extracted from the g2sys module. Notice that each screenshot shows an appropriate zoom on the predicted and the measured value, the head of the screenshot introduces the sensor indexing the relationship, the pickled file containing the solution, the number of parameters involved (card) and the type of relationship (static/dynamic). The right hand side dataframe shows the other sensors involved in the relationship, other than the sensor indexing the relationship.\n\n  Previous Next"
   },
   {
     "objectID": "digital_twins_zema.html#the-graph-of-the-system",
     "href": "digital_twins_zema.html#the-graph-of-the-system",
     "title": "Digital Twins",
     "section": "3 The graph of the system",
-    "text": "3 The graph of the system\nBased on the above relationships, the following graph can also be displayed in the g2sys module:\n\n\n\nThe graph of relationships between the sensors present in the Zema dataset as shown in the g2sys module.\n\n\nA simple observation of the graph provides the following information:\n\nPS1and PS4 are not indices of any relationship and therefore, they are exogenous inputs to the simulator.\nThe graph decomposes the system into two groups of sensors, the first is fed by the exogenous signal PS1 while the second is fed by the exogenous signal PS4.\nPS6 is defined by a recursive relationship with the only input PS4 which means that it can be simulated alone independently of the other sensors.\nPS5 is defined completely from PS6.\nEPS1 is statically defined as a function of PS1 and the resulting pair (PS1, EPS1) uniquely determines PS2.\nPS3 is defined by a dynamic relationship involving PS2 as leading sensor.\n\nThe whole above discussion can be summarized by the following Digital Twin schematic\n\n\n\n\n\n\nFigure 1: Functional view of the Digital Twin showing the two subsystems and the two different sampling periods \\(\\{5, 20\\}\\) used in each one.",
-    "crumbs": [
-      "Home",
-      "**Digital twins**",
-      "DT: First example"
-    ]
+    "text": "3 The graph of the system\nBased on the above relationships, the following graph can also be displayed in the g2sys module:\n\n\n\nThe graph of relationships between the sensors present in the Zema dataset as shown in the g2sys module.\n\n\nA simple observation of the graph provides the following information:\n\nPS1and PS4 are not indices of any relationship and therefore, they are exogenous inputs to the simulator.\nThe graph decomposes the system into two groups of sensors, the first is fed by the exogenous signal PS1 while the second is fed by the exogenous signal PS4.\nPS6 is defined by a recursive relationship with the only input PS4 which means that it can be simulated alone independently of the other sensors.\nPS5 is defined completely from PS6.\nEPS1 is statically defined as a function of PS1 and the resulting pair (PS1, EPS1) uniquely determines PS2.\nPS3 is defined by a dynamic relationship involving PS2 as leading sensor.\n\nThe whole above discussion can be summarized by the following Digital Twin schematic\n\n\n\n\n\n\nFigure 1: Functional view of the Digital Twin showing the two subsystems and the two different sampling periods \\(\\{5, 20\\}\\) used in each one."
   },
   {
     "objectID": "digital_twins_zema.html#the-relationships-f_i-as-polynomials",
     "href": "digital_twins_zema.html#the-relationships-f_i-as-polynomials",
     "title": "Digital Twins",
     "section": "4 The relationships \\(F_i\\) as polynomials",
-    "text": "4 The relationships \\(F_i\\) as polynomials\nRecall that g2sys module identifies relationships as sparse multi-variate polynomial in the sensors and possibly their delayed values. The polynomials have been defined in the dedicated section. Nevertheless, the definition is reported here for an easy reading:\n\\[\nP(x)=\\sum_{i=1}^{n_c} c_i\\phi_i(x)\\quad\\text{where}\\quad \\phi_i(x) = \\prod_{j=1}^{n}x_j^{p_{ij}}\n\\]\nwhich obviously highlights that a polynomial is defined by the definition of:\n\nThe vector of input argument \\(x\\)\nThe matrix of powers \\(P\\)\nThe vector of coefficients \\(c\\)\n\n\n\n\n\n\n\nFigure 2: Attributes of a monomial in a polynomial in \\(n\\) arguments\n\n\n\nThe different relationships \\(F_i\\) invoked above are quatitatively exposed below using the following script that uses the model object returned by the g2sys module:\nfor i in range(len(model)):\n    s = list(model[i].keys())[0]\n    print(f'{i} Relationship indexed by {s}')\n    print('==================================')\n    print(f\"arguments: {model[i][s]['Lred']}\")\n    print('--------')\n    print(f\"powers \\n {model[i][s]['powers']}\")\n    print('--------')\n    print(f\"coefficients: \\n {model[i][s]['coefs']}\")\n    print('---')\n\nF5F6F2F3Fe\n\n\n0 Relationship indexed by PS5\n==================================\narguments: ['PS6(k)']\n--------\npowers \n [[1]]\n--------\ncoefficients: \n [1.01204197]\n\n\n1 Relationship indexed by PS6\n==================================\narguments: ['PS4(k)', 'PS6(k-5)', 'PS4(k-5)']\n--------\npowers \n [[0 7 0]\n [7 0 0]\n [0 0 7]]\n--------\ncoefficients: \n [ 4.24551785e-10 -1.26887138e-07  1.26536849e-07]\n\n\n2 Relationship indexed by PS2\n==================================\narguments: ['PS1(k)', 'EPS1(k)']\n--------\npowers \n [[0 0]\n [7 0]\n [2 0]\n [1 0]\n [0 5]\n [0 7]\n [2 4]\n [1 4]\n [0 6]\n [2 5]\n [2 2]\n [0 3]\n [1 3]]\n--------\ncoefficients: \n [-1.60070178e+01  2.69116140e-13 -2.01153924e+00  1.94358046e+02\n  2.68563176e-13 -1.08337198e-20 -9.94726683e-14  3.35975706e-12\n -1.08849622e-17  1.67660452e-17  5.11233178e-07 -2.49710828e-06\n -1.34518741e-09]\n\n\n3 Relationship indexed by PS3\n==================================\narguments: ['PS2(k)', 'PS3(k-20)', 'PS2(k-20)']\n--------\npowers \n [[0 1 3]\n [0 1 0]\n [5 0 0]\n [2 0 0]\n [4 1 0]\n [0 2 0]\n [0 3 0]\n [0 5 0]\n [0 1 2]\n [3 0 0]\n [3 2 0]\n [1 0 0]\n [2 0 3]\n [0 4 0]\n [0 1 1]\n [4 0 0]\n [0 1 4]\n [1 0 2]\n [1 0 4]]\n--------\ncoefficients: \n [ 1.53869689e-04 -8.29888290e+00 -1.84442936e-10  3.66707452e-04\n  7.07717016e-10  3.13970159e+00 -6.20235249e-01 -2.51614370e-03\n -2.07759665e-02  1.08749688e-05 -2.82239193e-07 -2.80942438e-02\n -1.09176591e-10  6.59990851e-02  9.50487222e-01 -3.96594565e-08\n -3.77116064e-07 -3.53961657e-06  2.24793977e-10]\n\n\n4 Relationship indexed by EPS1\n==================================\narguments: ['PS1(k)']\n--------\npowers \n [[1]\n [0]]\n--------\ncoefficients: \n [ 13.09598968 441.01619799]\n\n\n\nLet us defne the functions \\(F_i\\) as defined above using the following script\nimport numpy as np\nfrom plars import predict\n\ndef F2(PS1, EPS1):\n    x = np.array([PS1, EPS1]).T\n    val = predict(x, model[2]['PS2'])\n    return val   \n\ndef F3(PS2, PS3_past, PS2_past):\n    x = np.array([PS2, PS3_past, PS2_past]).T\n    val = predict(x, model[3]['PS3'])\n    return val[0]   \n\ndef Fe(PS1):\n    x = np.array(PS1).reshape(-1,1)\n    val = predict(x, model[4]['EPS1'])\n    return val\n\ndef F5(PS6):\n    x = np.array(PS6).reshape(-1,1)\n    val = predict(x, model[0]['PS5'])\n    return val\n\ndef F6(PS4, PS6_past, PS4_past):\n    x = np.array([PS4, PS6_past, PS4_past]).T\n    val = predict(x, model[1]['PS6'])\n    return  val[0]\n\n\n\n\n\n\nAbout Open-loop simulation\n\n\n\nIt should be kept in mind that when dynamic relationships are involved, it is unrealistic tous the simulation model in open-loop as small identification errors might propagate along the simulation leading to totally erronous results. The dgital-twin is however useful in closed-loop mode as it gives the dependence (approximately) of the derivatices of some of the sensors in terms of other sensors.",
-    "crumbs": [
-      "Home",
-      "**Digital twins**",
-      "DT: First example"
-    ]
-  },
-  {
-    "objectID": "digital_twins_zema.html#construction-of-the-digital-twin",
-    "href": "digital_twins_zema.html#construction-of-the-digital-twin",
-    "title": "Digital Twins",
-    "section": "5 Construction of the Digital Twin",
-    "text": "5 Construction of the Digital Twin\n\n5.1 The elementary functions\nLet first defne the functions \\(F_i\\) as defined above using the following script\nimport numpy as np\nfrom plars import predict\n\ndef F2(PS1, EPS1):\n    x = np.array([PS1, EPS1]).T\n    val = predict(x, model[2]['PS2'])\n    return val   \n\ndef F3(PS2, PS3_past, PS2_past):\n    x = np.array([PS2, PS3_past, PS2_past]).T\n    val = predict(x, model[3]['PS3'])\n    return val[0]   \n\ndef Fe(PS1):\n    x = np.array(PS1).reshape(-1,1)\n    val = predict(x, model[4]['EPS1'])\n    return val\n\ndef F5(PS6):\n    x = np.array(PS6).reshape(-1,1)\n    val = predict(x, model[0]['PS5'])\n    return val\n\ndef F6(PS4, PS6_past, PS4_past):\n    x = np.array([PS4, PS6_past, PS4_past]).T\n    val = predict(x, model[1]['PS6'])\n    return  val[0]\n\n\n\n\n\n\nAbout Open-loop simulation\n\n\n\nIt should be kept in mind that when dynamic relationships are involved, it is unrealistic tous the simulation model in open-loop as small identification errors might propagate along the simulation leading to totally erronous results. The dgital-twin is however useful in closed-loop mode as it gives the dependence (approximately) of the derivatices of some of the sensors in terms of other sensors.",
-    "crumbs": [
-      "Home",
-      "**Digital twins**",
-      "DT: First example"
-    ]
-  },
-  {
-    "objectID": "digital_twins_zema.html#dt-based-simulation",
-    "href": "digital_twins_zema.html#dt-based-simulation",
-    "title": "Digital Twins",
-    "section": "6 DT-based simulation",
-    "text": "6 DT-based simulation",
-    "crumbs": [
-      "Home",
-      "**Digital twins**",
-      "DT: First example"
-    ]
+    "text": "4 The relationships \\(F_i\\) as polynomials\nRecall that g2sys module identifies relationships as sparse multi-variate polynomial in the sensors and possibly their delayed values. The polynomials have been defined in the dedicated section. Nevertheless, the definition is reported here for an easy reading:\n\\[\nP(x)=\\sum_{i=1}^{n_c} c_i\\phi_i(x)\\quad\\text{where}\\quad \\phi_i(x) = \\prod_{j=1}^{n}x_j^{p_{ij}}\n\\]\nwhich obviously highlights that a polynomial is defined by the definition of:\n\nThe vector of input argument \\(x\\)\nThe matrix of powers \\(P\\)\nThe vector of coefficients \\(c\\)\n\n\n\n\n\n\n\nFigure 2: Attributes of a monomial in a polynomial in \\(n\\) arguments\n\n\n\nThe different relationships \\(F_i\\) invoked above are quatitatively exposed below using the following script that uses the model object returned by the g2sys module:\nfor i in range(len(model)):\n    s = list(model[i].keys())[0]\n    print(f'{i} Relationship indexed by {s}')\n    print('==================================')\n    print(f\"arguments: {model[i][s]['Lred']}\")\n    print('--------')\n    print(f\"powers \\n {model[i][s]['powers']}\")\n    print('--------')\n    print(f\"coefficients: \\n {model[i][s]['coefs']}\")\n    print('---')\n\nF5F6F2F3Fe\n\n\n0 Relationship indexed by PS5\n==================================\narguments: ['PS6(k)']\n--------\npowers \n [[1]]\n--------\ncoefficients: \n [1.01204197]\n\n\n1 Relationship indexed by PS6\n==================================\narguments: ['PS4(k)', 'PS6(k-5)', 'PS4(k-5)']\n--------\npowers \n [[0 7 0]\n [7 0 0]\n [0 0 7]]\n--------\ncoefficients: \n [ 4.24551785e-10 -1.26887138e-07  1.26536849e-07]\n\n\n2 Relationship indexed by PS2\n==================================\narguments: ['PS1(k)', 'EPS1(k)']\n--------\npowers \n [[0 0]\n [7 0]\n [2 0]\n [1 0]\n [0 5]\n [0 7]\n [2 4]\n [1 4]\n [0 6]\n [2 5]\n [2 2]\n [0 3]\n [1 3]]\n--------\ncoefficients: \n [-1.60070178e+01  2.69116140e-13 -2.01153924e+00  1.94358046e+02\n  2.68563176e-13 -1.08337198e-20 -9.94726683e-14  3.35975706e-12\n -1.08849622e-17  1.67660452e-17  5.11233178e-07 -2.49710828e-06\n -1.34518741e-09]\n\n\n3 Relationship indexed by PS3\n==================================\narguments: ['PS2(k)', 'PS3(k-20)', 'PS2(k-20)']\n--------\npowers \n [[0 1 3]\n [0 1 0]\n [5 0 0]\n [2 0 0]\n [4 1 0]\n [0 2 0]\n [0 3 0]\n [0 5 0]\n [0 1 2]\n [3 0 0]\n [3 2 0]\n [1 0 0]\n [2 0 3]\n [0 4 0]\n [0 1 1]\n [4 0 0]\n [0 1 4]\n [1 0 2]\n [1 0 4]]\n--------\ncoefficients: \n [ 1.53869689e-04 -8.29888290e+00 -1.84442936e-10  3.66707452e-04\n  7.07717016e-10  3.13970159e+00 -6.20235249e-01 -2.51614370e-03\n -2.07759665e-02  1.08749688e-05 -2.82239193e-07 -2.80942438e-02\n -1.09176591e-10  6.59990851e-02  9.50487222e-01 -3.96594565e-08\n -3.77116064e-07 -3.53961657e-06  2.24793977e-10]\n\n\n4 Relationship indexed by EPS1\n==================================\narguments: ['PS1(k)']\n--------\npowers \n [[1]\n [0]]\n--------\ncoefficients: \n [ 13.09598968 441.01619799]\n\n\n\nLet us defne the functions \\(F_i\\) as defined above using the following script\nimport numpy as np\nfrom plars import predict\n\ndef F2(PS1, EPS1):\n    x = np.array([PS1, EPS1]).T\n    val = predict(x, model[2]['PS2'])\n    return val   \n\ndef F3(PS2, PS3_past, PS2_past):\n    x = np.array([PS2, PS3_past, PS2_past]).T\n    val = predict(x, model[3]['PS3'])\n    return val[0]   \n\ndef Fe(PS1):\n    x = np.array(PS1).reshape(-1,1)\n    val = predict(x, model[4]['EPS1'])\n    return val\n\ndef F5(PS6):\n    x = np.array(PS6).reshape(-1,1)\n    val = predict(x, model[0]['PS5'])\n    return val\n\ndef F6(PS4, PS6_past, PS4_past):\n    x = np.array([PS4, PS6_past, PS4_past]).T\n    val = predict(x, model[1]['PS6'])\n    return  val[0]\n\n\n\n\n\n\nAbout Open-loop simulation\n\n\n\nIt should be kept in mind that when dynamic relationships are involved, it is unrealistic tous the simulation model in open-loop as small identification errors might propagate along the simulation leading to totally erronous results. The dgital-twin is however useful in closed-loop mode as it gives the dependence (approximately) of the derivatices of some of the sensors in terms of other sensors."
   },
   {
     "objectID": "digital_twins_zema.html#footnotes",
     "href": "digital_twins_zema.html#footnotes",
     "title": "Digital Twins",
     "section": "Footnotes",
-    "text": "Footnotes\n\n\nAs it has been disclaimed earlier, this cannot always be successful, because of the non completness of the data. More precisely, if there are quantities that impact strongly the behavior of the system which are not present in the set of sensors, then it is rigorously impossible to design a dynamic simultator from the available information.↩︎",
-    "crumbs": [
-      "Home",
-      "**Digital twins**",
-      "DT: First example"
-    ]
+    "text": "Footnotes\n\n\nAs it has been disclaimed earlier, this cannot always be successful, because of the non completness of the data. More precisely, if there are quantities that impact strongly the behavior of the system which are not present in the set of sensors, then it is rigorously impossible to design a dynamic simultator from the available information.↩︎"
   },
   {
     "objectID": "pwp_intro.html",
@@ -796,24 +747,14 @@
     "href": "digital_twins_intro.html",
     "title": "Digital Twins",
     "section": "",
-    "text": "Before any discussion let us recall the following fact:\nThis being said, the following illustration summarizes the steps involved in using MizoPol (in particular the g2sys module already discussed in the introduction to g2sys section) to help building the digital twin.\nThis picture gives the ideal case where the task is perfectly achieved.\nAn example of such a complete process is shown in the section dedicated to the nasa turbofan ageing example.\nNotice that the process is mainly based on the decomposition of the set of sensors into three subsets, which are:",
-    "crumbs": [
-      "Home",
-      "**Digital twins**",
-      "DT: Introduction"
-    ]
+    "text": "Before any discussion let us recall the following fact:\nThis being said, the following illustration summarizes the steps involved in using MizoPol (in particular the g2sys module already discussed in the introduction to g2sys section) to help building the digital twin.\nThis picture gives the ideal case where the task is perfectly achieved.\nAn example of such a complete process is shown in the section dedicated to the nasa turbofan ageing example.\nNotice that the process is mainly based on the decomposition of the set of sensors into three subsets, which are:"
   },
   {
     "objectID": "digital_twins_intro.html#footnotes",
     "href": "digital_twins_intro.html#footnotes",
     "title": "Digital Twins",
     "section": "Footnotes",
-    "text": "Footnotes\n\n\nNotice that, rigorously speaking, there is no difference in nature between these sensors and those who would have been eliminated through the search for aligned sensors step. All of them can be expressed in terms of static relationships involving the other sensors. It is only their position in the process that distinguished them.↩︎",
-    "crumbs": [
-      "Home",
-      "**Digital twins**",
-      "DT: Introduction"
-    ]
+    "text": "Footnotes\n\n\nNotice that, rigorously speaking, there is no difference in nature between these sensors and those who would have been eliminated through the search for aligned sensors step. All of them can be expressed in terms of static relationships involving the other sensors. It is only their position in the process that distinguished them.↩︎"
   },
   {
     "objectID": "plars_gui.html",
@@ -1094,18 +1035,6 @@
     "title": "g2sys",
     "section": "3.1 System’s graph",
     "text": "3.1 System’s graph\nThe following graph of connexion between sensors is obtained (see the section) dedicated to the presentation of the graph of connexion between sensors for more details:\n\n\n\n\n\n\nFigure 1: Graph representing the relationships as discovered using the g2sys module from the nasa_2.csv dataset. Notice that the nodes with thick boundaries refer to sensors indexing dynamic relationships while the other refer to sensors that can be represented through static raltionsips (expressing them as functions of the sets of sensors that send arrows to them).\n\n\n\nNotice that as it is shown in the screenshot below, only 15% of the data is used for discovering the relationships while the residuals shown after are computed for the whole datasets.\n\n\n\n\n\n\nFigure 2: Screenshot of the g2sys module showing the amount of training data (15%) used in the discovery of the relationships. As the successive portions of the dataset represents different turbofans recordings, The persistency of the smalleness of the residuals as shown hereafter witnesses in favour of the relevance of these invariant relationships over the whole set of engines.",
-    "crumbs": [
-      "Home",
-      "**g2sys**",
-      "g2sys: turbofan"
-    ]
-  },
-  {
-    "objectID": "g2sys_turbofan.html#exploiting-the-graph",
-    "href": "g2sys_turbofan.html#exploiting-the-graph",
-    "title": "g2sys",
-    "section": "3.2 Exploiting the graph",
-    "text": "3.2 Exploiting the graph\nBefore we examine the quality of the fit of the relationships leading to the graph of Figure 1, let us state the following facts that give an example of the type of information contained in the associated graph of the system:\nThe screenshot shown in Figure 2 shows that 15 sensors have been eliminated during the study based on the created correlation dictionary as they are highly aligned with one of the five sensors:\n\\[\n\\texttt{c3, c8, c13, c18, c17}\n\\]\nHence in the remainder of the analysis, these representative sensors are used together with those sensors that are not aligned with any other sensors.\n\nThere are 5 sensors that appear as labels in dynamic/recursive relationships1 which are \\(\\texttt{c3, c4, c8, c19, c21}\\). This means that we can consider the following state vector definition:\n\n\\[\nx := \\begin{bmatrix}\nc_3\\cr c_4\\cr c_8\\cr c_{19}\\cr c_{21}\n\\end{bmatrix}\n\\]\n\nFour sensors appear in static relationships which are \\(\\texttt{c13, c15, c17, c24}\\). We can then define the vector \\(z\\) as follows:\n\n\\[\nz := \\begin{bmatrix}\nc_{13}\\cr c_{15}\\cr c_{17}\\cr c_{24}\n\\end{bmatrix}\n\\]\nand examining the graph of the system enables to explicitly see that:\n\\[\\begin{align}\nc_{15} &= \\texttt{Function}(x)\\\\\nc_{24} &= \\texttt{Function}(x)\\\\\nc_{17} &= \\texttt{Function}(x, c_{15})\\\\\nc_{13} &= \\texttt{Function}(c_{17}, c_{24}) \\\\\n\\end{align}\\]\nwhich is obviously equivalent to:\n\\[\nz = h(x)\n\\]\nOn the other hand, the evolution of \\(x\\) depends only on the previous values of \\(x\\) leading to the complete definition of a sort of autonomous dynamical system of the form:\n\\[\nx_{k+1} = \\texttt{Function}(x_k, x_{k-3}, x_{k-4})\n\\tag{1}\\]\n\n\n\n\n\n\nIs this an Ageing dynamic equation?\n\n\n\nEquation 1 is quite exciting autonomous equation as it seems to be the dynamic equation of the ageing of a Nasa Turbofan. Recall that this relationship has been identified using a tiny subset of the available subset of all the turbofans and despite of that, it seem to hold true for all the engines.\nSince this is an autonomous dynamics, it can be simulated to predict how the internal state \\(x\\) of each turbofan is getting older along time. More precisely, this relationship gives an idea of what would be the value of all the sensors after any desired number of flights in the future!",
     "crumbs": [
       "Home",
       "**g2sys**",

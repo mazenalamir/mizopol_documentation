@@ -146,13 +146,8 @@ Notice that in spite of the complex nature of the relationships, the number of m
 
 ## Event detection results 
 
-The previously defined normality characterization might be used to fire alarms in the operation rooms. The following figures show the resulting events detection statistics for different levels of acceptable false alarm rates. 
+The previously defined normality characterization might be used to fire alarms in the operation rooms. The following figures show the resulting events detection statistics for different levels of acceptable false alarm rates and different decision window's size. 
 
-Notice that there are different columns corresponding each to a level of precision so that each one can be used alone to fire alarm signals. The threshold used for each individual *worker* is the one written in purple at the top right corners of each table. 
-
-The last column corresponds to the case where an alarm is raised as soon as one of the workers fires an alarm. 
-
-The effective false alarm is the one associated to the last row in the tables. This differs from the previously mentioned one (in purple) which is used by each worker to fire the alarm.
 
 :::{.callout-tip}
 The events-related intervals have been annotated by doctors from the CHU-Grenoble on the recordings of 19 patients.
@@ -160,17 +155,21 @@ The events-related intervals have been annotated by doctors from the CHU-Grenobl
 
 :::{.panel-tabset}
 
-### admissible FA=10
+### window= 2min 
 
-![](images/FA10_medical.png)
+![](images/health_w120.png)
 
-### admissible FA=15
+### window = 1min
 
-![](images/FA15_medical.png)
+![](images/health_w60.png)
 
-### admissible FA=20
+### window = 30 sec
 
-![](images/FA20_medical.png)
+![](images/health_w30.png)
+
+### window = 10 sec
+
+![](images/health_w10.png)
 
 :::
 
