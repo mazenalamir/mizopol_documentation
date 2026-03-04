@@ -93,6 +93,8 @@ website:
             href: pwpol_robot.qmd
           - text: "pwpol: Medical data"
             href: pwpol_anaesthesia.qmd
+          - text: "pwpol: The benchmark"
+            href: pwpol_bench.qmd
       - section: "**explicit pwpol**"
         contents:
           - text: "xpwpol: Intro"
