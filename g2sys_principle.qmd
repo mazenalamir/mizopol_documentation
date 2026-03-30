@@ -130,5 +130,4 @@ namely:
 Another very speaking example showing the role of the sparsity in enhancing both the reliability of the diagnosis and its interpetability is given through the use-case of the section dedicated to the [hydraulic system](g2sys_zema.qmd).
 
  
-[^noneed]: In case you are using the GUI, you probably do not need to go through the detailed description although this can help understanding the set of parameters to be tuned. 
 [^theraremethods]: There are some alternatives but franckly, they are not reliable nor trustworthy. 

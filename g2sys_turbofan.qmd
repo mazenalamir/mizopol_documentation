@@ -71,7 +71,7 @@ This leads to four datasets among which, only the second one, namely `nasa_2.csv
 
 The following graph of connexion between sensors is obtained (see [the section](graph_intro.qmd)) dedicated to the presentation of the graph of connexion between sensors for more details: 
 
-![Graph representing the relationships as discovered using the **g2sys** module from the `nasa_2.csv` dataset. Notice that the nodes with thick boundaries refer to sensors indexing dynamic relationships while the other refer to sensors that can be represented through static raltionsips (expressing them as functions of the sets of sensors that send arrows to them).](images/nasa2_graph.png){width=60% #fig-graph_nasa_2}
+![Graph representing the relationships as discovered using the **g2sys** module from the `nasa_2.csv` dataset. Notice that the nodes with thick boundaries refer to sensors indexing dynamic relationships[^dynamicrec] while the other refer to sensors that can be represented through static raltionsips (expressing them as functions of the sets of sensors that send arrows to them).](images/nasa2_graph.png){width=60% #fig-graph_nasa_2}
 
 
 Notice that as it is shown in the screenshot below, only 15% of the data is used for discovering the relationships while the residuals shown after are computed for the whole datasets. 
@@ -105,8 +105,6 @@ where
 <iframe src="html_files/all_residual_nasa_2.html" width="100%" height="620px" style="border:none;"></iframe>
 
 
-
-[^graph]: See the section dedicated to the presentation of the concept of [graph of system](graph_intro.qmd).
 
 [^ifnond]: If $\texttt{d}=0$, the parameter $\texttt{nd}$ has no effect.
 

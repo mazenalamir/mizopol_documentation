@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Piece-wise polynomial invariants – MizoPol</title>
+<title>API documentation – MizoPol</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -29,8 +29,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./rlars_intro.html" rel="next">
-<link href="./pwpol_anaesthesia.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -68,35 +66,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles/styles.css">
 </head>
@@ -179,7 +148,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./pwp_intro.html"><strong>implicit pwpol</strong></a></li><li class="breadcrumb-item"><a href="./pwpol_bench.html">pwpol: The benchmark</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">API documentation</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -373,7 +342,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pwpol_bench.html" class="sidebar-item-text sidebar-link active">
+  <a href="./pwpol_bench.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">pwpol: The benchmark</span></a>
   </div>
 </li>
@@ -436,35 +405,15 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#parametric-anomalies-in-industrial-equipments" id="toc-parametric-anomalies-in-industrial-equipments" class="nav-link active" data-scroll-target="#parametric-anomalies-in-industrial-equipments"><span class="header-section-number">1</span> Parametric anomalies in industrial equipments</a></li>
-  <li><a href="#the-dataset" id="toc-the-dataset" class="nav-link" data-scroll-target="#the-dataset"><span class="header-section-number">2</span> The dataset</a>
-  <ul class="collapse">
-  <li><a href="#industrial-specificities" id="toc-industrial-specificities" class="nav-link" data-scroll-target="#industrial-specificities"><span class="header-section-number">2.1</span> Industrial specificities</a></li>
-  <li><a href="#description-of-a-typical-problems-dataframe" id="toc-description-of-a-typical-problems-dataframe" class="nav-link" data-scroll-target="#description-of-a-typical-problems-dataframe"><span class="header-section-number">2.2</span> Description of a typical problem’s dataframe</a></li>
-  <li><a href="#example-of-context-induced-partition-of-the-features-space" id="toc-example-of-context-induced-partition-of-the-features-space" class="nav-link" data-scroll-target="#example-of-context-induced-partition-of-the-features-space"><span class="header-section-number">2.3</span> Example of context-induced partition of the features space</a></li>
-  <li><a href="#normalized-version-of-the-dataset" id="toc-normalized-version-of-the-dataset" class="nav-link" data-scroll-target="#normalized-version-of-the-dataset"><span class="header-section-number">2.4</span> Normalized version of the dataset</a></li>
-  </ul></li>
-  <li><a href="#the-anomaly-detection-problem" id="toc-the-anomaly-detection-problem" class="nav-link" data-scroll-target="#the-anomaly-detection-problem"><span class="header-section-number">3</span> The anomaly detection problem</a></li>
-  <li><a href="#the-pwpol-based-solution" id="toc-the-pwpol-based-solution" class="nav-link" data-scroll-target="#the-pwpol-based-solution"><span class="header-section-number">4</span> The <code>pwpol</code>-based solution</a>
-  <ul class="collapse">
-  <li><a href="#the-principle" id="toc-the-principle" class="nav-link" data-scroll-target="#the-principle"><span class="header-section-number">4.1</span> The principle</a></li>
-  <li><a href="#the-results" id="toc-the-results" class="nav-link" data-scroll-target="#the-results"><span class="header-section-number">4.2</span> The results</a></li>
-  </ul></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./pwp_intro.html"><strong>implicit pwpol</strong></a></li><li class="breadcrumb-item"><a href="./pwpol_bench.html">pwpol: The benchmark</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Piece-wise polynomial invariants</h1>
-<p class="subtitle lead">Solving the benchmark on parameteric anomaly in industrial time-series</p>
+<h1 class="title">API documentation</h1>
 </div>
 
 
@@ -482,176 +431,10 @@ window.Quarto = {
 
 
 <hr>
-<div class="columns">
-<div class="column">
-<p>This section presents the results obtained when using the <code>pwpol</code> modules which identifies piece-wise polynomial invariant to solve the benchmark problem associated to the <a href="https://www.kaggle.com/datasets/aaf751ada96dd3dc96127af653f1be76d28e61edbb69cfdccf77fe4a43efb68a">KAGGLE dataset</a> that is dedicated to serve as benchmark for parameteric anomaly detection.</p>
-<hr>
-<p>A full description of this section is also provided in the detailed paper:</p>
-<div class="small-gray-light">
-<p><strong>M. Alamir</strong>, A benchmark for context-dependent parametric anomaly detection in industrial time series. hal-05533907v1</p>
-</div>
-</div><div class="column">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/snapshot_bench.png" class="img-fluid figure-img"></p>
-<figcaption>Screenshot of the pwpBench python module serving in producing the Kaggle benchmark</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<section id="parametric-anomalies-in-industrial-equipments" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="parametric-anomalies-in-industrial-equipments"><span class="header-section-number">1</span> Parametric anomalies in industrial equipments</h2>
-<p>By <em>parameteric anomalies</em>, it is meant that the anomaly affects a relationship of the form:</p>
-<p><span id="eq-param-anomaly"><span class="math display">\[
-F(x,y,p)=0 \quad \text{-- (anomaly) ---&gt;}\qquad  F(x,y,p+\delta_p)=0
-\tag{1}\]</span></span></p>
-<p>which is a quite frequent (if not the main) form of faults encountered in industrial equipment. The parametric change might be associated to change in the friction coefficients, the braking efficiency coefficient induced by the deterioration of the quality of the surfaces, the coefficient linking the pressure gradient to the flow rate in a valves that is affected by some impurity or changes in the cross section, and the examples are unlimited.</p>
-</section>
-<section id="the-dataset" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="the-dataset"><span class="header-section-number">2</span> The dataset</h2>
-<p>The <a href="https://www.kaggle.com/datasets/aaf751ada96dd3dc96127af653f1be76d28e61edbb69cfdccf77fe4a43efb68a">KAGGLE dataset</a> is built using the freely available python <a href="https://mazenalamir.github.io/pwp_bench/">module <code>pwpBench</code></a> which enables to generate an infinite number of problems.</p>
-<section id="industrial-specificities" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="industrial-specificities"><span class="header-section-number">2.1</span> Industrial specificities</h3>
-<p>The <a href="https://www.kaggle.com/datasets/aaf751ada96dd3dc96127af653f1be76d28e61edbb69cfdccf77fe4a43efb68a">KAGGLE dataset</a> is built so that it meets the following specificity of inustrial time series.</p>
-<ol type="1">
-<li><p>Industrial time series obey some underlying (although possibly unknown) generally sparse relationships. These relationships represent physical laws<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p></li>
-<li><p>These relationships might be context-dependent. Moreover, the information regarding the context is commonly absent in the learning data which prevent building context classifiers.</p></li>
-<li><p>Many of equipment’s anomalies materialize through changes in the parameters that are involved in the governing parsimonious relationships invoked in the first item above.</p></li>
-<li><p>The representation of the different contexts in the training data is not balanced.</p></li>
-</ol>
-<div class="callout callout-style-default callout-tip callout-titled" title="30 different problems in the Kaggle dataset">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-30 different problems in the Kaggle dataset
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The dataset contains 30 instances of the anomaly detection problem in each of which, several contexts exists with unbalanced presence in the dataset. The default is introduced in a single context in the second half of each dataset.</p>
-</div>
-</div>
-</section>
-<section id="description-of-a-typical-problems-dataframe" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="description-of-a-typical-problems-dataframe"><span class="header-section-number">2.2</span> Description of a typical problem’s dataframe</h3>
-<p>The Figure below show an examples of the dataframe that is associated to a one of the 30 instances contained in the Kaggle benchmark.</p>
-<div id="fig-df" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-df-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/example_df_bench.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-df-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Example of a dataframe representing the data of one of the 30 instances of problem included in the Kaggle dataset.
-</figcaption>
-</figure>
-</div>
-<p>The columns are:</p>
-<ul>
-<li><code>xi</code> represents the features (sensors values) whose number range from 2 to 12 (see <a href="#fig-statistics" class="quarto-xref">Figure&nbsp;2</a>)</li>
-<li><code>idz</code> is the context index</li>
-<li><code>ytrue</code> and <code>y</code> are the default-free and the detuned value of <span class="math inline">\(y\)</span>. This difference is induced by a change in the piece-wise (<code>idz</code>-dependent) polynomial serving to compute the label’s values.</li>
-<li><code>res</code> is a redundant column representing the norm of the difference between <code>y</code>and <code>ytrue</code>.</li>
-</ul>
-<div id="fig-statistics" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-statistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/statistics_dataframe_bench.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-statistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Statistics regarding the number of sensors (features) and the number of context among the set of 30 problem instances contained in the dataset.
-</figcaption>
-</figure>
-</div>
-<p>The following Figure shows that kind of differences that one obtains between <code>y</code> and <code>ytrue</code> which are induced by the parametric detuning of the original relaionships.</p>
-<hr>
-<p><img src="images/timeline_example_bench.png" class="img-fluid" style="width:48.0%"> <img src="images/timeline_zoom_bench.png" class="img-fluid" style="width:48.0%"></p>
-<p>Example of an anomaly introduced in context <code>idz</code>=2 in the second half of the dataset.</p>
-<hr>
-<p><img src="images/timeline_2_bench.png" class="img-fluid" style="width:48.0%"> <img src="images/timeline_2_zoom_bench.png" class="img-fluid" style="width:48.0%"></p>
-<p>Example of an anomaly introduced in context <code>idz</code>=3 in the second half of the dataset.</p>
-<hr>
-</section>
-<section id="example-of-context-induced-partition-of-the-features-space" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="example-of-context-induced-partition-of-the-features-space"><span class="header-section-number">2.3</span> Example of context-induced partition of the features space</h3>
-<p>The following figures shows examples of context-dependent region in the features space (here of dimension 2 for the sake of illustration).</p>
-<p><img src="images/regions_ex1_bench.png" class="img-fluid" style="width:32.0%"> <img src="images/regions_ex2_bench.png" class="img-fluid" style="width:32.0%"> <img src="images/regions_ex3_bench.png" class="img-fluid" style="width:32.0%"></p>
-</section>
-<section id="normalized-version-of-the-dataset" class="level3" data-number="2.4">
-<h3 data-number="2.4" class="anchored" data-anchor-id="normalized-version-of-the-dataset"><span class="header-section-number">2.4</span> Normalized version of the dataset</h3>
-<p>a normalized version of the benchmark is also investigated. Indeed, in the absence of normalization, it might be possible by investigating the statistical properties of <span class="math inline">\(y\)</span> to create clusters which might be highly correlated to the context index <code>idz</code>. In such situations which are not necessarily very frequent, the problem might be <em>simplified</em> by first creating the clusters and then fit a normality model for each of the resulting clusters.</p>
-<p>In order to definitively avoid such potential simplification, it is possible to derive a normalized version of the benchmark in which, the <span class="math inline">\(y\)</span> is normalized within each context so that the amplitudes of <span class="math inline">\(y\)</span> become comparable over the different contexts making the clustering far from being an easy option.</p>
-<p>This is done in the following investigation by dividing the values of <span class="math inline">\(y\)</span> inside each cluster by the value of the 95% quantile of <span class="math inline">\(\vert y\vert\)</span> inside the cluster in the training subset\footnote{The function that performs the normalization is provided in the documentation of the package, <a href="https://mazenalamir.github.io/pwp_bench/">(more details on the module’s website)</a>.</p>
-<p>The files associated to the resulting datasets are referred to hereafter by: <span class="math display">\[\texttt{pbn\_i.pkl}\qquad i\in \{1,\dots,30\}\]</span></p>
-<p>The Figure below show an example of data before and after normalization</p>
-<p><img src="images/ex_normalization_bench.png" class="img-fluid"></p>
-</section>
-</section>
-<section id="the-anomaly-detection-problem" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="the-anomaly-detection-problem"><span class="header-section-number">3</span> The anomaly detection problem</h2>
-<p>The problem can be stated as follows:</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Problem Statement">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Problem Statement
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>For each dataset associated to one of the files contained in the benchmark, namely: <span class="math display">\[\texttt{pb\_i.pkl}\qquad i\in \{1,\dots,30\}\]</span> or their normalized versions: <span class="math display">\[\texttt{pbn\_i.pkl}\qquad i\in \{1,\dots,30\}\]</span></p>
-<p>derive a normality characterization using only the columns labelled by: <span class="math display">\[\texttt{x1},\dots,\texttt{x}_{n_x}, \texttt{y}\]</span> together with a threshold and use the resulting characterization to detect the anomaly introduced in the second half of each dataset.</p>
-</div>
-</div>
-</section>
-<section id="the-pwpol-based-solution" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="the-pwpol-based-solution"><span class="header-section-number">4</span> The <code>pwpol</code>-based solution</h2>
-<section id="the-principle" class="level3" data-number="4.1">
-<h3 data-number="4.1" class="anchored" data-anchor-id="the-principle"><span class="header-section-number">4.1</span> The principle</h3>
-<p>A set of precision threshold <span class="math inline">\(\texttt{th}\in \{0.15, 0.2, 0.25, 0.3\}\)</span> is defined. For each dataset, a <span class="math inline">\(\texttt{th}\)</span>-associated implicit piece-wise relationship characterizing normality is computed using the <code>pwpol</code> module described in <a href="./pwp_intro.html">pwpol section</a>. This enables to define 4 residual generators: <span class="math display">\[
-R_\texttt{th}(x,y)\quad \texttt{th}\in \{0.15, 0.2, 0.25, 0.3\}
-\]</span></p>
-<p>which hence enables to define a Bagging-solution (averaging over the four <em>voters</em>). The results is also averaging over a rolling window in order to come out with a chaterring-free decision.</p>
-</section>
-<section id="the-results" class="level3" data-number="4.2">
-<h3 data-number="4.2" class="anchored" data-anchor-id="the-results"><span class="header-section-number">4.2</span> The results</h3>
-<p>First of all the following <a href="#fig-card" class="quarto-xref">Figure&nbsp;3</a> shows the cardinality and the computation times of the implicit relationships obtained for the different values of the precision threshold <span class="math inline">\(\texttt{th}\)</span> mentioned above. The results are shown for the raw (non normalized data). The case of normalized data leads to comparable order of magnitude in terms of cardinality and computation times.</p>
-<div id="fig-card" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-card-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/cardinality_bench.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-card-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Cardinality of the different normality characterization relationships for the different datasets and the different values of the precision threshold <span class="math inline">\(\texttt{th}\)</span>.
-</figcaption>
-</figure>
-</div>
-<p>The detection and false alarm statistics for the Bagging solution is shown in <a href="#fig-DR" class="quarto-xref">Figure&nbsp;4</a> below:</p>
-<div id="fig-DR" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-DR-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/bagging_DR_bench.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-DR-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Statistics of detection rate and false alarm over the different instances of the parametric anomaly detection
-</figcaption>
-</figure>
-</div>
-<p>As for the individual statistics for each of the individual <span class="math inline">\(\texttt{th}\)</span>-related solutions, they are shown in the figures below where it can be observed that no more than 4 datasets show rather bad detection rates. It can also be observed that generally, when one individual solution does not detect an anomaly, the other three solutions manage to detect it which explain the impressive statistics of the bagging-based solution.</p>
-<p><img src="images/individual_DR_bench.png" class="img-fluid"></p>
 
 
-</section>
-</section>
 
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>The relationships used in the benchmark are piece-wise polynomial ones.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1072,18 +855,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./pwpol_anaesthesia.html" class="pagination-link" aria-label="pwpol: Medical data">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">pwpol: Medical data</span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="./rlars_intro.html" class="pagination-link" aria-label="rlars: Intro">
-        <span class="nav-page-text">rlars: Intro</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 
 

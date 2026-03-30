@@ -269,6 +269,8 @@ In order to be able to appreciate the generalization power of the model that has
 ```{=html}
 {{< include html_files/twin_plot_4.html >}}
 ```
+
+
 :::
 
 :::{.callout-warning title='Train & test among experiments'}

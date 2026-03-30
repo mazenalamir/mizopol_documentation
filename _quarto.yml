@@ -95,12 +95,12 @@ website:
             href: pwpol_anaesthesia.qmd
           - text: "pwpol: The benchmark"
             href: pwpol_bench.qmd
-      - section: "**explicit pwpol**"
-        contents:
-          - text: "xpwpol: Intro"
-            href: xpwpol_intro.qmd
-          - text: "xpwpol: Robotic"
-            href: xpwpol_robot.qmd
+      #- section: "**explicit pwpol**"
+      #  contents:
+      #    - text: "xpwpol: Intro"
+      #      href: xpwpol_intro.qmd
+      #    - text: "xpwpol: Robotic"
+      #      href: xpwpol_robot.qmd
       - section: "**rlars**"
         contents:
           - text: "rlars: Intro"

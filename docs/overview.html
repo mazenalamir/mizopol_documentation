@@ -416,35 +416,12 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>explicit pwpol</strong></span></a>
+ <span class="menu-text"><strong>rlars</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./xpwpol_intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">xpwpol: Intro</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./xpwpol_robot.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">xpwpol: Robotic</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>rlars</strong></span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./rlars_intro.html" class="sidebar-item-text sidebar-link">
@@ -461,13 +438,13 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
  <span class="menu-text"><strong>Graph of a model</strong></span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./graph_intro.html" class="sidebar-item-text sidebar-link">
@@ -502,7 +479,7 @@ window.Quarto = {
   <li><a href="#g2sys" id="toc-g2sys" class="nav-link" data-scroll-target="#g2sys"><span class="header-section-number">2</span> <code>g2sys</code></a></li>
   <li><a href="#pwpol" id="toc-pwpol" class="nav-link" data-scroll-target="#pwpol"><span class="header-section-number">3</span> <code>pwpol</code></a></li>
   <li><a href="#rlars" id="toc-rlars" class="nav-link" data-scroll-target="#rlars"><span class="header-section-number">4</span> <code>rlars</code></a></li>
-  <li><a href="#xpwpol" id="toc-xpwpol" class="nav-link" data-scroll-target="#xpwpol"><span class="header-section-number">5</span> <code>xpwpol</code></a></li>
+  <li><a href="#undergoing-develoment" id="toc-undergoing-develoment" class="nav-link" data-scroll-target="#undergoing-develoment"><span class="header-section-number">5</span> Undergoing develoment</a></li>
   </ul>
 </nav>
     </div>
@@ -532,20 +509,28 @@ window.Quarto = {
 <hr>
 <p>The <strong>mizopol</strong> suite currently consists of the following modules that are presented in details through this documentation.</p>
 <p>The presentation below aims at giving a brief and sketchy overview of the tools.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The script provided in the sketchy presentation uses the local version of the packages. For a precise and rigorous syntax of the publicly available <strong>API</strong>, refer to the <a href="./api-documentation-intro.html">API-documentation section</a> below.</p>
+</div>
+</div>
 <section id="plars" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> <code>plars</code></h1>
-<div class="columns">
-<div class="column" style="width:45%;">
 <p>Identify a sparse multi-variate polynomial<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math inline">\(P\)</span> such that: <span class="math display">\[y\approx P(x)\]</span></p>
 <p>The algorithm is based on a modified, <strong>scalable version</strong> of the <code>LARS</code> (least angle) algorithm.</p>
 <p>The <code>plars</code> module is detailed <a href="./plars_intro.html">here</a>.</p>
-<hr>
 <div class="small-gray-light">
 <p><strong>M. Alamir</strong>, Nonlinear control of uncertain systems: conventional and data driven alternatives with python. <strong>Springer-Nature</strong>, November, 2025</p>
 </div>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:50%;">
+<hr>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plars <span class="im">import</span> PLARS, predict </span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an instance of the PLARS class</span></span>
@@ -562,15 +547,11 @@ window.Quarto = {
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on new data with sol </span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>ypred <span class="op">=</span> predict(Xtest, sol)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
+<p>Notice that <code>plars</code> is the fundamental building brick of the whole package in the sense that all the other modules call it at some stage of their execution.</p>
 </section>
 <section id="g2sys" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> <code>g2sys</code></h1>
-<div class="columns">
-<div class="column" style="width:58%;">
 <p>Given sensors <span class="math inline">\(s_1\)</span>, …, <span class="math inline">\(s_n\)</span>, fit a set of relationships of one of the following two forms:</p>
-<div class="small">
 <div class="callout callout-style-default callout-note callout-titled" title="Static">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -615,10 +596,6 @@ Dynamic
 <li>Survey <strong>persistant correlations</strong></li>
 </ul>
 <p>The <strong>g2sys</strong> module is detailed <a href="./g2sys_intro.html">here</a></p>
-</div>
-</div><div class="column" style="width:1%;">
-
-</div><div class="column" style="width:41%;">
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Objective</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Screenshot</a></li></ul>
 <div class="tab-content">
@@ -640,13 +617,9 @@ Dynamic
 </div>
 </div>
 </div>
-</div>
-</div>
 </section>
 <section id="pwpol" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> <code>pwpol</code></h1>
-<div class="columns">
-<div class="column" style="width:55%;">
 <p>Given a set of sensors <span class="math inline">\(s_j\)</span>, <span class="math inline">\(j=1,\dots,n_s\)</span> and a target sensor <span class="math inline">\(s_i\)</span>, find a set of <span class="math inline">\(n_r\)</span> polynomials <span class="math inline">\(P_\sigma\)</span>, <span class="math inline">\(\sigma=1,\dots,n_r\)</span>, such that the following residual: <span id="eq-residual-implicit"><span class="math display">\[
 e_i = \min_{\sigma=1}^{n_r}\Bigl\vert s_i-P_\sigma(\{s_j\}_{j\neq i})\Bigr\vert
 \tag{1}\]</span></span> is small.</p>
@@ -657,23 +630,15 @@ e_i = \min_{\sigma=1}^{n_r}\Bigl\vert s_i-P_\sigma(\{s_j\}_{j\neq i})\Bigr\vert
 <li><p><a href="#eq-residual-implicit" class="quarto-xref">Equation&nbsp;1</a> does not provide a <em>prediction</em> capability since the residual can be computed only when the measurement <span class="math inline">\(s_i\)</span> is available.</p></li>
 </ul>
 <p>The <strong>pwpol</strong> module is detailed <a href="./pwp_intro.html">here</a>.</p>
-<div class="column" style="width:2%;">
-
-</div>
-</div><div class="column" style="width:42%;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/piece_wise.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <figcaption>Schematic view of a piece-wise defined relationship with two regions <span class="math inline">\(\mathcal R_a\)</span> and <span class="math inline">\(\mathcal R_b\)</span> and the random search hypercubes used in the <code>pwpol</code> module.</figcaption>
 </figure>
 </div>
-</div>
-</div>
 </section>
 <section id="rlars" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> <code>rlars</code></h1>
-<div class="columns">
-<div class="column" style="width:50%;">
 <p>Given</p>
 <ul>
 <li>a features vector <span class="math inline">\(x\)</span> and</li>
@@ -691,9 +656,6 @@ c_r(x)z^r+\dots+c_1(x)z+c_0(x)
 <p><span id="eq-residualofrlars"><span class="math display">\[
 R(x,y):=\sum_{j=0}^rc_j(x)y^j
 \tag{2}\]</span></span></p>
-</div><div class="column" style="width:2%;">
-
-</div><div class="column" style="width:47%;">
 <div class="callout callout-style-default callout-note callout-titled" title="Rational functions">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -712,38 +674,12 @@ y = -\dfrac{c_0(x)}{c_1(x)}
 <p>Notice however that this is only the starting point, the results obviously offer a much wider generalization than simply fractional representation when <span class="math inline">\(r&gt;1\)</span>.</p>
 </div>
 </div>
-</div>
-</div>
 </section>
-<section id="xpwpol" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> <code>xpwpol</code></h1>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Given</p>
-<ul>
-<li>a features vector <span class="math inline">\(x\)</span> and</li>
-<li>a label <span class="math inline">\(y\)</span>,</li>
-</ul>
-<p>the <code>xpwpol</code> module enables to design relationships of the form:</p>
-<p><span class="math display">\[
-y = P_{\mathcal R(x)}(x)
-\]</span></p>
-<p>where</p>
-<ul>
-<li><p><span class="math inline">\(\mathcal R(x)\in \{1,\dots,n_r\}\)</span> is a region map</p></li>
-<li><p><span class="math inline">\(P_j\)</span> for <span class="math inline">\(j\in \{1,\dots,n_r\}\)</span> is the multi-variate polynomial that represents the relationship between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> in the associated region of the features space.</p></li>
-</ul>
-</div><div class="column" style="width:2%;">
+<section id="undergoing-develoment" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Undergoing develoment</h1>
+<p><code>MizoPol</code> is a research steered package. New features and modules are expected to be added continuously as the research goes.</p>
 
-</div><div class="column" style="width:47%;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/illustration_xpwpol_overview.png" class="img-fluid figure-img"></p>
-<figcaption>Given a features vector <span class="math inline">\(x\)</span>, the region map <span class="math inline">\(\mathcal R(x)\)</span> determines which polynomial should be used to predict the value of the label <span class="math inline">\(y\)</span></figcaption>
-</figure>
-</div>
-</div>
-</div>
+
 </section>
 
 
