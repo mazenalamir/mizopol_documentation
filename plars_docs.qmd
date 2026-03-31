@@ -135,7 +135,7 @@ from mizopol.plars_api import fit
 
 3. All the input arguments of `fit` are mandatory although the user might give the default dictionary as arguments. This choice has been made intentionally in order to remind the user of the existance of these dictionaries and that their default values are not necessarily the one to be used. 
 
-## Example of use
+## Example of use {#sec-plars-fit-example}
 ```python 
 import numpy as np
 from mizopol.plars_api import predict, fit, monomials_contrib
@@ -159,12 +159,169 @@ sol, cpu = fit(X, y, dic_plars=dic_plars, dic_plars_fit=dic_plars_fit)
 
 In the following section, we dive more deeply in the returned arguments `sol` and `cpu` that are returned by the `fit` method.
 
+## Returned arguments {#sec-retunred-args-fit}
+
+The `fit` method returns two arguments: 
+
+- `sol`: A dictionary containing the solution and some corresponding fitting results that are detailed below. 
+
+- `cpu`: a tuple (`cpu[0]`, `cpu[1]`) such that 
+
+    - `cpu[0]`: is the computation time from the user's perspective. Namley, this includes the communication with the endpoint, potentially the time needed by the server to warm up the docker image and the time needed to serialize and send back the results. 
+
+    - `cpu[1]`: is the computation time needed at the server side which gives a faithful information regarding the efficiency of the algorithm putting aside all the delays that are induced by the cloud and the distant deployment. This information might be interesting for the evaluation of local use of the `MizoPol` package which might be possible under certain circumstances. 
+
+As for the first argument `sol`, it is a dictionary whose content is detailed in the following table: 
+
+### The `sol` dictionary
+
+:::{.small}
+::: {#tbl-plars-sol}
+| Parameter | Type | Description| 
+|:-----------|:----|:----------------------------------| ------:|
+| `nfeat`     | `int` | The number of candidate monomials before selection | 
+| `indices`  | `list[int]` | The indices of the selected monomial among the polynomial-features generated ones |
+| `powers` | `list[list[int]]` | The matrix of powers that defines the selected monomials |
+| `coefs`  | `list[float]` | The associated vector of coefficients | 
+| `card`     | `int` | The cardinality of the solution (number of retained monomials) | 
+| `error`     | `float` | The value of the `eta` quantile of the error | 
+| `cpu`     | `float` | The computation time  (in sec)| 
+| `cols`     | `list[str]` | columns names in accordance with the  maatrix of powers| 
+| `df_contrib`     | `pandas dataframe` | Dataframe showing the normalized contributions of the selected monomial in reconstructing the label **(available only if `compute_contributions` is set ton True in the `dic_plars_fit` dictionary)**| 
+| `df_sol`     | `pandas dataframe` | Summary datafreame showing a more detailed statistics of the monomial contribution together with their associated coefficients in the solutions **(available only if `compute_contributions` is set ton True in the `dic_plars_fit` dictionary)** | 
+| `dfe_train`     | `pandas dataframe` | Dataframe showing the percentiles of error | 
+| `eta`     | `int` | Recalling the `eta` used to produce the normalized percentile of errors | 
+
+
+: The content of the `sol` dictionary returned by the `fit` method of the `mizopol.plars_api` module.
+:::
+:::
+
+## Example of returned results 
+
+So let us examine the returned `sol` and `cpu` resulted from our last script used in @sec-plars-fit-example by executing the following script:
+
+```python 
+for k, value in sol.items():
+    print(k)
+    print(value)
+    print('---')
+
+print(f'cpu all = {cpu[0]:1.3} | cpu distant = {cpu[1]:1.3}')
+```
+
+Below are the printed messages: 
+
+```bash
+nfeat
+330
+---
+indices
+[0, 1, 204, 16]
+---
+powers
+[[0, 4, 0, 0, 0, 0, 0], [0, 1, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
+---
+coefs
+[-1.9999998958050205, 10.299963148684332, 11.999881943977648, -11.999786769721386]
+---
+card
+4
+---
+error
+3.671939849565719e-06
+---
+cpu
+0.11779189109802246
+---
+cols
+['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7']
+---
+bias_to_add
+0.0
+---
+df_contrib
+   Monomial  Contribution       std
+0    (S2)^4     -0.333409  0.088181
+1  (S2)(S3)      0.236548  0.029214
+2      (S1)      0.232246  0.016285
+3         1     -0.197798  0.000000
+---
+df_sol
+   S1  S2  S3  S4  S5  S6  S7  Contribution       std      coefs
+0   0   4   0   0   0   0   0     -0.333409  0.088181  -2.000000
+1   0   1   1   0   0   0   0      0.236548  0.029214  10.299963
+2   1   0   0   0   0   0   0      0.232246  0.016285  11.999882
+3   0   0   0   0   0   0   0     -0.197798  0.000000 -11.999787
+---
+dfe_train
+         Error
+50%   0.000001
+80%   0.000002
+90%   0.000003
+95%   0.000004
+98%   0.000004
+99%   0.000005
+100%  0.000008
+---
+eta
+95
+```
+
+# Computing monomial contributions 
+
+Previously, it has been shown that when fitting a `plars` model on some training dataset with the field `compute_contributions` set to `True` in the `dic_plars_fit` dictionart, the contribution of the monomial retained in the solution is automatically computed. 
+
+Now given a fitted solution `sol` that is returned by the `fit` method, it might be useful to compute the contribution of the monomial contained in the solution in a new dataframe. Indeed, this might contain several kind of information: 
+
+1. If the contributions of monomials in the new data is far from their contribution in the training data, this might indicate a change in the context between the train and the new data. 
+
+2. Sometimes, when the residual of the relationship is higher over a period of time inside the new data, the computation of the change of the contribution of the monomials within the incriminated period might inform a lot about the kind of default that lies behind the increase in the residual. 
+
+## Importing the `monomials_contrib` method
+
+This is done using the `monomials_contrib` method that can be imported as using 
+
+```python 
+from mizopol.plars_api import monomials_contrib
+```
+
+## Input arguments 
+
+:::{.small}
+::: {#tbl-params-plars-monomials_contrib}
+| Parameter | Type | Used for | Default | 
+|:-----------|:----|:----------------------------------| ------:|
+| `df`     | `pandas dataframe` | The working dataframe | `user-defined` |
+| `sol`  | `dict` | solution returned by the `fit` method | `user-defined` |
+| `win` | `int` | The window used in evaluating the contribution by random sampling | `200` |
+| `nBatch`  | `int` | Number of sampled window used in the evaluation| `25` |
+
+: Input arguments of the `monomials_contrib` method of the `plars_api` module.
+:::
+:::
+
+
+```python 
+df_contrib, (cpu1, cpu2) = monomials_contrib(df, sol, win=200, nBatch=25)
+```
+
 ## Returned arguments 
 
+The `monomials_contrib` method returns: 
 
+- `df_contrib`: a pandas dataframe taking the same form as the one contained in the fitted `sol` (provided that the `compute_contributions` field is set to `True` in the `dic_plars_fit` dictionary)
 
+- The tuple `cpu` containing the computation time (user and distant cpu) as preciously explained in @sec-retunred-args-fit. 
 
+# The `predict` method
 
+Once a solution dictionary, say `sol`, is returned by the `fit` method, it can be used to predict the label for a given features matrix `X`. This is done by the `predict` method as it is shown in the following script:
 
+```python 
+from mizopol.plars_api import predict
 
+ypred, (cpu1, cpu2) = predict(X, sol)
+```
 
+where the returned arguments are quite self-explanatory. 

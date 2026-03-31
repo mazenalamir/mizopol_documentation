@@ -512,9 +512,20 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#importing-the-fit-method" id="toc-importing-the-fit-method" class="nav-link" data-scroll-target="#importing-the-fit-method"><span class="header-section-number">2.1</span> Importing the <code>fit</code> method</a></li>
   <li><a href="#input-arguments" id="toc-input-arguments" class="nav-link" data-scroll-target="#input-arguments"><span class="header-section-number">2.2</span> Input arguments</a></li>
-  <li><a href="#example-of-use" id="toc-example-of-use" class="nav-link" data-scroll-target="#example-of-use"><span class="header-section-number">2.3</span> Example of use</a></li>
-  <li><a href="#returned-arguments" id="toc-returned-arguments" class="nav-link" data-scroll-target="#returned-arguments"><span class="header-section-number">2.4</span> Returned arguments</a></li>
+  <li><a href="#sec-plars-fit-example" id="toc-sec-plars-fit-example" class="nav-link" data-scroll-target="#sec-plars-fit-example"><span class="header-section-number">2.3</span> Example of use</a></li>
+  <li><a href="#sec-retunred-args-fit" id="toc-sec-retunred-args-fit" class="nav-link" data-scroll-target="#sec-retunred-args-fit"><span class="header-section-number">2.4</span> Returned arguments</a>
+  <ul class="collapse">
+  <li><a href="#the-sol-dictionary" id="toc-the-sol-dictionary" class="nav-link" data-scroll-target="#the-sol-dictionary"><span class="header-section-number">2.4.1</span> The <code>sol</code> dictionary</a></li>
   </ul></li>
+  <li><a href="#example-of-returned-results" id="toc-example-of-returned-results" class="nav-link" data-scroll-target="#example-of-returned-results"><span class="header-section-number">2.5</span> Example of returned results</a></li>
+  </ul></li>
+  <li><a href="#computing-monomial-contributions" id="toc-computing-monomial-contributions" class="nav-link" data-scroll-target="#computing-monomial-contributions"><span class="header-section-number">3</span> Computing monomial contributions</a>
+  <ul class="collapse">
+  <li><a href="#importing-the-monomials_contrib-method" id="toc-importing-the-monomials_contrib-method" class="nav-link" data-scroll-target="#importing-the-monomials_contrib-method"><span class="header-section-number">3.1</span> Importing the <code>monomials_contrib</code> method</a></li>
+  <li><a href="#input-arguments-1" id="toc-input-arguments-1" class="nav-link" data-scroll-target="#input-arguments-1"><span class="header-section-number">3.2</span> Input arguments</a></li>
+  <li><a href="#returned-arguments" id="toc-returned-arguments" class="nav-link" data-scroll-target="#returned-arguments"><span class="header-section-number">3.3</span> Returned arguments</a></li>
+  </ul></li>
+  <li><a href="#the-predict-method" id="toc-the-predict-method" class="nav-link" data-scroll-target="#the-predict-method"><span class="header-section-number">4</span> The <code>predict</code> method</a></li>
   </ul>
 </nav>
     </div>
@@ -793,8 +804,8 @@ Table&nbsp;3: Input arguments of the <code>fit</code> method of the <code>plars_
 <li><p>All the input arguments of <code>fit</code> are mandatory although the user might give the default dictionary as arguments. This choice has been made intentionally in order to remind the user of the existance of these dictionaries and that their default values are not necessarily the one to be used.</p></li>
 </ol>
 </section>
-<section id="example-of-use" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="example-of-use"><span class="header-section-number">2.3</span> Example of use</h2>
+<section id="sec-plars-fit-example" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="sec-plars-fit-example"><span class="header-section-number">2.3</span> Example of use</h2>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.plars_api <span class="im">import</span> predict, fit, monomials_contrib</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -815,11 +826,276 @@ Table&nbsp;3: Input arguments of the <code>fit</code> method of the <code>plars_
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>sol, cpu <span class="op">=</span> fit(X, y, dic_plars<span class="op">=</span>dic_plars, dic_plars_fit<span class="op">=</span>dic_plars_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In the following section, we dive more deeply in the returned arguments <code>sol</code> and <code>cpu</code> that are returned by the <code>fit</code> method.</p>
 </section>
-<section id="returned-arguments" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="returned-arguments"><span class="header-section-number">2.4</span> Returned arguments</h2>
-
-
+<section id="sec-retunred-args-fit" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="sec-retunred-args-fit"><span class="header-section-number">2.4</span> Returned arguments</h2>
+<p>The <code>fit</code> method returns two arguments:</p>
+<ul>
+<li><p><code>sol</code>: A dictionary containing the solution and some corresponding fitting results that are detailed below.</p></li>
+<li><p><code>cpu</code>: a tuple (<code>cpu[0]</code>, <code>cpu[1]</code>) such that</p>
+<ul>
+<li><p><code>cpu[0]</code>: is the computation time from the user’s perspective. Namley, this includes the communication with the endpoint, potentially the time needed by the server to warm up the docker image and the time needed to serialize and send back the results.</p></li>
+<li><p><code>cpu[1]</code>: is the computation time needed at the server side which gives a faithful information regarding the efficiency of the algorithm putting aside all the delays that are induced by the cloud and the distant deployment. This information might be interesting for the evaluation of local use of the <code>MizoPol</code> package which might be possible under certain circumstances.</p></li>
+</ul></li>
+</ul>
+<p>As for the first argument <code>sol</code>, it is a dictionary whose content is detailed in the following table:</p>
+<section id="the-sol-dictionary" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="the-sol-dictionary"><span class="header-section-number">2.4.1</span> The <code>sol</code> dictionary</h3>
+<div class="small">
+<div id="tbl-plars-sol" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-plars-sol-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: The content of the <code>sol</code> dictionary returned by the <code>fit</code> method of the <code>mizopol.plars_api</code> module.
+</figcaption>
+<div aria-describedby="tbl-plars-sol-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 8%">
+<col style="width: 59%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: right;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>nfeat</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">The number of candidate monomials before selection</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>indices</code></td>
+<td style="text-align: left;"><code>list[int]</code></td>
+<td style="text-align: left;">The indices of the selected monomial among the polynomial-features generated ones</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>powers</code></td>
+<td style="text-align: left;"><code>list[list[int]]</code></td>
+<td style="text-align: left;">The matrix of powers that defines the selected monomials</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>coefs</code></td>
+<td style="text-align: left;"><code>list[float]</code></td>
+<td style="text-align: left;">The associated vector of coefficients</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>card</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">The cardinality of the solution (number of retained monomials)</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>error</code></td>
+<td style="text-align: left;"><code>float</code></td>
+<td style="text-align: left;">The value of the <code>eta</code> quantile of the error</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>cpu</code></td>
+<td style="text-align: left;"><code>float</code></td>
+<td style="text-align: left;">The computation time (in sec)</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>cols</code></td>
+<td style="text-align: left;"><code>list[str]</code></td>
+<td style="text-align: left;">columns names in accordance with the maatrix of powers</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>df_contrib</code></td>
+<td style="text-align: left;"><code>pandas dataframe</code></td>
+<td style="text-align: left;">Dataframe showing the normalized contributions of the selected monomial in reconstructing the label <strong>(available only if <code>compute_contributions</code> is set ton True in the <code>dic_plars_fit</code> dictionary)</strong></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>df_sol</code></td>
+<td style="text-align: left;"><code>pandas dataframe</code></td>
+<td style="text-align: left;">Summary datafreame showing a more detailed statistics of the monomial contribution together with their associated coefficients in the solutions <strong>(available only if <code>compute_contributions</code> is set ton True in the <code>dic_plars_fit</code> dictionary)</strong></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>dfe_train</code></td>
+<td style="text-align: left;"><code>pandas dataframe</code></td>
+<td style="text-align: left;">Dataframe showing the percentiles of error</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>eta</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">Recalling the <code>eta</code> used to produce the normalized percentile of errors</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
 </section>
+</section>
+<section id="example-of-returned-results" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="example-of-returned-results"><span class="header-section-number">2.5</span> Example of returned results</h2>
+<p>So let us examine the returned <code>sol</code> and <code>cpu</code> resulted from our last script used in <a href="#sec-plars-fit-example" class="quarto-xref">Section&nbsp;2.3</a> by executing the following script:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, value <span class="kw">in</span> sol.items():</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(k)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(value)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'---'</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'cpu all = </span><span class="sc">{</span>cpu[<span class="dv">0</span>]<span class="sc">:1.3}</span><span class="ss"> | cpu distant = </span><span class="sc">{</span>cpu[<span class="dv">1</span>]<span class="sc">:1.3}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Below are the printed messages:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nfeat</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">330</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">indices</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[0,</span> 1, 204, 16]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ex">powers</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="ex">[[0,</span> 4, 0, 0, 0, 0, 0], [0, 1, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="ex">coefs</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="ex">[-1.9999998958050205,</span> 10.299963148684332, 11.999881943977648, <span class="at">-11.999786769721386]</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="ex">card</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="ex">4</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="ex">error</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="ex">3.671939849565719e-06</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="ex">cpu</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="ex">0.11779189109802246</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="ex">cols</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="ex">[</span><span class="st">'S1'</span><span class="ex">,</span> <span class="st">'S2'</span>, <span class="st">'S3'</span>, <span class="st">'S4'</span>, <span class="st">'S5'</span>, <span class="st">'S6'</span>, <span class="st">'S7'</span>]</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="ex">bias_to_add</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="ex">0.0</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="ex">df_contrib</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>   <span class="ex">Monomial</span>  Contribution       std</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span>    <span class="er">(</span><span class="ex">S2</span><span class="kw">)</span><span class="ex">^4</span>     <span class="at">-0.333409</span>  0.088181</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span>  <span class="er">(</span><span class="ex">S2</span><span class="kw">)(</span><span class="ex">S3</span><span class="kw">)</span>      <span class="ex">0.236548</span>  0.029214</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span>      <span class="er">(</span><span class="ex">S1</span><span class="kw">)</span>      <span class="ex">0.232246</span>  0.016285</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="ex">3</span>         1     <span class="at">-0.197798</span>  0.000000</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="ex">df_sol</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>   <span class="ex">S1</span>  S2  S3  S4  S5  S6  S7  Contribution       std      coefs</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span>   0   4   0   0   0   0   0     <span class="at">-0.333409</span>  0.088181  <span class="at">-2.000000</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span>   0   1   1   0   0   0   0      0.236548  0.029214  10.299963</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span>   1   0   0   0   0   0   0      0.232246  0.016285  11.999882</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="ex">3</span>   0   0   0   0   0   0   0     <span class="at">-0.197798</span>  0.000000 <span class="at">-11.999787</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="ex">dfe_train</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>         <span class="ex">Error</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="ex">50%</span>   0.000001</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="ex">80%</span>   0.000002</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="ex">90%</span>   0.000003</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="ex">95%</span>   0.000004</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="ex">98%</span>   0.000004</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="ex">99%</span>   0.000005</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="ex">100%</span>  0.000008</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="ex">eta</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="ex">95</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="computing-monomial-contributions" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Computing monomial contributions</h1>
+<p>Previously, it has been shown that when fitting a <code>plars</code> model on some training dataset with the field <code>compute_contributions</code> set to <code>True</code> in the <code>dic_plars_fit</code> dictionart, the contribution of the monomial retained in the solution is automatically computed.</p>
+<p>Now given a fitted solution <code>sol</code> that is returned by the <code>fit</code> method, it might be useful to compute the contribution of the monomial contained in the solution in a new dataframe. Indeed, this might contain several kind of information:</p>
+<ol type="1">
+<li><p>If the contributions of monomials in the new data is far from their contribution in the training data, this might indicate a change in the context between the train and the new data.</p></li>
+<li><p>Sometimes, when the residual of the relationship is higher over a period of time inside the new data, the computation of the change of the contribution of the monomials within the incriminated period might inform a lot about the kind of default that lies behind the increase in the residual.</p></li>
+</ol>
+<section id="importing-the-monomials_contrib-method" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="importing-the-monomials_contrib-method"><span class="header-section-number">3.1</span> Importing the <code>monomials_contrib</code> method</h2>
+<p>This is done using the <code>monomials_contrib</code> method that can be imported as using</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.plars_api <span class="im">import</span> monomials_contrib</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="input-arguments-1" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="input-arguments-1"><span class="header-section-number">3.2</span> Input arguments</h2>
+<div class="small">
+<div id="tbl-params-plars-monomials_contrib" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-params-plars-monomials_contrib-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Input arguments of the <code>monomials_contrib</code> method of the <code>plars_api</code> module.
+</figcaption>
+<div aria-describedby="tbl-params-plars-monomials_contrib-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 8%">
+<col style="width: 59%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Used for</th>
+<th style="text-align: right;">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>df</code></td>
+<td style="text-align: left;"><code>pandas dataframe</code></td>
+<td style="text-align: left;">The working dataframe</td>
+<td style="text-align: right;"><code>user-defined</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>sol</code></td>
+<td style="text-align: left;"><code>dict</code></td>
+<td style="text-align: left;">solution returned by the <code>fit</code> method</td>
+<td style="text-align: right;"><code>user-defined</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>win</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">The window used in evaluating the contribution by random sampling</td>
+<td style="text-align: right;"><code>200</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>nBatch</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">Number of sampled window used in the evaluation</td>
+<td style="text-align: right;"><code>25</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df_contrib, (cpu1, cpu2) <span class="op">=</span> monomials_contrib(df, sol, win<span class="op">=</span><span class="dv">200</span>, nBatch<span class="op">=</span><span class="dv">25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="returned-arguments" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="returned-arguments"><span class="header-section-number">3.3</span> Returned arguments</h2>
+<p>The <code>monomials_contrib</code> method returns:</p>
+<ul>
+<li><p><code>df_contrib</code>: a pandas dataframe taking the same form as the one contained in the fitted <code>sol</code> (provided that the <code>compute_contributions</code> field is set to <code>True</code> in the <code>dic_plars_fit</code> dictionary)</p></li>
+<li><p>The tuple <code>cpu</code> containing the computation time (user and distant cpu) as preciously explained in <a href="#sec-retunred-args-fit" class="quarto-xref">Section&nbsp;2.4</a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="the-predict-method" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> The <code>predict</code> method</h1>
+<p>Once a solution dictionary, say <code>sol</code>, is returned by the <code>fit</code> method, it can be used to predict the label for a given features matrix <code>X</code>. This is done by the <code>predict</code> method as it is shown in the following script:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.plars_api <span class="im">import</span> predict</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>ypred, (cpu1, cpu2) <span class="op">=</span> predict(X, sol)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>where the returned arguments are quite self-explanatory.</p>
+
+
 </section>
 
 </main> <!-- /main -->
