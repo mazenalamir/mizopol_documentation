@@ -208,6 +208,10 @@ window.Quarto = {
 <span class="menu-text">Graph</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./api-documentation-intro.html"> 
+<span class="menu-text">API-Docs</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -479,6 +483,23 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>API documentation</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./api-documentation-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
@@ -533,7 +554,7 @@ window.Quarto = {
 <div class="columns">
 <div class="column" style="width:60%;">
 <p>We dispose of a dataset containing the recordings of the angular positions, velocities and accelerations of the four links as well as the associated applied torques<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-<p>From the measurements dataframe shown below, it can be seen that there are 16 columns (12 of which are used as features) which are those linked to the kinematic variables (three for each link). The remaining four columns stand for the torque at the four links.</p>
+<p>From the measurements dataframe shown below, it can be seen that there are 16 columns (12 of which are used as features) which are those linked to the kinematic variables (three for each link). The remaining four columns stand for the torques at the four links.</p>
 <p><em>The dataset contains 1,617,936 rows</em>.</p>
 </div><div class="column" style="width:40%;">
 <div class="quarto-figure quarto-figure-right">
@@ -565,32 +586,28 @@ window.Quarto = {
 e = \min_{i=1,\dots,n_r}\left\vert y-P_i(x)\right\vert
 \]</span></p>
 <p>over the samples contained in the training dataset.</p>
-<p>The following script sets some of the search parameters (leaving the remaining ones to their default values) and calls the fitting function <code>fit_pwp_models</code> accordingly:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pwpol <span class="im">import</span> fit_pwp_models, plot, DIC_ARGS</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> time <span class="im">import</span> time</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose which columns to use as features </span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>colX <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> dfTrain.columns <span class="cf">if</span> <span class="st">'torque'</span> <span class="kw">not</span> <span class="kw">in</span> c]</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># and which is to be used as label y</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>coly <span class="op">=</span> <span class="st">'torque1'</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the default values dictionary </span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>dic_args <span class="op">=</span> DIC_ARGS</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># and change some of its entries:</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>dic_args.update(<span class="bu">dict</span>(</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    df<span class="op">=</span>dfTrain, </span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    colX<span class="op">=</span>colX, </span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    coly<span class="op">=</span>coly,</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    th<span class="op">=</span><span class="fl">0.2</span>, </span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    deg<span class="op">=</span><span class="dv">1</span>, </span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    window<span class="op">=</span><span class="dv">200</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>t1 <span class="op">=</span> time()</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>model, _ <span class="op">=</span> fit_pwp_models(<span class="op">**</span>dic_args)</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'cpu=</span><span class="sc">{</span>time()<span class="op">-</span>t1<span class="sc">:3.2f}</span><span class="ss"> sec'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>While the syntax and the list of calling parameters are precisely introduced and explained in the <a href="./api-documentation-intro.html">API documentation section</a>, the following script is provided for the sake of illustration which sets some of the search parameters (leaving the remaining ones to their default values) and calls the fitting function <code>fit_pwp_models</code> accordingly:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.pwpol_api <span class="im">import</span> get_default_agrs, fit, predict</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose which columns to use as features </span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>colX <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> dfTrain.columns <span class="cf">if</span> <span class="st">'torque'</span> <span class="kw">not</span> <span class="kw">in</span> c]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># and which is to be used as label y</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>coly <span class="op">=</span> <span class="st">'torque1'</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the default values dictionary </span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>args <span class="op">=</span> <span class="bu">dict</span>(</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        th<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        deg<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        window<span class="op">=</span><span class="dv">200</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        compute_contributions<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        th_monomial<span class="op">=</span><span class="fl">1e-3</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    model, (cpu1, cpu2) <span class="op">=</span> fit(df<span class="op">=</span>df, colX<span class="op">=</span>colX, coly<span class="op">=</span>coly, </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                                args<span class="op">=</span>args, plot_conv<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(cpu2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-note callout-titled" title="Parameters setting">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -603,8 +620,8 @@ Parameters setting
 <div class="callout-body-container callout-body">
 <p>Notice that the script above attempts to fit a piece-linear relationship (deg=1) with a threshold 0.2 in the sense of the following acceptability criterion to adopt a polynomial in the set of useful ones:</p>
 <p><span class="math display">\[
-\dfrac{\texttt{percentile}(y-\hat y, 95)}{\texttt{median}(\vert y\vert )}\le \texttt{th}
-\]</span> Notice however that the value of the threshold <span class="math inline">\(\texttt{th}\)</span> is <strong>first set</strong> to the corresponding argument of the <code>dic_args</code> used in the call of the <code>fit_pwp_models</code> but <strong>it might be increased</strong> after a given number of failures, this explains the following log content where the final percentile needed a higher value of the threshold.</p>
+\dfrac{\vert y-\hat y\vert }{\texttt{median}(\vert y\vert )}\le \texttt{th}
+\]</span> Notice however that the value of the threshold <span class="math inline">\(\texttt{th}\)</span> is <strong>first set</strong> to the corresponding argument of the <code>dic_args</code> used in the call of the <code>fit</code> method but <strong>it might be increased</strong> after a given number of failures, this explains the following log content where the final percentile needed a higher value of the threshold.</p>
 </div>
 </div>
 <p>The previous script produces the following output:</p>
@@ -622,7 +639,7 @@ Treated 100% | #rows=     14 | #models =   9 | #coeffs =  77, | th=1.032
 
 cpu=101.75 sec</code></pre>
 </div>
-<p>This log shows provides, among others, the following facts:</p>
+<p>This log provides, among others, the following facts:</p>
 <ul>
 <li>The solution has been found in less than two minutes</li>
 <li>The solution involves <span class="math inline">\(n_r=9\)</span> models</li>
@@ -640,18 +657,19 @@ cpu=101.75 sec</code></pre>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>ytrue <span class="op">=</span> df_robot[coly]</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># predict the closest output of the polynomials</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>Ypred, ypred, per_e <span class="op">=</span> predict(df_robot, model, options<span class="op">=</span><span class="bu">dict</span>(y<span class="op">=</span>ytrue))</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the result</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> go.Figure()</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="bu">len</span>(ytrue))</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>fig.add_trace(go.Scatter(x<span class="op">=</span>t, y<span class="op">=</span>ytrue, name<span class="op">=</span><span class="st">'True'</span>))</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>fig.add_trace(go.Scatter(x<span class="op">=</span>t, y<span class="op">=</span>ypred, name<span class="op">=</span><span class="st">'predicted'</span>))</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ... some other plotting instructions for the shaded region</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># and the title ... </span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>options <span class="op">=</span> <span class="bu">dict</span>(y <span class="op">=</span> df[coly].values)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>Ypred, ypred, dfe, ind_polynomial, (cpu1, cpu2) <span class="op">=</span> predict(df, model, options)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the result</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> go.Figure()</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="bu">len</span>(ytrue))</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>fig.add_trace(go.Scatter(x<span class="op">=</span>t, y<span class="op">=</span>ytrue, name<span class="op">=</span><span class="st">'True'</span>))</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>fig.add_trace(go.Scatter(x<span class="op">=</span>t, y<span class="op">=</span>ypred, name<span class="op">=</span><span class="st">'predicted'</span>))</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># ... some other plotting instructions for the shaded region</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># and the title ... </span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-tip callout-titled" title="Result for th=0.2">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -670,7 +688,7 @@ Result for th=0.2
 </section>
 <section id="precision-vs-sparsity" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="precision-vs-sparsity"><span class="header-section-number">5</span> Precision vs sparsity</h2>
-<p>Now what if we increase the precision threshold from <span class="math inline">\(\texttt{th}=0.2\)</span> to <span class="math inline">\(\texttt{th}=0.3\)</span>. This would obviously leads to less precise matching but might reduce the complexity of the invariance relationship.</p>
+<p>Now what if we increase the precision threshold from <span class="math inline">\(\texttt{th}=0.2\)</span> to <span class="math inline">\(\texttt{th}=0.3\)</span>. This would obviously lead to less precise matching but might reduce the complexity of the invariance relationship.</p>
 <p>This indeed materializes in the output of the process that is reported hereafter:</p>
 <div class="small">
 <pre class="verbatim"><code>Treated   0% | #rows=  80896 | #models =   0 | #coeffs =   0, | th=0.300 
@@ -723,7 +741,7 @@ Treated  99% | #rows=   1068 | #models =  18 | #coeffs = 167, | th=0.430
 
 cpu=101.70363187789917</code></pre>
 </div>
-<p>An easier comparison between the three setting can be obtained by looking at the percentile of normalized error (ratio to the median of the absolute value of the target) for the different values <span class="math inline">\(\texttt{th}=0.1, 0.2, 0.3\)</span>. The same results are also shown for an indentification of a single <span class="math inline">\(3\)</span>rd order polynomial via the <code>plars</code> module introduced in the <a href="./plars_intro.html">dedicated section</a>:</p>
+<p>An easier comparison between the three setting can be obtained by looking at the percentile of normalized error (ratio to the median of the absolute value of the target) for the different values <span class="math inline">\(\texttt{th}=0.1, 0.2, 0.3\)</span>. The same results are also shown for an identification of a single <span class="math inline">\(3\)</span>rd order polynomial via the <code>plars</code> module introduced in the <a href="./plars_intro.html">dedicated section</a>:</p>
 <div class="columns">
 <div class="column" style="width:60%;">
 <div class="quarto-figure quarto-figure-center">

@@ -1,6 +1,6 @@
 ---
 title: Piece-wise polynomial invariants
-subtitle: Usin pwpol to characterize normality in anaesthesia-related sensors
+subtitle: Characterizing normality in anaesthesia-related sensors
 ---
 
 ***

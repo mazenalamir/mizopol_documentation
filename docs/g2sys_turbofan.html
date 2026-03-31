@@ -188,6 +188,10 @@ window.Quarto = {
 <span class="menu-text">Graph</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./api-documentation-intro.html"> 
+<span class="menu-text">API-Docs</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -459,6 +463,23 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>API documentation</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./api-documentation-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
@@ -475,12 +496,13 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#dataset-objective" id="toc-dataset-objective" class="nav-link active" data-scroll-target="#dataset-objective"><span class="header-section-number">1</span> Dataset / objective</a></li>
-  <li><a href="#dataset-preparation-for-g2sys" id="toc-dataset-preparation-for-g2sys" class="nav-link" data-scroll-target="#dataset-preparation-for-g2sys"><span class="header-section-number">2</span> Dataset preparation for g2sys</a></li>
-  <li><a href="#results-discussion" id="toc-results-discussion" class="nav-link" data-scroll-target="#results-discussion"><span class="header-section-number">3</span> Results &amp; Discussion</a>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link active" data-scroll-target="#dataset"><span class="header-section-number">1</span> Dataset</a></li>
+  <li><a href="#objective" id="toc-objective" class="nav-link" data-scroll-target="#objective"><span class="header-section-number">2</span> Objective</a></li>
+  <li><a href="#dataset-preparation-for-g2sys" id="toc-dataset-preparation-for-g2sys" class="nav-link" data-scroll-target="#dataset-preparation-for-g2sys"><span class="header-section-number">3</span> Dataset preparation for g2sys</a></li>
+  <li><a href="#results-discussion" id="toc-results-discussion" class="nav-link" data-scroll-target="#results-discussion"><span class="header-section-number">4</span> Results &amp; Discussion</a>
   <ul class="collapse">
-  <li><a href="#systems-graph" id="toc-systems-graph" class="nav-link" data-scroll-target="#systems-graph"><span class="header-section-number">3.1</span> System’s graph</a></li>
-  <li><a href="#viewing-residuals" id="toc-viewing-residuals" class="nav-link" data-scroll-target="#viewing-residuals"><span class="header-section-number">3.2</span> Viewing residuals</a></li>
+  <li><a href="#systems-graph" id="toc-systems-graph" class="nav-link" data-scroll-target="#systems-graph"><span class="header-section-number">4.1</span> System’s graph</a></li>
+  <li><a href="#viewing-residuals" id="toc-viewing-residuals" class="nav-link" data-scroll-target="#viewing-residuals"><span class="header-section-number">4.2</span> Viewing residuals</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -509,8 +531,8 @@ window.Quarto = {
 
 
 <hr>
-<section id="dataset-objective" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Dataset / objective</h1>
+<section id="dataset" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Dataset</h1>
 <div class="columns">
 <div class="column" style="width:63%;">
 <p>This use case involves the <a href="https://www.kaggle.com/datasets/behrad3d/nasa-cmaps">dataset provided by Nasa</a> where run-to-failure history of degradation is captured. Four datasets are provided which correspond to different conditions.</p>
@@ -520,6 +542,9 @@ window.Quarto = {
 <p><img src="images/turbofan.png" class="img-fluid"></p>
 </div>
 </div>
+</section>
+<section id="objective" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Objective</h1>
 <div class="callout callout-style-default callout-note callout-titled" title="Objective">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -540,8 +565,8 @@ Your browser does not support the video tag.
 </video>
 <p>For those who are interested in the pre-processing of the <span class="math inline">\(\texttt{kaggle}\)</span> data set, the following section might be helpful.</p>
 </section>
-<section id="dataset-preparation-for-g2sys" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Dataset preparation for g2sys</h1>
+<section id="dataset-preparation-for-g2sys" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Dataset preparation for g2sys</h1>
 <p>As the dataset labelled as <em>train</em> (in the Nasa repository) contains the whole lifecycle until final degradation, we stick to these datasets. The dataset labelled <em>test</em> are there for the RUL-related studies (see above).</p>
 <p>The following script is used to create the four datasets. Notice that the sensors have been labeled more simply and that the first two columns are removed as they represents respectively the time and the cycle endpoints.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd </span>
@@ -575,10 +600,10 @@ The dataset used for illustration
 </div>
 </div>
 </section>
-<section id="results-discussion" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Results &amp; Discussion</h1>
-<section id="systems-graph" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="systems-graph"><span class="header-section-number">3.1</span> System’s graph</h2>
+<section id="results-discussion" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Results &amp; Discussion</h1>
+<section id="systems-graph" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="systems-graph"><span class="header-section-number">4.1</span> System’s graph</h2>
 <p>The following graph of connexion between sensors is obtained (see <a href="./graph_intro.html">the section</a>) dedicated to the presentation of the graph of connexion between sensors for more details:</p>
 <div id="fig-graph_nasa_2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -602,8 +627,8 @@ Figure&nbsp;2: Screenshot of the <strong>g2sys</strong> module showing the amoun
 </figure>
 </div>
 </section>
-<section id="viewing-residuals" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="viewing-residuals"><span class="header-section-number">3.2</span> Viewing residuals</h2>
+<section id="viewing-residuals" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="viewing-residuals"><span class="header-section-number">4.2</span> Viewing residuals</h2>
 <p>Recall that the residual is expressed by the normalized expression:</p>
 <p><span class="math display">\[
 \dfrac{\texttt{percentile}(y-\hat y, 95)}{\texttt{median}(\vert y\vert )}

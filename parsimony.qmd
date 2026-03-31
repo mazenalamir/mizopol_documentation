@@ -22,7 +22,7 @@ Consequently, one can state that **looking for sparsity**, at the search step,  
 
 ### Anomaly detection 
 
-The parsimony, by helping avoiding *hasardous excursions* when the features go away from the domain spanned by the training data, improves the quality of the detection as it is suggested in the following sketchy representation:
+The parsimony, by helping avoiding *hasardous predictions* when the features go away from the domain spanned by the training data, improves the quality of the detection as it is suggested in the following sketchy representation:
 
 :::{.panel-tabset}
 
@@ -32,7 +32,7 @@ The parsimony, by helping avoiding *hasardous excursions* when the features go a
 
 ## Non parsimonious
 
-![Because the model (in Green) is not parsimonuous, the probability it overfit the data is greater making the diagnosis of the red circle more difficult to assess with confidence.](images/parsimony2){width=80%}
+![Because the model (in Green) is not parsimonuous, the probability it overfits the data is greater making the diagnosis of the red circle more difficult to assess with confidence.](images/parsimony2){width=80%}
 :::
 
 This example shows that: 
@@ -41,10 +41,10 @@ This example shows that:
 sparsity helps detecting true anomalies compared to *nervous* models that might wrongly visit irrelevant regions inducing false normality bias. 
 :::
 
-While this simple example highlights the relevance of sparsity in detecting true anomalies, the following discussion focuses on its role in avoinding false alarm upon changes in the context of use. 
+While this simple example highlights the relevance of sparsity in **detecting true anomalies**, the following discussion focuses on its role in **avoinding false alarms** upon changes in the context of use. 
 
 
-The need for sparsity in the industrial case stems from two major specificities, namely: The curse of contexts and the aversion to false alarms. This issues are explained hereafter.
+More precisely, the need for sparsity in the industrial case stems from two major specificities, namely: The curse of contexts and the aversion to false alarms. These issues are explained hereafter.
 
 ### The curse of context
 
@@ -54,7 +54,7 @@ The training data scarcely contains all possible contexts
 : Take a robot for instance, the context of use might be represented by the types of trajectories, the types of tasks, the excursion of the kinematic or dynamic variables contained. On all these items, the training data might not represent all the different contexts. 
 
 :::{.callout-warning title="False alarm on new contexts"}
-The multiplicity of contexts of use and their highly probable absence in the training data enhances the risk of raising **false alarm** because of the resurgence of an unseen contexts rather than because of a real change in the system's integrity or health parameters. 
+The multiplicity of contexts of use and their highly probable absence in the training data enhances the risk of raising **false alarm** because of the resurgence of an unseen context rather than because of a real change in the system's integrity or health parameters. 
 
 In the [Anomalies vs operational changes](state_context_anomalies.qmd) section, a more detailed visual explanation of the state and context-induced anomalies that need to be distinguished from parameter changes (induced by faults) in dynamical systems. 
 :::
@@ -64,7 +64,7 @@ In the [Anomalies vs operational changes](state_context_anomalies.qmd) section, 
 Another specificity of industrial applications is that:
 
 Industry is very sensitive to false alarms
-: Compared to a bad classification in images or an erroneous book recommendation:
+: Compared to a bad classification in images or an erroneous book/movie recommendation:
 
 :::{.callout-tip title='The cost of False alarm in industry'}
  a false alarm in the industrial context is much more cumbersome as it might trigger harmeful action such as stopping the production or triggering expensive human interventions.  
@@ -72,11 +72,11 @@ Industry is very sensitive to false alarms
 
 Moreover, the risk of false alarm is increased by the fact that in order to detect anomaly rapidly, one needs to make a classification over short windows inducing a number of decisions per day that are quite important. As an example, imagine a decision that is based on the examination of a sliding window that lasts 10 seconds. This induces 360 decisions per hour and 2880 decision in a working day of 8 hours. 
 
-This means that with a **false alarm rate of 1%**, whcih is considered to be quite small in the everyday applications mentioned above, one should expect more than **28 false alarms per day** which is obviously inacceptable and might lead to the alarm system being totally deactivated by the operators. 
+This means that with a **false alarm rate of 1%**, whcih is considered to be quite small in the everyday applications mentioned above, one should expect more than **28 false alarms per day** which is obviously inacceptable and might lead to the alarm system being totally deactivated by the operators. Even with a false alarm rate of 0.1\% this might lead to almost 3 false alarm per day which is still unacceptable. 
 
 ## Sparsity and physics 
 
-knowledge based physical laws are known to be a major source of sparsity. As an example, consider the most famous physical law one can imagine, namely, the Newton law in its translational form: 
+knowledge based physical laws are known to be a major source of sparsity. As an example, consider the most famous physical law one can imagine, namely, the Newton's law in its translational form: 
 
 $$
 m\underbrace{\dfrac{d^2r}{dt^2}}_{a_{cc}} = F - \nu\underbrace{\dfrac{dr}{dt}}_{v}
@@ -106,18 +106,17 @@ $${#eq-newton2}
 
 where the quadratic expression $(k_1\theta+k_2\theta^2)$ is suppsed to represent the traction force[^exper].
 
-With this new set of measurement, it is @eq-newton2 that represents the normality of the system in a way that is still context-independent.
+With this new set of measurements, it is @eq-newton2 that represents the normality of the system in a way that is still context-independent.
 
 From the above simple and intuitive example, it comes out that: 
 
 :::{.callout-note title="physical laws are sparse"}
-Almost any context of use might be sufficient to capture the values of the parameters $(m, k_1, k_2, \nu)$ leading to a relationship that holds over **all other unseen conttexts**. Therefore no alarm would be raised when these unseen contexts arise because the residual remains small. 
+Almost any context of use might be sufficient to capture the values of the parameters $(m, k_1, k_2, \nu)$ involved in @eq-newton2 leading to a relationship that holds over **all other unseen conttexts**. Therefore no alarm would be raised when these unseen contexts arise because the residual remains small. 
 :::
 
 The `mizopol` package's philosophy lies in the search for **parsimonious** relationships that are polynomial or piece wise-polynomial. This is inspired by the discussion above. 
 
-In the following section, a simple illustrative example is given to show the superiority of sparse solution in addressing the normality characteriation outside the space spanned by the samples present in the training dataset. 
 
-The [following section](parsimony_oscillator.qmd) shows another example of physical system highlighting the difference between a **blind normality characterization** and the one based on parsimonious **physically-inspired normality characterization**.
+The [following section](parsimony_oscillator.qmd) shows an example of physical system highlighting the difference between a **blind normality characterization** and the one based on parsimonious **physically-inspired normality characterization**.
 
 [^exper]: Assuming that the pair $(k_1,k_2)$ is *identified* via some factory data-acquisition experiments. 

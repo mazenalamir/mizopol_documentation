@@ -154,6 +154,10 @@ window.Quarto = {
 <span class="menu-text">Graph</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./api-documentation-intro.html"> 
+<span class="menu-text">API-Docs</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -425,6 +429,23 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>API documentation</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./api-documentation-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
@@ -441,11 +462,12 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#computation-architecture" id="toc-computation-architecture" class="nav-link active" data-scroll-target="#computation-architecture"><span class="header-section-number">1</span> Computation architecture</a></li>
-  <li><a href="#sparsity-enhances-reliability-interpretability" id="toc-sparsity-enhances-reliability-interpretability" class="nav-link" data-scroll-target="#sparsity-enhances-reliability-interpretability"><span class="header-section-number">2</span> Sparsity enhances reliability &amp; interpretability</a>
+  <li><a href="#the-two-form-of-g2sys-module" id="toc-the-two-form-of-g2sys-module" class="nav-link active" data-scroll-target="#the-two-form-of-g2sys-module"><span class="header-section-number">1</span> The two form of <code>g2sys</code> module</a></li>
+  <li><a href="#computation-architecture" id="toc-computation-architecture" class="nav-link" data-scroll-target="#computation-architecture"><span class="header-section-number">2</span> Computation architecture</a></li>
+  <li><a href="#sparsity-enhances-reliability-interpretability" id="toc-sparsity-enhances-reliability-interpretability" class="nav-link" data-scroll-target="#sparsity-enhances-reliability-interpretability"><span class="header-section-number">3</span> Sparsity enhances reliability &amp; interpretability</a>
   <ul class="collapse">
-  <li><a href="#reliability" id="toc-reliability" class="nav-link" data-scroll-target="#reliability"><span class="header-section-number">2.1</span> Reliability</a></li>
-  <li><a href="#interpretability" id="toc-interpretability" class="nav-link" data-scroll-target="#interpretability"><span class="header-section-number">2.2</span> Interpretability</a></li>
+  <li><a href="#reliability" id="toc-reliability" class="nav-link" data-scroll-target="#reliability"><span class="header-section-number">3.1</span> Reliability</a></li>
+  <li><a href="#interpretability" id="toc-interpretability" class="nav-link" data-scroll-target="#interpretability"><span class="header-section-number">3.2</span> Interpretability</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -474,9 +496,19 @@ window.Quarto = {
 
 
 <hr>
-<section id="computation-architecture" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="computation-architecture"><span class="header-section-number">1</span> Computation architecture</h2>
-<p>The principle of the <strong>g2sys</strong> module is depicted in <a href="#fig-g2sysprinciple" class="quarto-xref">Figure&nbsp;1</a> below</p>
+<section id="the-two-form-of-g2sys-module" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="the-two-form-of-g2sys-module"><span class="header-section-number">1</span> The two form of <code>g2sys</code> module</h2>
+<p>The <code>g2sys</code> module comes with in two different forms, both using the same core computation module:</p>
+<ol type="1">
+<li><p>A Graphical User Interfance (GUI) which is <code>streamlit</code>-powered application that facilitates the choice of the parameters.</p></li>
+<li><p>A standard python module that can be used inside a python script.</p></li>
+</ol>
+<p>A standard workflow might be to use the <code>streamlit</code> version to find the approriate set of paramaters for each targeted label and once the setting is found, use it in the script version to produce the personalized results and outputs.</p>
+<p>More details regarding these two forms are given in the <a href="./api-documentation-intro.html">API documentation section</a></p>
+</section>
+<section id="computation-architecture" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="computation-architecture"><span class="header-section-number">2</span> Computation architecture</h2>
+<p>The principle of the <code>g2sys</code> module is depicted in <a href="#fig-g2sysprinciple" class="quarto-xref">Figure&nbsp;1</a> below</p>
 <div id="fig-g2sysprinciple" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-g2sysprinciple-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -487,42 +519,42 @@ Figure&nbsp;1: Principle of g2sys: It is all about preparing the identification 
 </figcaption>
 </figure>
 </div>
-<p>Notice the following fact:</p>
+<p>Notice the following facts:</p>
 <ol type="1">
-<li><p>The set of alignments between columns is reported in a dictionary of correlations. <strong>Only uncorrelated columns are used in the search for relationships</strong>. This reduces the computational burden by avoiding establishing easy-to-detect relationships.</p>
-<p>Obviously, later on, the normality check must also investigate whether previously aligned columns remain to be so, otherwise a missing alignement flag should be raised.</p></li>
-<li><p>For each of the remaining <em>non aligned</em> columns, a <code>plars</code>-compatible problem (see the <a href="#g2sys_intro.qmd">introductory section for g2sys</a>) and the associated regression problem is solved and the results are reported for the user’s convenience.</p>
+<li><p>The set of alignments between columns is reported in a dictionary of correlations. <strong>Only uncorrelated columns are used in the search for relationships</strong>. This reduces the computational burden by avoiding establishing easy-to-detect relationships on the one hand and reduce the number of eligible monomials in the relationshops one is looking to establish.</p>
+<p>Obviously, later on, the normality assessment process must also investigate whether previously aligned columns are still ligned, otherwise <strong>a missing alignement flag should be raised</strong> as this might be induced by a default in the equipment.</p></li>
+<li><p>For each of the remaining <em>non aligned</em> sensors, a <code>plars</code>-compatible problem (see the <a href="#g2sys_intro.qmd">introductory section for g2sys</a>) and the associated regression problem is solved and the results are reported for the user’s convenience.</p>
 <p>Notice that the creation of the plars-compatible regression problem needs the parameters <code>d</code>, <code>nd</code> and <code>recursive</code> to be defined.</p></li>
-<li><div class="callout callout-style-default callout-note callout-titled" title="recursive=True -> dynamic / otherwise static">
+<li><div class="callout callout-style-default callout-note callout-titled" title="The `recursive` boolean option">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-recursive=True -&gt; dynamic / otherwise static
+The <code>recursive</code> boolean option
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The recursive parameters is used to designate whether it is a static or a dynamic relationship that is searched for. More precisely, setting <code>recursive</code> to <code>true</code> means that a dynamic relationship is searched for, otherwise, a static relationship is targeted.</p>
+<p>The recursive parameters is used to inform whether it is a static or a dynamic relationship that is searched for. More precisely, setting <code>recursive</code> to <code>true</code> means that a dynamic relationship is searched for, otherwise, a static relationship is targeted (see <a href="./g2sys_intro.html">the related definitions</a> for a recall regarding the definition of these modes).</p>
 </div>
 </div></li>
 <li><p>The operation is repeated over the list of sensors to be investigated. This list is designated by the input argument <code>list_of_c</code>.</p></li>
 </ol>
 </section>
-<section id="sparsity-enhances-reliability-interpretability" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="sparsity-enhances-reliability-interpretability"><span class="header-section-number">2</span> Sparsity enhances reliability &amp; interpretability</h2>
-<p>While the crucial role of <strong>sparsity</strong> in addressing false alarm and anomaly detection has been previously underlined in the <a href="./parsimony.html">Parsimony-related chapter</a> and the examples that follow. It is worth mentioning it again in this <strong>g2sys</strong> chapter by addressing more <strong>realistic examples</strong> while underlying a new advantage that is associated to the <strong>interpretability issue</strong>.</p>
-<section id="reliability" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="reliability"><span class="header-section-number">2.1</span> Reliability</h3>
-<p>It is important to understand the role of <strong>sparsity</strong> in providing reliable and <strong>interpretable</strong> anomaly detection because sparsity lies in the very heart of the <strong>MizoPol</strong> set of tools.</p>
-<section id="sec-compressor-ex" class="level4" data-number="2.1.1">
-<h4 data-number="2.1.1" class="anchored" data-anchor-id="sec-compressor-ex"><span class="header-section-number">2.1.1</span> Real life example</h4>
-<p>In order to understand this key issue, we shall invoke the results shown in the use-case presented in <a href="./g2sys_metro.html">the metro compressor</a> section where a system representing a train’s compressor (15 sensors) is analyzed by means of the <strong>g2sys</strong> dedicated Graphical User Interface (GUI).</p>
+<section id="sparsity-enhances-reliability-interpretability" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="sparsity-enhances-reliability-interpretability"><span class="header-section-number">3</span> Sparsity enhances reliability &amp; interpretability</h2>
+<p>While the crucial role of <strong>sparsity</strong> in addressing false alarm and anomaly detection has been previously underlined in the <a href="./parsimony.html">Parsimony-related chapter</a> and the examples that follow. It is worth mentioning it again in this <code>g2sys</code> -related chapter by addressing more <strong>realistic examples</strong> while underlying a new advantage that is associated to the <strong>interpretability issue</strong>.</p>
+<section id="reliability" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="reliability"><span class="header-section-number">3.1</span> Reliability</h3>
+<p>It is important to understand the role of <strong>sparsity</strong> in providing reliable and <strong>interpretable</strong> anomaly detection because sparsity lies in the very heart of the <code>MizoPol</code> package.</p>
+<section id="sec-compressor-ex" class="level4" data-number="3.1.1">
+<h4 data-number="3.1.1" class="anchored" data-anchor-id="sec-compressor-ex"><span class="header-section-number">3.1.1</span> A real-life example</h4>
+<p>In order to understand this key issue, we shall invoke the results shown in the use-case presented in <a href="./g2sys_metro.html">the metro compressor</a> section where a system representing a train’s compressor (15 sensors) is analyzed by means of the <code>g2sys</code> dedicated Graphical User Interface (GUI).</p>
 <p>After few clicks and iterations, it is shown that a tight <strong>static</strong> relationship can be found <em>indexed</em> by the sensor called <code>Reservoir</code>. The model has been fitted using only 12% of the learning data.</p>
 <p>The following figure shows a screenshot of the GUI after these manipulations.</p>
 <div class="columns">
 <div class="column" style="width:35%;">
-<p>The <strong>bold</strong> title of the figure states the following fact:</p>
+<p>The <strong>bold</strong> title of the figure states the following facts:</p>
 <ul>
 <li><p>The model involves only <span class="math inline">\(5\)</span> monomials (hence, <span class="math inline">\(5\)</span> coefficients).</p></li>
 <li><p>It provides a very small regression error and an almost <strong>perfect alignment</strong></p></li>
@@ -533,25 +565,25 @@ recursive=True -&gt; dynamic / otherwise static
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/compressor1.png" class="img-fluid figure-img"></p>
-<figcaption>Screenshot of the <strong>g2sys</strong> GUI showing some information regarding the identified polynomial and the regression quality of the sensor/label <span class="math inline">\(\texttt{Reservoirs}\)</span>.</figcaption>
+<figcaption>Screenshot of the <code>g2sys</code> GUI showing some information regarding the identified polynomial and the regression quality of the sensor/label <span class="math inline">\(\texttt{Reservoirs}\)</span>.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>The next figure show the examination by the GUI of the residual (the normalized regression error) between the truly measured value of the <span class="math inline">\(\texttt{Reservoir}\)</span> sensor and the one provided by the fitted sparse polynomial:</p>
+<p>The next figure shows the examination through the GUI of the residual (the normalized regression error) between the truly measured value of the <span class="math inline">\(\texttt{Reservoirs}\)</span> sensor and the one provided by the fitted sparse polynomial:</p>
 <div id="fig-anomaly-compressor" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-anomaly-compressor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/compressor2.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-anomaly-compressor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Evolution of the residual, averaged over a rolling window of 5000 samples. Recall that the training has been performed using the first 30,000 samples.
+Figure&nbsp;2: Evolution of the residual associated to the label <strong>Reservoirs</strong>, averaged over a rolling window of 5000 samples. Recall that the training has been performed using the first 30,000 samples.
 </figcaption>
 </figure>
 </div>
 <p>This figure suggests the following observations:</p>
 <ol type="1">
-<li>The relationship that links the sensor defining the label, namely <span class="math inline">\(\texttt{Reservoirs}\)</span> to the two sensors: <span class="math inline">\(\texttt{H1}\)</span> and <span class="math inline">\(\texttt{Oil\_temperature}\)</span> so that one can write:</li>
+<li>The relationship links the sensor defining the label, namely <span class="math inline">\(\texttt{Reservoirs}\)</span> to the two sensors: <span class="math inline">\(\texttt{H1}\)</span> and <span class="math inline">\(\texttt{Oil\_temperature}\)</span> so that one can write:</li>
 </ol>
 <p><span id="eq-reservoirH1Oil"><span class="math display">\[
 \texttt{Reservoir} = P\Bigl(\texttt{H1}, \texttt{Oil\_temperature}\Bigr)
@@ -573,12 +605,12 @@ About normality detection
 <li><p>Either a context that is not seen in the training data</p></li>
 <li><p>Or a true anomaly affecting the compressor that <em>disturbed the relationship between these three sensors</em>?</p></li>
 </ul>
-<p>The odds should be very small but <strong>the answer would not be so straightforward should the model be a Deep Neural Network with 200,000 parameters</strong>.</p>
+<p>The odds should be very small but <strong>the answer would not be so straightforward should the model be a Deep Neural Network with 200,000 parameters</strong> that densly links all the existing sensors.</p>
 </div>
 </div>
 </section>
-<section id="a-sketchy-example" class="level4" data-number="2.1.2">
-<h4 data-number="2.1.2" class="anchored" data-anchor-id="a-sketchy-example"><span class="header-section-number">2.1.2</span> A sketchy example</h4>
+<section id="a-sketchy-example" class="level4" data-number="3.1.2">
+<h4 data-number="3.1.2" class="anchored" data-anchor-id="a-sketchy-example"><span class="header-section-number">3.1.2</span> A sketchy example</h4>
 <p>If this is not yet clear, the following two tabs hopefully might help:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Parsimonious</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Non parsimonious</a></li></ul>
@@ -603,11 +635,11 @@ About normality detection
 </div>
 </section>
 </section>
-<section id="interpretability" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="interpretability"><span class="header-section-number">2.2</span> Interpretability</h3>
+<section id="interpretability" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="interpretability"><span class="header-section-number">3.2</span> Interpretability</h3>
 <p>The discussion of the previous section was centered on reliability: sparsity makes decision reliable as the characterization of normality is less prone to overfitting and mis-representation.</p>
 <p>But what about interpretability?</p>
-<p>Let us consider again the example of the train compressor system used in <a href="#sec-compressor-ex" class="quarto-xref">Section&nbsp;2.1.1</a> above. Recall that our dataset involves <strong>15 sensors</strong> meaning that if we use an anomaly detection method that provides a black-box like anomaly-related residual, it would be difficult to interpret this residual having high value<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. One can just states that <em>there is something wrong happening</em>.</p>
+<p>Let us consider again the example of the train compressor system used in <a href="#sec-compressor-ex" class="quarto-xref">Section&nbsp;3.1.1</a> above. Recall that our dataset involves <strong>15 sensors</strong> meaning that if we use an anomaly detection method that provides a black-box like anomaly-related residual, it would be difficult to interpret this residual having high value<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. One can just states that <em>there is something wrong happening</em>.</p>
 <p>On the contrary, the fact that the residual is defined by the error on <a href="#eq-reservoirH1Oil" class="quarto-xref">Equation&nbsp;1</a> leads naturally to the following diagnosis:</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Localisation of the anomaly source">
 <div class="callout-header d-flex align-content-center">
@@ -629,6 +661,7 @@ Localisation of the anomaly source
 </div>
 </div>
 <p>Another very speaking example showing the role of the sparsity in enhancing both the reliability of the diagnosis and its interpetability is given through the use-case of the section dedicated to the <a href="./g2sys_zema.html">hydraulic system</a>.</p>
+<p>For the time being let us emphasize the need for delays when looking for relationships in some use-cases.</p>
 
 
 </section>

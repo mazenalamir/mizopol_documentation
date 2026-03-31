@@ -5,7 +5,7 @@ subtitle: Detecting invariant relationships in the Nasa Turbofan Jet Engine Data
 
 ***
 
-# Dataset / objective
+# Dataset 
 
 :::{.columns}
 ::: {.column width=63%}
@@ -19,6 +19,8 @@ This use case involves the [dataset provided by Nasa](https://www.kaggle.com/dat
 ![](images/turbofan.png)
 :::
 ::: 
+
+# Objective
 
 :::{.callout-note title="Objective"}
 The original objective of this Nasa Datasets is to estimate the **R**emaining **U**seful **L**ife (**RUL**) which is not our objective in this usecase as we aim at showing **how the sensors relate to each other** and what are the invariant relationships that hold depsite of the aging so that one can only focus on non redundant information. 

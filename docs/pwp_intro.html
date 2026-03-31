@@ -125,6 +125,10 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Graph</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./api-documentation-intro.html"> 
+<span class="menu-text">API-Docs</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -396,6 +400,23 @@ ul.task-list li input[type="checkbox"] {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>API documentation</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./api-documentation-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
@@ -435,8 +456,8 @@ ul.task-list li input[type="checkbox"] {
 
 <hr>
 <p>The rationale behind the need for <strong>piece-wise polynomial</strong> representation has already be discussed and explained in <a href="./pwpolynomials.html">piece-wise polynomials section</a>.</p>
-<p>In a nutshell, these relationships enable to handle non purely polynomial dependencies (trigonomic, rational fractions, exponential to cite but few ones), but <strong>more importantly</strong>, they enable to handle multiple context of use where the nature of relationships changes drastically.</p>
-<p>Searching for piece-wise multi-variate polynomials can be done using the <strong>pwpol</strong> module of the <strong>MizoPol</strong> suite of tools.</p>
+<p>In a nutshell, these relationships enable to handle non purely polynomial dependencies (trigonomic, rational fractions, exponential to cite but few ones), but <strong>more importantly</strong>, they enable to handle multiple context of use where the nature of relationships changes drastically and in a way that is not necessarily indicated in the dataset though context related indicators.</p>
+<p>Searching for piece-wise multi-variate polynomials can be done using the <code>pwpol</code> module of the <code>MizoPol</code> package.</p>
 <p>Nothing can be better than specific use-cases studies where instantiations of such circumstances are studied.</p>
 <p>In the present section, we shall consider the following sets of use-cases:</p>
 <hr>
@@ -445,7 +466,7 @@ ul.task-list li input[type="checkbox"] {
 <dl>
 <dt><strong>The manipulator robot case</strong></dt>
 <dd>
-Where the precision of the residuals when standard multi-variate relationships are identified by the <strong>pwpol</strong> module and the ones that might be obtained used piece-wise polynomial are compared.
+Where the precision of the residuals when standard multi-variate relationships are identified by the <code>pwpol</code> module and the ones that might be obtained used piece-wise polynomial are compared. This use case illustrate the case where the true relationships are not rigorously polynomials.
 </dd>
 </dl>
 <p>This use-case is detailed in the <a href="./pwpol_robot.html">robot use-case</a></p>
@@ -465,7 +486,7 @@ Where the precision of the residuals when standard multi-variate relationships a
 <dl>
 <dt><strong>The anaesthesia dataset</strong></dt>
 <dd>
-Where it is shown how the <strong>pwpol</strong> module can be used to <em>characterize the normality</em> over a large number of datasets coming from operation rooms enabling the detection of anomalous events during the surgery depsite the wide class of operations type and medical staff.
+Where it is shown how the <code>pwpol</code> module can be used to <em>characterize the normality</em> over a large number of datasets coming from operation rooms enabling the detection of anomalous events during the surgery depsite the wide class of operations type and medical staff.
 </dd>
 </dl>
 <p>This use-case is detailed in the <a href="./pwpol_anaesthesia.html">anaesthesie use-case</a></p>
@@ -473,6 +494,22 @@ Where it is shown how the <strong>pwpol</strong> module can be used to <em>chara
 
 </div><div class="column" style="width:25%;">
 <p><img src="images/anaesthesia.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+<hr>
+<div class="columns">
+<div class="column" style="width:70%;">
+<dl>
+<dt><strong>The multi-context Kaggle Benchmark dataset</strong></dt>
+<dd>
+Where a publicly available dataset is used to show the ability of the <code>pwpol</code> module to define normality and to detect parametric faults that arise only in a specific context of use among others where the context defining variable is not available to the algorithm.
+</dd>
+</dl>
+<p>This use-case is detailed in the <a href="./pwpol_bench.html">multi-context-banchmark use-case</a></p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:25%;">
+<p><img src="images/kaggle_gros.png" class="img-fluid" style="width:100.0%"></p>
 </div>
 </div>
 <hr>

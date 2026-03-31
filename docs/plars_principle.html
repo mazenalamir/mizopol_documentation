@@ -174,6 +174,10 @@ window.Quarto = {
 <span class="menu-text">Graph</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./api-documentation-intro.html"> 
+<span class="menu-text">API-Docs</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -445,6 +449,23 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>API documentation</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./api-documentation-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
@@ -551,8 +572,8 @@ Randomness &amp; scalability
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The process inside <code>plars</code> involves an amount of randomness due to the randomly selected <code>nModels</code> windows. Consequently, the solution returned is never rigorously the same.</p>
-<p>Notice however that the random windowing process is in the heart of <strong>the scalability</strong> of <code>plars</code>.</p>
+<p>The process inside <code>plars</code> involves an amount of randomness due to the randomly selected <code>nModels</code> windows. Consequently, the solution returned is never rigorously the same. This is totally intentional.</p>
+<p>Notice however that the random windowing process that leads to only a partial covering of the dataset is in the heart of <strong>the scalability</strong> of <code>plars</code>. This can only be done if parsinomious search is used, otherwise the risk of overfitting would be too high.</p>
 </div>
 </div>
 </section>

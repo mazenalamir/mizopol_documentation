@@ -12,7 +12,7 @@ subtitle: Using pwpol to design invariants for robot manipulators
 :::{.column width=60%}
 We dispose of a dataset containing the recordings of the angular positions, velocities and accelerations of the four links as well as the associated applied torques[^current]. 
 
-From the measurements dataframe shown below, it can be seen that there are 16 columns (12 of which are used as features) which are those linked to the kinematic variables (three for each link). The remaining four columns stand for the torque at the four links. 
+From the measurements dataframe shown below, it can be seen that there are 16 columns (12 of which are used as features) which are those linked to the kinematic variables (three for each link). The remaining four columns stand for the torques at the four links. 
 
 _The dataset contains 1,617,936 rows_.
 :::
@@ -46,11 +46,10 @@ $$
 
 over the samples contained in the training dataset.
 
-The following script sets some of the search parameters (leaving the remaining ones to their default values) and calls the fitting function `fit_pwp_models` accordingly: 
+While the syntax and the list of calling parameters are precisely introduced and explained in the [API documentation section](api-documentation-intro.qmd),  the following script is provided for the sake of illustration which sets some of the search parameters (leaving the remaining ones to their default values) and calls the fitting function `fit_pwp_models` accordingly: 
 
 ```python 
-from pwpol import fit_pwp_models, plot, DIC_ARGS
-from time import time
+from mizopol.pwpol_api import get_default_agrs, fit, predict
 
 # Choose which columns to use as features 
 colX = [c for c in dfTrain.columns if 'torque' not in c]
@@ -59,30 +58,27 @@ colX = [c for c in dfTrain.columns if 'torque' not in c]
 coly = 'torque1'
 
 # Download the default values dictionary 
-dic_args = DIC_ARGS
+args = dict(
+        th=0.2,
+        deg=1,
+        window=200,
+        compute_contributions=True,
+        th_monomial=1e-3,
+    )
 
-# and change some of its entries:
-dic_args.update(dict(
-    df=dfTrain, 
-    colX=colX, 
-    coly=coly,
-    th=0.2, 
-    deg=1, 
-    window=200
-))
+    model, (cpu1, cpu2) = fit(df=df, colX=colX, coly=coly, 
+                                args=args, plot_conv=True)
 
-t1 = time()
-model, _ = fit_pwp_models(**dic_args)
-print(f'cpu={time()-t1:3.2f} sec')
+    print(cpu2)
 ```
 
 :::{.callout-note title='Parameters setting'}
 Notice that the script above attempts to fit a piece-linear relationship (deg=1) with a threshold 0.2 in the sense of the following acceptability criterion to adopt a polynomial in the set of useful ones: 
 
 $$
-\dfrac{\texttt{percentile}(y-\hat y, 95)}{\texttt{median}(\vert y\vert )}\le \texttt{th}
+\dfrac{\vert y-\hat y\vert }{\texttt{median}(\vert y\vert )}\le \texttt{th}
 $$
-Notice however that the value of the threshold $\texttt{th}$ is **first set** to the corresponding argument of the `dic_args` used in the call of the `fit_pwp_models` but **it might be increased** after a given number of failures, this explains the following log content where the final percentile needed a higher value of the threshold.
+Notice however that the value of the threshold $\texttt{th}$ is **first set** to the corresponding argument of the `dic_args` used in the call of the `fit` method but **it might be increased** after a given number of failures, this explains the following log content where the final percentile needed a higher value of the threshold.
 :::
 
 The previous script produces the following output: 
@@ -104,7 +100,7 @@ cpu=101.75 sec
 ```
 :::
 
-This log shows provides, among others, the following facts:
+This log provides, among others, the following facts:
 
 - The solution has been found in less than two minutes
 - The solution involves $n_r=9$ models 
@@ -125,7 +121,8 @@ from pwpol import predict
 ytrue = df_robot[coly]
 
 # predict the closest output of the polynomials
-Ypred, ypred, per_e = predict(df_robot, model, options=dict(y=ytrue))
+options = dict(y = df[coly].values)
+Ypred, ypred, dfe, ind_polynomial, (cpu1, cpu2) = predict(df, model, options)
 
 # plot the result
 fig = go.Figure()
@@ -147,7 +144,7 @@ Performing *zoom operations* on the figure above enable to better appreciate how
 
 ## Precision vs sparsity 
 
-Now what if we increase the precision threshold from $\texttt{th}=0.2$ to $\texttt{th}=0.3$. This would obviously leads to less precise matching but might reduce the complexity of the invariance relationship. 
+Now what if we increase the precision threshold from $\texttt{th}=0.2$ to $\texttt{th}=0.3$. This would obviously lead to less precise matching but might reduce the complexity of the invariance relationship. 
 
 This indeed materializes in the output of the process that is reported hereafter: 
 
@@ -201,7 +198,7 @@ cpu=101.70363187789917
 ```
 :::
 
-An easier comparison between the three setting can be obtained by looking at the percentile of normalized error (ratio to the median of the absolute value of the target) for the different values $\texttt{th}=0.1, 0.2, 0.3$. The same results are also shown for an indentification of a single $3$rd order polynomial via the `plars` module introduced in the [dedicated section](plars_intro.qmd):
+An easier comparison between the three setting can be obtained by looking at the percentile of normalized error (ratio to the median of the absolute value of the target) for the different values $\texttt{th}=0.1, 0.2, 0.3$. The same results are also shown for an identification of a single $3$rd order polynomial via the `plars` module introduced in the [dedicated section](plars_intro.qmd):
 
 :::{.columns}
 

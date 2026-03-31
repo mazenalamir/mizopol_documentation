@@ -188,6 +188,10 @@ window.Quarto = {
 <span class="menu-text">Graph</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./api-documentation-intro.html"> 
+<span class="menu-text">API-Docs</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -459,6 +463,23 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>API documentation</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./api-documentation-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
@@ -505,11 +526,12 @@ window.Quarto = {
 
 
 <hr>
+<p>Recall that the exhaustive and precise documentation of the API is proposed in the <a href="./api-documentation-intro.html">API-documentation section</a> and those which follow it. Here, only a use-case is presented in order to grasp a feeling of the capabilities of the <code>MizoPol</code> package.</p>
 <section id="the-problem" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="the-problem"><span class="header-section-number">1</span> The problem</h2>
 <p>In order to better understand the parameters involved in the <code>plars</code> instantiation and use, it is worth working on a specific illustrative example so that the effect of changing each parameter value can be easily observed and explained.</p>
-<p>So let us consider the following script that define a dataset that is associated to a known polynomial so that we can examine how the <code>plars</code> is able to recover the <em>hidden truth</em> from the pair <span class="math inline">\((X,y)\)</span> of features matrix and label vector.</p>
-<p>Let us consider the relationship defined by</p>
+<p>So let us consider the following script that defines a dataset that is associated to a known polynomial so that we can examine how the <code>plars</code> is able to recover the <em>hidden truth</em> from the pair <span class="math inline">\((X,y)\)</span> of features matrix and label vector.</p>
+<p>So let us consider the relationship defined by:</p>
 <p><span id="eq-leydefini"><span class="math display">\[
 y = x_0^2-30x_1x_3^3+4x_5^5-1
 \tag{1}\]</span></span></p>
@@ -526,11 +548,11 @@ y = x_0^2-30x_1x_3^3+4x_5^5-1
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <p>In this setting, we increase the number of variable <span class="math inline">\(n_x=9\)</span>. Morover, we instantiate the solver with a <strong>higher degree</strong> than the unknown hidden one involved in <a href="#eq-leydefini" class="quarto-xref">Equation&nbsp;1</a>, namely <code>deg</code>=7.</p>
-<p><em>Notice that in this case, the number of eligible monomial is equal to 11440</em>.</p>
+<p><em>Notice that in this case, the number of eligible monomials is equal to 11440</em>.</p>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 <p>We reuse the previous setting but we ask <code>plars</code> to select only <code>nfeats=4</code> among the <span class="math inline">\(n_x=9\)</span> variables to be involved in the polynomial expansion.</p>
-<p>Notice how this induces a reduction in the computation time. Moreover, notice that the <code>nfeat</code> attribute of the solution is still computed based on <span class="math inline">\(n_x=9\)</span> while in fact, internally the truly used number of variables is <code>nfeats=4</code> which explain the reduction in the computation time.</p>
+<p>Notice how this induces a reduction in the computation time. Moreover, notice that the <code>nfeat</code> attribute of the solution is still computed based on <span class="math inline">\(n_x=9\)</span> while in fact, internally the truly used number of variables is <code>nfeats=4</code> which explains the reduction in the computation time.</p>
 </div>
 </div>
 </div>
@@ -541,22 +563,28 @@ y = x_0^2-30x_1x_3^3+4x_5^5-1
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Setting 1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Setting 2</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Setting 3</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plars <span class="im">import</span> PLARS</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.plars_api <span class="im">import</span> fit</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>nx <span class="op">=</span> <span class="dv">6</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>nt <span class="op">=</span> <span class="dv">100000</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span>  np.random.rand(nt, nx)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> X[:,<span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span> <span class="op">-</span><span class="dv">30</span><span class="op">*</span>X[:,<span class="dv">1</span>] <span class="op">*</span> X[:,<span class="dv">3</span>]<span class="op">**</span><span class="dv">3</span> <span class="op">+</span> <span class="dv">4</span> <span class="op">*</span> X[:,<span class="dv">5</span>]<span class="op">**</span><span class="dv">5</span><span class="op">-</span><span class="dv">1</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>pl <span class="op">=</span> PLARS(window<span class="op">=</span><span class="dv">500</span>, deg<span class="op">=</span><span class="dv">6</span>, nModels<span class="op">=</span><span class="dv">5</span>, nModes<span class="op">=</span><span class="dv">10</span>, eps<span class="op">=</span><span class="fl">1e-2</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> pl.fit(X, y, compute_contributions<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'number of eligible parameters'</span>, sol[<span class="st">'nfeat'</span>])</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'dfe_train'</span>])</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'card'</span>])</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'df_sol'</span>])</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'cpu = </span><span class="sc">{</span>sol[<span class="st">"cpu"</span>]<span class="sc">:3.2}</span><span class="ss"> sec'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create the data (X,y) </span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>nx <span class="op">=</span> <span class="dv">6</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>nt <span class="op">=</span> <span class="dv">100000</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span>  np.random.rand(nt, nx)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> X[:,<span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span> <span class="op">-</span><span class="dv">30</span><span class="op">*</span>X[:,<span class="dv">1</span>] <span class="op">*</span> X[:,<span class="dv">3</span>]<span class="op">**</span><span class="dv">3</span> <span class="op">+</span> <span class="dv">4</span> <span class="op">*</span> X[:,<span class="dv">5</span>]<span class="op">**</span><span class="dv">5</span><span class="op">-</span><span class="dv">1</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># call and fit parameters </span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>dic_plars <span class="op">=</span> <span class="bu">dict</span>(window<span class="op">=</span><span class="dv">500</span>, deg<span class="op">=</span><span class="dv">6</span>, nModels<span class="op">=</span><span class="dv">5</span>, nModes<span class="op">=</span><span class="dv">10</span>, eps<span class="op">=</span><span class="fl">1e-2</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>dic_plars_fit <span class="op">=</span> <span class="bu">dict</span>(compute_contributions<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># solve the problem </span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>sol, cpu <span class="op">=</span> fit(X, y, dic_plars<span class="op">=</span>dic_plars, dic_plars_fit<span class="op">=</span>dic_plars_fit)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># print the results </span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'number of eligible parameters'</span>, sol[<span class="st">'nfeat'</span>])</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'dfe_train'</span>])</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'card'</span>])</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'df_sol'</span>])</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'cpu = </span><span class="sc">{</span>sol[<span class="st">"cpu"</span>]<span class="sc">:3.2}</span><span class="ss"> sec'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>which results in</p>
 <div class="very_small">
 <pre class="verbatim"><code>number of eligible parameters 924
@@ -587,22 +615,28 @@ cpu = 0.3 sec</code></pre>
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plars <span class="im">import</span> PLARS</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.plars_api <span class="im">import</span> fit</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>nx <span class="op">=</span> <span class="dv">9</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>nt <span class="op">=</span> <span class="dv">100000</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span>  np.random.rand(nt, nx)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> X[:,<span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span> <span class="op">-</span><span class="dv">30</span><span class="op">*</span>X[:,<span class="dv">1</span>] <span class="op">*</span> X[:,<span class="dv">3</span>]<span class="op">**</span><span class="dv">3</span> <span class="op">+</span> <span class="dv">4</span> <span class="op">*</span> X[:,<span class="dv">5</span>]<span class="op">**</span><span class="dv">5</span><span class="op">-</span><span class="dv">1</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>pl <span class="op">=</span> PLARS(window<span class="op">=</span><span class="dv">500</span>, deg<span class="op">=</span><span class="dv">7</span>, nModels<span class="op">=</span><span class="dv">5</span>, nModes<span class="op">=</span><span class="dv">10</span>, eps<span class="op">=</span><span class="fl">1e-2</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> pl.fit(X, y, compute_contributions<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'number of eligible parameters'</span>, sol[<span class="st">'nfeat'</span>])</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'dfe_train'</span>])</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'card'</span>])</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'df_sol'</span>])</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'cpu = </span><span class="sc">{</span>sol[<span class="st">"cpu"</span>]<span class="sc">:3.2}</span><span class="ss"> sec'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create the data (X,y) </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>nx <span class="op">=</span> <span class="dv">9</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>nt <span class="op">=</span> <span class="dv">100000</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span>  np.random.rand(nt, nx)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> X[:,<span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span> <span class="op">-</span><span class="dv">30</span><span class="op">*</span>X[:,<span class="dv">1</span>] <span class="op">*</span> X[:,<span class="dv">3</span>]<span class="op">**</span><span class="dv">3</span> <span class="op">+</span> <span class="dv">4</span> <span class="op">*</span> X[:,<span class="dv">5</span>]<span class="op">**</span><span class="dv">5</span><span class="op">-</span><span class="dv">1</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># call and fit parameters </span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>dic_plars <span class="op">=</span> <span class="bu">dict</span>(window<span class="op">=</span><span class="dv">500</span>, deg<span class="op">=</span><span class="dv">7</span>, nModels<span class="op">=</span><span class="dv">5</span>, nModes<span class="op">=</span><span class="dv">10</span>, eps<span class="op">=</span><span class="fl">1e-2</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>dic_plars_fit <span class="op">=</span> <span class="bu">dict</span>(compute_contributions<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># solve the problem </span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>sol, cpu <span class="op">=</span> fit(X, y, dic_plars<span class="op">=</span>dic_plars, dic_plars_fit<span class="op">=</span>dic_plars_fit)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># print the results </span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'number of eligible parameters'</span>, sol[<span class="st">'nfeat'</span>])</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'dfe_train'</span>])</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'card'</span>])</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'df_sol'</span>])</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'cpu = </span><span class="sc">{</span>sol[<span class="st">"cpu"</span>]<span class="sc">:3.2}</span><span class="ss"> sec'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>which results in</p>
 <div class="very_small">
 <pre class="verbatim"><code>number of eligible parameters 11440
@@ -631,22 +665,28 @@ cpu = 0.93 sec</code></pre>
 </div>
 </div>
 <div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plars <span class="im">import</span> PLARS</span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.plars_api <span class="im">import</span> fit</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>nx <span class="op">=</span> <span class="dv">9</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>nt <span class="op">=</span> <span class="dv">100000</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span>  np.random.rand(nt, nx)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> X[:,<span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span> <span class="op">-</span><span class="dv">30</span><span class="op">*</span>X[:,<span class="dv">1</span>] <span class="op">*</span> X[:,<span class="dv">3</span>]<span class="op">**</span><span class="dv">3</span> <span class="op">+</span> <span class="dv">4</span> <span class="op">*</span> X[:,<span class="dv">5</span>]<span class="op">**</span><span class="dv">5</span><span class="op">-</span><span class="dv">1</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>pl <span class="op">=</span> PLARS(window<span class="op">=</span><span class="dv">500</span>, deg<span class="op">=</span><span class="dv">7</span>, nModels<span class="op">=</span><span class="dv">5</span>, nModes<span class="op">=</span><span class="dv">10</span>, eps<span class="op">=</span><span class="fl">1e-2</span>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> pl.fit(X, y, compute_contributions<span class="op">=</span><span class="va">True</span>, nfeats<span class="op">=</span><span class="dv">4</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'number of eligible parameters'</span>, sol[<span class="st">'nfeat'</span>])</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'dfe_train'</span>])</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'card'</span>])</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'df_sol'</span>])</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'cpu = </span><span class="sc">{</span>sol[<span class="st">"cpu"</span>]<span class="sc">:3.2}</span><span class="ss"> sec'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create the data (X,y)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>nx <span class="op">=</span> <span class="dv">9</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>nt <span class="op">=</span> <span class="dv">100000</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span>  np.random.rand(nt, nx)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> X[:,<span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span> <span class="op">-</span><span class="dv">30</span><span class="op">*</span>X[:,<span class="dv">1</span>] <span class="op">*</span> X[:,<span class="dv">3</span>]<span class="op">**</span><span class="dv">3</span> <span class="op">+</span> <span class="dv">4</span> <span class="op">*</span> X[:,<span class="dv">5</span>]<span class="op">**</span><span class="dv">5</span><span class="op">-</span><span class="dv">1</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># call and fit parameters</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>dic_plars <span class="op">=</span> <span class="bu">dict</span>(window<span class="op">=</span><span class="dv">500</span>, deg<span class="op">=</span><span class="dv">7</span>, nModels<span class="op">=</span><span class="dv">5</span>, nModes<span class="op">=</span><span class="dv">10</span>, eps<span class="op">=</span><span class="fl">1e-2</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>dic_plars_fit <span class="op">=</span> <span class="bu">dict</span>(compute_contributions<span class="op">=</span><span class="va">True</span>, nfeats<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># solve the problem</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>sol, cpu <span class="op">=</span> fit(X, y, dic_plars<span class="op">=</span>dic_plars, dic_plars_fit<span class="op">=</span>dic_plars_fit)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># print the results</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'number of eligible parameters'</span>, sol[<span class="st">'nfeat'</span>])</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'dfe_train'</span>])</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'card'</span>])</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol[<span class="st">'df_sol'</span>])</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'cpu = </span><span class="sc">{</span>sol[<span class="st">"cpu"</span>]<span class="sc">:3.2}</span><span class="ss"> sec'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>which results in</p>
 <div class="very_small">
 <pre class="verbatim"><code>number of eligible parameters 330

@@ -24,8 +24,9 @@ of a 4-axis manipulator robot.
 # Problem statement 
 
 
-:::{.callout-note title="Problem statement"}
-**Regression Problam** Find a sparse polynomial relationship $P$ such that 
+:::{.callout-note title="**Regression Problem**"}
+
+Find a sparse polynomial relationship $P$ such that 
 $$
 T_1 \approx P\bigl(x\bigr)\quad \vert\quad x:= \begin{bmatrix} 
 q\cr \dot q\cr \ddot q
@@ -44,10 +45,15 @@ The relationship $P$ should be fitted using only $10\%$ of the data[^withoutshuf
 The following script creates an instance of the `PLARS` class and look for a polynomial of degree 3. 
 
 ```python 
-from plars import PLARS
+import numpy as np
+from mizopol.plars_api import fit
 
-pl = PLARS(deg=3, window=1000, nModels=10, nModes=15, eps=0.01)
-sol = pl.fit(Xtrain, ytrain)
+# call and fit parameters
+dic_plars = dict(window=1000, deg=3, nModels=10, nModes=15, eps=1e-2)
+dic_plars_fit = dict(compute_contributions=True)
+
+# solve the problem
+sol, cpu = fit(X[0:nTrain], y, dic_plars=dic_plars, dic_plars_fit=dic_plars_fit)
 
 print('number of rows in the training data = ', len(ytrain))
 print('number of eligible monomials', sol['nfeat'])
@@ -69,16 +75,12 @@ cpu = 1.756 sec
 Now we use the `predict` method of the `PLARS` class in order to computed the torque on the test unseen dataset[^undersampling]. 
 
 ```python
-from plars import predict 
+from mizopol.plars_api import predict
 
 nJump = 10
-ypred = predict(Xtest[::nJump], sol)
-print(Xtest.shape)
+ypred, cpu = predict(X[nTrain:], sol)
 ```
 
-```verbatim
-(1456143, 12)
-```
 
 # Results on test data
 
@@ -93,7 +95,7 @@ It is possible to **zoom on the figure** in order to appreciate the quality of t
 
 # Contributions of monomials 
 
-Using the `monomial_contributions` function available in the `plars` module, it is possible to rank the relative contributions of the selected monomials in the solution `sol` delivered by the `fit` method. 
+Using the `monomials_contrib` function available in the `plars` module, it is possible to rank the relative contributions of the monomials selected by the solver during the fit process to be incorporated in the solution `sol`.
 
 In the following results these contributions are examined using the train and the test datasets successively. 
 
@@ -107,33 +109,29 @@ In the following results these contributions are examined using the train and th
 # Train dataset 
 
 ```python 
-from plars import monomial_contributions
+from mizopol.plars_api import monomials_contrib
 
-df_Contrib = monomial_contributions(df[colXq].iloc[0:nTrain], 
-                                    sol, 
-                                    win=pl.window)
+df_Contrib = monomials_contrib(df[colXq].iloc[0:nTrain], sol, win=pl.window)
 
 df_Contrib.reset_index(drop=True).iloc[0:10]
 ```
-![Contribution of the selected monomial in the train dataset](images/contribTrain.png){width=50% fig-align="left"}
+![Contributions of the selected monomial in the train dataset](images/contribTrain.png){width=50% fig-align="left"}
 
 # Test dataset 
 
 ```python 
-from plars import monomial_contributions
+from mizopol.plars_api import monomials_contrib
 
-df_Contrib = monomial_contributions(df[colXq].iloc[nTrain:], 
-                                    sol, 
-                                    win=pl.window)
+df_Contrib = monomials_contrib(df[colXq].iloc[nTrain:], sol, win=pl.window)
 
 df_Contrib.reset_index(drop=True).iloc[0:10]
 ```
 
-![Contribution of the selected monomials in the test dataset](images/contribTest.png){width=50% fig-align="left"}
+![Contributions of the selected monomials in the test dataset](images/contribTest.png){width=50% fig-align="left"}
 
 :::
 
 
-[^withoutshuffle]: The split should be done without shuffile by using only the first $10\%$ of the data to fit the model. 
+[^withoutshuffle]: The split should be done without shuffle by using only the first $10\%$ of the data to fit the model. 
 
 [^undersampling]: Only one row each 10 is computed so that the resulting plotly-generated html be *memory-friendly*.

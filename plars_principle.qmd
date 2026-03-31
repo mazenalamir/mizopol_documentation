@@ -38,9 +38,9 @@ A more detailed presentation is provided in [@alamir2025Book].
 The following features come out directly from the principle sketched above: 
 
 :::{.callout-note title="Randomness & scalability"}
-The process inside `plars` involves an amount of randomness due to the randomly selected `nModels` windows. Consequently, the solution returned is never rigorously the same. 
+The process inside `plars` involves an amount of randomness due to the randomly selected `nModels` windows. Consequently, the solution returned is never rigorously the same. This is totally intentional. 
 
-Notice however that the random windowing process is in the heart of **the scalability** of `plars`. 
+Notice however that the random windowing process that leads to only a partial covering of the dataset is in the heart of **the scalability** of `plars`. This can only be done if parsinomious search is used, otherwise the risk of overfitting would be too high. 
 :::
 
 ## Input arguments 

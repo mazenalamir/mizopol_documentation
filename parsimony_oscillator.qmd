@@ -5,7 +5,7 @@ subtitle: Context-independent normality characterization
 
 ***
 
-In the slides below, we show how the physics-informed definition of the features enables to better separate the time-series in clusters that are determined by the coefficients of the system. 
+In the slides below, it is shown how the physics-informed definition of the features enables to better separate the time-series in clusters that are determined by the coefficients of the system. 
 
 The slides shows two ways of generating features:
 
@@ -40,7 +40,7 @@ function prev() {
 </script>
 
 :::{.callout-important}
-Now obviously, the idea is not to look for a physical modelling of each use case but to underline the fact that if one look for sparse relationships between sensors and their delayed versions (as it is, in paritular done in the **g2sys** module of the MizoPol suite), it is most likely that relationships which are based on the physics naturally emerge from the search process.
+Now obviously, the idea is not to look for a physical modelling of each use case but to underline the fact that if one looks for sparse relationships between sensors and their delayed versions (as it is, in paritular done in the `g2sys` module of the `MizoPol` suite), it is most likely that relationships which are based on the physics naturally emerge from the search process.
 ::: 
 
-In the next section, another example is provided that underlines the advantages of sparse solutions to an identification problem. 
+In the next [section](parsimony_example_pol.qmd), another example is provided that underlines the advantages of sparse solutions to an identification problem. 

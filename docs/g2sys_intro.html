@@ -154,6 +154,10 @@ window.Quarto = {
 <span class="menu-text">Graph</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./api-documentation-intro.html"> 
+<span class="menu-text">API-Docs</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -425,6 +429,23 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>API documentation</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./api-documentation-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
@@ -462,7 +483,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./g2sys_intro.html"><strong>g2sys</strong></a></li><li class="breadcrumb-item"><a href="./g2sys_intro.html">g2sys: Introduction</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">g2sys</h1>
-<p class="subtitle lead">Discovering the graph of static and dynamic connections in a set of sensors.</p>
+<p class="subtitle lead">Discovering static and dynamic coupling in a set of sensors.</p>
 </div>
 
 
@@ -480,38 +501,54 @@ window.Quarto = {
 
 
 <hr>
-<p><strong>g2sys</strong> leverages the <strong>plars</strong> module in order to exhibit multi-variate <strong>polynomial<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> relationships</strong> involving a set of sensors’ time-series included in the training dataset.</p>
-<p>Let us first state the problem the g2sys is designed to address before we go deeper in the presentation.</p>
+<p><code>g2sys</code> leverages the <strong>plars</strong> module presented in the previous sections in order to exhibit multi-variate <strong>polynomial<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> relationships</strong> involving a set of sensors’ time-series included in the training dataset.</p>
+<p>Let us first state the problem the <code>g2sys</code> is designed to address before we go deeper in the presentation.</p>
 <section id="problem-statement" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="problem-statement"><span class="header-section-number">1</span> Problem statement</h2>
-<p><strong>g2sys</strong> is a friendly graphical user-interface (GUI) which enables an easy and efficient manipualtion of the parameters in order to discover <strong>invariant relationships</strong> between a set of sensors and their delayed values.</p>
+<p><code>g2sys</code> is a graphical user-friendly interface (GUI) which enables an easy and efficient manipualtion of the parameters defining the structure of relationhips<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> in order to discover <strong>invariant relationships</strong> between a set of sensors and their delayed values.</p>
 <p>Moreover, the GUI enables to choose the training regions and show the residuals associated to the <em>discovered</em> relationships over the whole dataset. This enables to check their generalization powers (the persistence of their invariance).</p>
-<p>Let us first of all precisely define the class of relationships <strong>g2sys</strong> helps disconvering.</p>
-<div class="callout callout-style-default callout-tip callout-titled" title="Sensor-based indexing of relationships">
+<p>Let us first of all precisely define the class of relationships <code>g2sys</code> helps discovering.</p>
+<p>Regardless of the kind of a relationhip (see below), the latter is always associated to a sensor index, say <span class="math inline">\(i\)</span>.</p>
+<p>The relationship is then expressed in one of the following two forms:</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Static">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Sensor-based indexing of relationships
+Static
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Regardless of the kind of a relationhip (see below), the latter is always associated to a sensor index, say <span class="math inline">\(i\)</span>.</p>
-<p>The relationship is then expressed in one of the following two forms:</p>
 <p><span id="eq-static-dynamic"><span class="math display">\[
-\begin{align}
-&amp;(\texttt{Static})\qquad\qquad  &amp;s_i(k) = P_i(\dots) \\
-&amp;(\texttt{Dynamic})\qquad\qquad  &amp;s_i(k)-s_i(k-d) = P_i(\dots)
-\end{align}
-\tag{1}\]</span></span> where <span class="math inline">\(P_i\)</span> is a polynomial, <span class="math inline">\(d\)</span> is a chosen delay and where the input arguments, the denoted by <span class="math inline">\(\dots\)</span> are detailed in the following sections.</p>
+s_i(k)=F_i\left(\{s_j(k-\sigma\times d_i)\}_{(j\neq i,\sigma\in \{0,\dots,m_i\})}\right)
+\tag{1}\]</span></span> <span class="math inline">\(\rightarrow\)</span> <span class="math inline">\(s_i\)</span> is a static function of the other sensors and their past values up to <span class="math inline">\(m_i\times d_i\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Dynamic">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Dynamic
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span id="eq-dynamic-duynamic"><span class="math display">\[
+\bigl[\Delta^{(m_i)} s_i\bigr](k)=F_i\left(\begin{array}
+\{s_i(k-\sigma\times d_i)\}_{\sigma\in \{1,\dots,m_i\}}\cr
+\{s_j(k-\sigma\times d_i)\}_{(j\neq i,\sigma\in \{0,\dots,m_i\})}
+\end{array}
+\right)
+\tag{2}\]</span></span> <span class="math inline">\(\rightarrow\)</span> The increment <span class="math inline">\(\bigl[\Delta^{(m_i)} s_i\bigr](k)\)</span> represents the discrete version, at instant <span class="math inline">\(k\)</span>, of the <span class="math inline">\(m_i\)</span> derivatives of <span class="math inline">\(s_i\)</span>.</p>
 </div>
 </div>
 <p>In the following sections, the two classes of relationships are detailed.</p>
 </section>
 <section id="the-classes-of-relationships" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="the-classes-of-relationships"><span class="header-section-number">2</span> The classes of relationships</h2>
-<p>Depending on the parameters setting of the <strong>g2sys</strong> module, the following two kinds of polynomial relationships might be targeted by the search engine:</p>
+<p>Depending on the parameters setting of the <code>g2sys</code> module, the following two kinds of polynomial relationships might be targeted by the search engine:</p>
 <section id="static-relationships" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="static-relationships"><span class="header-section-number">2.1</span> Static relationships</h3>
 <p>In a static relationship, <strong>related to sensor index <span class="math inline">\(i\)</span></strong>, the st of arguments of the polynomial <span class="math inline">\(P_i\)</span> involved in <a href="#eq-static-dynamic" class="quarto-xref">Equation&nbsp;1</a> is given by:</p>
@@ -522,7 +559,7 @@ s_j(k-d)\\
 \vdots\\
 s_j(k-n_d\times d)
 \end{bmatrix}_{j\neq i}
-\tag{2}\]</span></span> Namely, all the values of all the sensors, <strong>except <span class="math inline">\(i\)</span></strong>, and their delayed version, with <span class="math inline">\(n_d\)</span> multiples of the delay <span class="math inline">\(d\)</span>.</p>
+\tag{3}\]</span></span> Namely, all the values of all the sensors, <strong>except <span class="math inline">\(i\)</span></strong>, and their delayed version, with <span class="math inline">\(n_d\)</span> multiples of the delay <span class="math inline">\(d\)</span>. This relation is named <em>static</em> because the previous values of the label (sensor <span class="math inline">\(i\)</span>) are not involved in the vector of features.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Regarding the design parameters $d$ and $n_d$">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -534,7 +571,7 @@ Regarding the design parameters <span class="math inline">\(d\)</span> and <span
 </div>
 <div class="callout-body-container callout-body">
 <p>The elementary delay <span class="math inline">\(d\in \mathbb N\)</span> as well as the number of delays considered in the arguments of <span class="math inline">\(P_i\)</span> are two of the search parameters (see below).</p>
-<p>Notice that when choosing <span class="math inline">\(d&gt;1\)</span>, an under-sampling is applied which can be necessary in many cases where a high sampling rate is present in the data that is not necessarily useful<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> for the relationships’ discovery.</p>
+<p>Notice that when choosing <span class="math inline">\(d&gt;1\)</span>, an under-sampling is applied which can be necessary in many cases where a high sampling rate is present in the data that is not necessarily useful<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> for the relationships’ discovery.</p>
 </div>
 </div>
 <p>Based on the above definitions, the <strong>static relationships</strong> can be schematically described by the following figure:</p>
@@ -551,17 +588,13 @@ Figure&nbsp;1: Illustration of the logic of a static relationship indexed by sen
 </section>
 <section id="dynamic-relationships" class="level3" data-number="2.2">
 <h3 data-number="2.2" class="anchored" data-anchor-id="dynamic-relationships"><span class="header-section-number">2.2</span> Dynamic relationships</h3>
-<p>The dynamic relatioships might possibly<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> correspond to discrete versions of any possible differential relationships expressed via multi-variate polynomials.</p>
-<p>Mathematically, such relationships involve arguments of the form expressed by <a href="#eq-arguments-exp" class="quarto-xref">Equation&nbsp;2</a> with a major difference in that the index <span class="math inline">\(j\)</span> spans all sensors indices including the index <span class="math inline">\(i\)</span> of the targeted sensor, namely:</p>
-<p><span id="eq-arguments-exp_allj"><span class="math display">\[
-\texttt{(Dynamic)}\quad \texttt{arguments of $P_i$}: \quad \begin{bmatrix}
-s_j(k)\\
-s_j(k-d)\\
-\vdots\\
-s_j(k-n_d\times d)
-\end{bmatrix}_{\forall j}
-\tag{3}\]</span></span></p>
-<p>Moreover, keep in mind that the relationship should approximate the increment <span class="math display">\[\Delta s_i(k):=s_i(k)-s_i(k-d)\]</span> rather than the simple value <span class="math inline">\(s_i(k)\)</span>.</p>
+<p>The dynamic relatioships might possibly<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> correspond to discrete versions of any possible differential relationships expressed via multi-variate polynomials.</p>
+<p>Mathematically, such relationships involve arguments of the form expressed by <a href="#eq-arguments-exp" class="quarto-xref">Equation&nbsp;3</a> with a major difference in that the index <span class="math inline">\(j\)</span> spans all sensors indices including the index <span class="math inline">\(i\)</span> of the targeted sensor with only one exception, namley the value <span class="math inline">\(s_i(k)\)</span>.</p>
+<p>Moreover, keep in mind that, in the case where only one delay is used <span class="math inline">\(n_d=1\)</span>, the relationship should approximate the increment <span class="math display">\[\Delta^{(1)} s_i(k):=s_i(k)-s_i(k-d)\]</span> rather than the simple value <span class="math inline">\(s_i(k)\)</span>. In the case where two increments are used <span class="math inline">\(n_d=2\)</span>, the target becomes:</p>
+<p><span class="math display">\[
+\Delta^{(2)} s_i(k):= s_i(k)-2s_i(k-1)+s_i(k-2)
+\]</span></p>
+<p>and so on for the higher values of <span class="math inline">\(n_d\in \mathbb N\)</span>.</p>
 <p>This can be schematically represented in the following figure:</p>
 <div id="fig-dyn-scheme" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -573,41 +606,23 @@ Figure&nbsp;2: Illustration of the a <strong>dynamic relationship</strong> assoc
 </figcaption>
 </figure>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled" title="Risk of trivial solution for dynamic relationship with $n_d\ge 2$">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Risk of trivial solution for dynamic relationship with <span class="math inline">\(n_d\ge 2\)</span>
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Using dynamique relationships with <span class="math inline">\(n_d\ge 2\)</span> might lead to the risk of identifying <strong>trivial relationships</strong> as in many use-cases, the following might be true: <span id="eq-trivial"><span class="math display">\[
-\Delta s(k) := s(k)-s(k-d) \approx s(k-d)-s(k-2d)
-\tag{4}\]</span></span></p>
-<p>and since the terms in the r.h.s of <a href="#eq-trivial" class="quarto-xref">Equation&nbsp;4</a> are both in the set of arguments of <span class="math inline">\(P_i(\cdot)\)</span>, a tight relationship might be thought to be found while it simply represent an zero order extrapolation of the previous increment’s value.</p>
-<p>That is the reason why, when dynamic relationships are seeked with <span class="math inline">\(n_d\ge 2\)</span>, a meticulous check should be undertaked to certify that the relationship is not a trivial one.</p>
-<p><strong>Another way to avoid this risk is to prefer dynamic relationships with <span class="math inline">\(n_d=1\)</span> and to use higher values only in case of failure.</strong></p>
-</div>
-</div>
 </section>
 </section>
 <section id="redundancy-implicit-character" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="redundancy-implicit-character"><span class="header-section-number">3</span> Redundancy &amp; implicit character</h2>
-<p>In this section, some important aspects that are worth keeping in mind when using <strong>g2sys</strong> are briefly discussed.</p>
+<p>In this section, some important aspects that are worth keeping in mind when using <code>g2sys</code> are briefly discussed.</p>
 <section id="an-illustrative-example" class="level3" data-number="3.1">
 <h3 data-number="3.1" class="anchored" data-anchor-id="an-illustrative-example"><span class="header-section-number">3.1</span> An illustrative example</h3>
 <p>As a supporting example, let us consider the following relationship linking tow sensors:</p>
 <ul>
-<li>The speed <span class="math inline">\(v\)</span> of a vehcile of mass <span class="math inline">\(m\)</span> and</li>
+<li>The speed <span class="math inline">\(v\)</span> of a vehcule of mass <span class="math inline">\(m\)</span> and</li>
 <li>The acceleration pedal’s angular position <span class="math inline">\(\theta\)</span>.</li>
 </ul>
 <p>Let us assume that an angular position <span class="math inline">\(\theta\)</span> induces a traction force <span class="math inline">\(T=K\theta\)</span> that is proportional to <span class="math inline">\(\theta\)</span> and that a friction term given by <span class="math inline">\(-\lambda_f v^2\)</span> is present. The Newton’s law can be written as follows:</p>
 <p><span id="eq-car-newton"><span class="math display">\[
 \dfrac{dv}{dt} = K\theta-\lambda_f v^2
-\tag{5}\]</span></span></p>
-<p>In this example, we dispose of two sensors:</p>
+\tag{4}\]</span></span></p>
+<p>In this example, let us assume that we dispose of two sensors:</p>
 <p><span class="math display">\[
 s_1=v\quad \text{and}\quad s_2=\theta
 \]</span></p>
@@ -617,7 +632,7 @@ s_1=v\quad \text{and}\quad s_2=\theta
 <p>In this case, one is targetting relationships on the sensor <span class="math display">\[s_1=v\]</span> As mentioned, above this can be static or dynamic.</p>
 <section id="static-relationships-1" class="level5" data-number="3.1.1.1">
 <h5 data-number="3.1.1.1" class="anchored" data-anchor-id="static-relationships-1"><span class="header-section-number">3.1.1.1</span> Static relationships</h5>
-<p>In this case, one is looking for a relationship of the form:</p>
+<p>In this case, using <span class="math inline">\(n_d=1\)</span>, one is looking for a relationship of the form:</p>
 <p><span class="math display">\[v_k=P_1(\theta_k, \theta_{k-d}, \dots, \theta_{k-n_d\times d})\]</span></p>
 <p>which is obviously <strong>non existant</strong>. One cannot guess the speed of the vehicle from the recent history of the angular position of the acceleration’s pedal.</p>
 </section>
@@ -625,15 +640,15 @@ s_1=v\quad \text{and}\quad s_2=\theta
 <h5 data-number="3.1.1.2" class="anchored" data-anchor-id="dynamic-relationships-1"><span class="header-section-number">3.1.1.2</span> Dynamic relationships</h5>
 <p>In this case, one is looking for a relationship of the form:</p>
 <p><span class="math display">\[v_k-v_{k-d}=P_1(v_{k-d}, \dots, v_{k-n_d\times d}, \theta_k, \theta_{k-d}, \dots, \theta_{k-n_d\times d})\]</span></p>
-<p>But we know from <a href="#eq-car-newton" class="quarto-xref">Equation&nbsp;5</a> that we have (approximately):</p>
+<p>But we know from <a href="#eq-car-newton" class="quarto-xref">Equation&nbsp;4</a> that we have (approximately):</p>
 <p><span class="math display">\[
 \dfrac{v_{k}-v_{k-d}}{d\times \tau} = K\theta_k -\lambda_f (v_{k-d}^2 + \varepsilon_k)\quad \text{where}\quad  \varepsilon_k:=(v_k^2-v_{k-d}^2)
 \]</span> where <span class="math inline">\(\tau\)</span> stands for the sampling acquisition period.</p>
-<p>This means that a dynamic relationship can be approximately find <strong>provided that the speed of the vehicle<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> is slowly varying</strong>.</p>
+<p>This means that a dynamic relationship can be approximately found <strong>provided that the speed of the vehicle<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> is slowly varying</strong> or the sampling time is sufficiently small.</p>
 <p>To summarize, in this case, a dynamic relationship would be found for which the polynomial present in the r.h.s of <a href="#eq-static-dynamic" class="quarto-xref">Equation&nbsp;1</a> is given by:</p>
 <p><span id="eq-case1dynamic"><span class="math display">\[
 P_1(\cdot) = (d\times \tau)\times (K\theta_k-\lambda_f v_{k-d}^2)
-\tag{6}\]</span></span></p>
+\tag{5}\]</span></span></p>
 </section>
 </section>
 <section id="case-where-i2" class="level4" data-number="3.1.2">
@@ -644,26 +659,26 @@ P_1(\cdot) = (d\times \tau)\times (K\theta_k-\lambda_f v_{k-d}^2)
 <p>Stranglely enough, this is much simpler since the static form of <a href="#eq-static-dynamic" class="quarto-xref">Equation&nbsp;1</a> can be identified leading to:</p>
 <p><span id="eq-case2static"><span class="math display">\[
 \theta_k \approx P_2(\cdot):=\dfrac{1}{K}\times \Bigl[\dfrac{1}{d\times \tau}(v_k-v_{k-d})+\lambda_f\times v_k^2\Bigr]
-\tag{7}\]</span></span></p>
+\tag{6}\]</span></span></p>
 <p>which simply expresses the fact that the acceleration pedal’s angular position can be expressed in terms of the speed and its delayed value.</p>
 </section>
 <section id="dynamic-relationships-2" class="level5" data-number="3.1.2.2">
 <h5 data-number="3.1.2.2" class="anchored" data-anchor-id="dynamic-relationships-2"><span class="header-section-number">3.1.2.2</span> Dynamic relationships</h5>
-<p>Obviouly <a href="#eq-case2static" class="quarto-xref">Equation&nbsp;7</a> when written at instants <span class="math inline">\(k\)</span> and <span class="math inline">\(k-1\)</span> enables to write:</p>
+<p>Obviouly <a href="#eq-case2static" class="quarto-xref">Equation&nbsp;6</a> when written at instants <span class="math inline">\(k\)</span> and <span class="math inline">\(k-1\)</span> enables to write:</p>
 <p><span id="eq-encoreunedyntheta"><span class="math display">\[
 \begin{align}
 \theta_k-\theta_{k-d} = &amp;\dfrac{1}{K}\times \Bigl[\dfrac{1}{d\times \tau}(v_k-v_{k-d})+\lambda_f\times v_k^2\Bigr] \\
 &amp;+ \dfrac{1}{K}\times \Bigl[\dfrac{1}{d\times \tau}(v_{k-d}-v_{k-2d})+\lambda_f\times v_{k-d}^2\Bigr] \label{encoreundyntheta}
 \end{align}
-\tag{8}\]</span></span></p>
-<p>which is another representation of the same physical law <a href="#eq-car-newton" class="quarto-xref">Equation&nbsp;5</a> that can be obgained provided that <span class="math inline">\(n_d\ge 2\)</span> is used.</p>
+\tag{7}\]</span></span></p>
+<p>which is another representation of the same physical law <a href="#eq-car-newton" class="quarto-xref">Equation&nbsp;4</a> that can be obtained provided that <span class="math inline">\(n_d\ge 2\)</span> is used.</p>
 <p>Therefore, the statement of the next section should be kept in mind.</p>
 </section>
 </section>
 </section>
 <section id="keep-in-mind" class="level3" data-number="3.2">
 <h3 data-number="3.2" class="anchored" data-anchor-id="keep-in-mind"><span class="header-section-number">3.2</span> Keep in mind</h3>
-<p>The previous simple example illustrates the following statement that should be kept in mind when using g2sys tools:</p>
+<p>The previous simple example illustrates the following statement that should be kept in mind when using<code>g2sys</code> tools:</p>
 <div class="callout callout-style-default callout-important callout-titled" title="keep in mind">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -677,14 +692,14 @@ keep in mind
 <dl>
 <dt>Fact1</dt>
 <dd>
-The same physical law might <strong>lead</strong> (or <em>lie behind</em>) <strong>several</strong> relationships that can be <em>discovered</em> by <strong>g2sys</strong>. Some of the latter can be static while others are dynamics.
+The same physical law might <strong>lead</strong> (or <em>lie behind</em>) <strong>several</strong> relationships that can be <em>discovered</em> by <code>g2sys</code>. Some of the latter can be static while others are dynamics.
 </dd>
 <dt>Fact2</dt>
 <dd>
-The woriding <em>static</em> or <em>dynamic</em> is totally linked to the targeted sensor <span class="math inline">\(i\)</span>: A static relationship for sensor <span class="math inline">\(i\)</span> contains only <span class="math inline">\(s_i(k)\)</span> in the left hand side of the relationship while <span class="math inline">\(s_i(k)-s_i(k-d)\)</span> appears in the l.h.s of <em>dynamic</em> relationships.
+The wording <em>static</em> or <em>dynamic</em> is totally linked to the targeted sensor <span class="math inline">\(i\)</span>: A static relationship for sensor <span class="math inline">\(i\)</span> contains only <span class="math inline">\(s_i(k)\)</span> in the left hand side of the relationship while <span class="math inline">\(\Delta^{(n_d)}(s_i)(k)\)</span> appears in the l.h.s of <em>dynamic</em> relationships.
 </dd>
 </dl>
-<p>BUT static relationships might involve <strong>dynamic<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> terms</strong> in the r.h.s as it is the case in <a href="#eq-case2static" class="quarto-xref">Equation&nbsp;7</a> and <a href="#eq-encoreunedyntheta" class="quarto-xref">Equation&nbsp;8</a>.</p>
+<p>BUT static relationships might involve <strong>dynamic<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> terms</strong> in the r.h.s as it is the case in <a href="#eq-case2static" class="quarto-xref">Equation&nbsp;6</a> and <a href="#eq-encoreunedyntheta" class="quarto-xref">Equation&nbsp;7</a>.</p>
 </div>
 </div>
 </section>
@@ -705,10 +720,11 @@ n = (n_d+1) \times (\text{number of sensors})
 
 <ol>
 <li id="fn1"><p>Refer to <a href="./polynomials.html">the polynomial’s dedicated section</a> for the precise definition.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>It can even be harmful in the presence of relatively high noise in the measurements.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Provided that the parameters <span class="math inline">\(n_d\)</span> and <span class="math inline">\(d\)</span> are correctly tuned.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>As present in the training dataset.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>Expression derivatives of other sensors.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This includes the degree of the polynomials, the delays introduced (their amounts and numbre) as well as the precision of the solutions, the thresholds on the monomial conributions to cite only a part of the degrees of freedom.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>It can even be harmful in the presence of relatively high noise in the measurements.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Provided that the parameters <span class="math inline">\(n_d\)</span> and <span class="math inline">\(d\)</span> are correctly tuned.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>As present in the training dataset.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Expression derivatives of other sensors.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

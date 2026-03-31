@@ -6,7 +6,7 @@ subtitle: Application to a hydraulic rig system (Zema).
 ***
 
 :::{.callout-note title='This is an introductory usecase for the **g2sys** GUI.'}
-This first dataset is used to introduce the different options available in the user-friendly tool **g2sys**. In the movie representing the other use-cases, it is assumed that the user is familiar with these options which makes this movie **a must to see**! 
+This first dataset is used to introduce the different options available in the user-friendly tool **g2sys**. In the movie representing the other use-cases, it is assumed that the user is familiar with these options which makes this movie **a must-to-see**! 
 :::
 
 
@@ -17,7 +17,7 @@ This first dataset is used to introduce the different options available in the u
 
 ***
 
-The data set addresses the condition assessment of a hydraulic test rig based on multi sensor data. 
+The dataset addresses the condition assessment of a hydraulic test rig based on multi-sensors data. 
 
 Four fault types are superimposed with several severity grades impeding selective quantification.
 

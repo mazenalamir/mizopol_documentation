@@ -10,7 +10,7 @@ subtitle: Finding invariant relationship between sensors installed on an industr
 :::{.columns}
 :::{.column width=45%}
 **indus_focets** Dataset
-: This is a true industrial dataset that is made anomymous to meet an industrial partner.
+: This is a true industrial dataset that is made anomymous as requested by an industrial partner.
 
 ***
 

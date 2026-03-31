@@ -154,6 +154,10 @@ window.Quarto = {
 <span class="menu-text">Graph</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./api-documentation-intro.html"> 
+<span class="menu-text">API-Docs</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -425,6 +429,23 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>API documentation</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./api-documentation-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
@@ -499,7 +520,7 @@ Parsimony vs sparsity
 <h2 data-number="2" class="anchored" data-anchor-id="why-sparsity-is-relevant-in-industry"><span class="header-section-number">2</span> Why sparsity is relevant in industry?</h2>
 <section id="anomaly-detection" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="anomaly-detection"><span class="header-section-number">2.1</span> Anomaly detection</h3>
-<p>The parsimony, by helping avoiding <em>hasardous excursions</em> when the features go away from the domain spanned by the training data, improves the quality of the detection as it is suggested in the following sketchy representation:</p>
+<p>The parsimony, by helping avoiding <em>hasardous predictions</em> when the features go away from the domain spanned by the training data, improves the quality of the detection as it is suggested in the following sketchy representation:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Parsimonious</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Non parsimonious</a></li></ul>
 <div class="tab-content">
@@ -515,7 +536,7 @@ Parsimony vs sparsity
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/parsimony2.png" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption>Because the model (in Green) is not parsimonuous, the probability it overfit the data is greater making the diagnosis of the red circle more difficult to assess with confidence.</figcaption>
+<figcaption>Because the model (in Green) is not parsimonuous, the probability it overfits the data is greater making the diagnosis of the red circle more difficult to assess with confidence.</figcaption>
 </figure>
 </div>
 </div>
@@ -535,8 +556,8 @@ Sparsity induces better detectability
 <p>sparsity helps detecting true anomalies compared to <em>nervous</em> models that might wrongly visit irrelevant regions inducing false normality bias.</p>
 </div>
 </div>
-<p>While this simple example highlights the relevance of sparsity in detecting true anomalies, the following discussion focuses on its role in avoinding false alarm upon changes in the context of use.</p>
-<p>The need for sparsity in the industrial case stems from two major specificities, namely: The curse of contexts and the aversion to false alarms. This issues are explained hereafter.</p>
+<p>While this simple example highlights the relevance of sparsity in <strong>detecting true anomalies</strong>, the following discussion focuses on its role in <strong>avoinding false alarms</strong> upon changes in the context of use.</p>
+<p>More precisely, the need for sparsity in the industrial case stems from two major specificities, namely: The curse of contexts and the aversion to false alarms. These issues are explained hereafter.</p>
 </section>
 <section id="the-curse-of-context" class="level3" data-number="2.2">
 <h3 data-number="2.2" class="anchored" data-anchor-id="the-curse-of-context"><span class="header-section-number">2.2</span> The curse of context</h3>
@@ -557,7 +578,7 @@ False alarm on new contexts
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The multiplicity of contexts of use and their highly probable absence in the training data enhances the risk of raising <strong>false alarm</strong> because of the resurgence of an unseen contexts rather than because of a real change in the system’s integrity or health parameters.</p>
+<p>The multiplicity of contexts of use and their highly probable absence in the training data enhances the risk of raising <strong>false alarm</strong> because of the resurgence of an unseen context rather than because of a real change in the system’s integrity or health parameters.</p>
 <p>In the <a href="./state_context_anomalies.html">Anomalies vs operational changes</a> section, a more detailed visual explanation of the state and context-induced anomalies that need to be distinguished from parameter changes (induced by faults) in dynamical systems.</p>
 </div>
 </div>
@@ -568,7 +589,7 @@ False alarm on new contexts
 <dl>
 <dt>Industry is very sensitive to false alarms</dt>
 <dd>
-Compared to a bad classification in images or an erroneous book recommendation:
+Compared to a bad classification in images or an erroneous book/movie recommendation:
 </dd>
 </dl>
 <div class="callout callout-style-default callout-tip callout-titled" title="The cost of False alarm in industry">
@@ -585,12 +606,12 @@ The cost of False alarm in industry
 </div>
 </div>
 <p>Moreover, the risk of false alarm is increased by the fact that in order to detect anomaly rapidly, one needs to make a classification over short windows inducing a number of decisions per day that are quite important. As an example, imagine a decision that is based on the examination of a sliding window that lasts 10 seconds. This induces 360 decisions per hour and 2880 decision in a working day of 8 hours.</p>
-<p>This means that with a <strong>false alarm rate of 1%</strong>, whcih is considered to be quite small in the everyday applications mentioned above, one should expect more than <strong>28 false alarms per day</strong> which is obviously inacceptable and might lead to the alarm system being totally deactivated by the operators.</p>
+<p>This means that with a <strong>false alarm rate of 1%</strong>, whcih is considered to be quite small in the everyday applications mentioned above, one should expect more than <strong>28 false alarms per day</strong> which is obviously inacceptable and might lead to the alarm system being totally deactivated by the operators. Even with a false alarm rate of 0.1% this might lead to almost 3 false alarm per day which is still unacceptable.</p>
 </section>
 </section>
 <section id="sparsity-and-physics" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="sparsity-and-physics"><span class="header-section-number">3</span> Sparsity and physics</h2>
-<p>knowledge based physical laws are known to be a major source of sparsity. As an example, consider the most famous physical law one can imagine, namely, the Newton law in its translational form:</p>
+<p>knowledge based physical laws are known to be a major source of sparsity. As an example, consider the most famous physical law one can imagine, namely, the Newton’s law in its translational form:</p>
 <p><span id="eq-newton"><span class="math display">\[
 m\underbrace{\dfrac{d^2r}{dt^2}}_{a_{cc}} = F - \nu\underbrace{\dfrac{dr}{dt}}_{v}
 \tag{1}\]</span></span></p>
@@ -620,7 +641,7 @@ Context-independent law
 m\underbrace{\dfrac{d^2r}{dt^2}}_{a_{cc}} = \underbrace{(k_1\theta+k_2\theta^2)}_{F} - \nu\underbrace{\dfrac{dr}{dt}}_{v}
 \tag{2}\]</span></span></p>
 <p>where the quadratic expression <span class="math inline">\((k_1\theta+k_2\theta^2)\)</span> is suppsed to represent the traction force<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-<p>With this new set of measurement, it is <a href="#eq-newton2" class="quarto-xref">Equation&nbsp;2</a> that represents the normality of the system in a way that is still context-independent.</p>
+<p>With this new set of measurements, it is <a href="#eq-newton2" class="quarto-xref">Equation&nbsp;2</a> that represents the normality of the system in a way that is still context-independent.</p>
 <p>From the above simple and intuitive example, it comes out that:</p>
 <div class="callout callout-style-default callout-note callout-titled" title="physical laws are sparse">
 <div class="callout-header d-flex align-content-center">
@@ -632,12 +653,11 @@ physical laws are sparse
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Almost any context of use might be sufficient to capture the values of the parameters <span class="math inline">\((m, k_1, k_2, \nu)\)</span> leading to a relationship that holds over <strong>all other unseen conttexts</strong>. Therefore no alarm would be raised when these unseen contexts arise because the residual remains small.</p>
+<p>Almost any context of use might be sufficient to capture the values of the parameters <span class="math inline">\((m, k_1, k_2, \nu)\)</span> involved in <a href="#eq-newton2" class="quarto-xref">Equation&nbsp;2</a> leading to a relationship that holds over <strong>all other unseen conttexts</strong>. Therefore no alarm would be raised when these unseen contexts arise because the residual remains small.</p>
 </div>
 </div>
 <p>The <code>mizopol</code> package’s philosophy lies in the search for <strong>parsimonious</strong> relationships that are polynomial or piece wise-polynomial. This is inspired by the discussion above.</p>
-<p>In the following section, a simple illustrative example is given to show the superiority of sparse solution in addressing the normality characteriation outside the space spanned by the samples present in the training dataset.</p>
-<p>The <a href="./parsimony_oscillator.html">following section</a> shows another example of physical system highlighting the difference between a <strong>blind normality characterization</strong> and the one based on parsimonious <strong>physically-inspired normality characterization</strong>.</p>
+<p>The <a href="./parsimony_oscillator.html">following section</a> shows an example of physical system highlighting the difference between a <strong>blind normality characterization</strong> and the one based on parsimonious <strong>physically-inspired normality characterization</strong>.</p>
 
 
 </section>

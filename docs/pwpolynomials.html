@@ -154,6 +154,10 @@ window.Quarto = {
 <span class="menu-text">Graph</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./api-documentation-intro.html"> 
+<span class="menu-text">API-Docs</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -425,6 +429,23 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>API documentation</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./api-documentation-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
@@ -476,7 +497,7 @@ window.Quarto = {
 
 
 <hr>
-<p>In this section, we discuss the class of piece-wise polynomial relationship, in their implicit and explicit forms.</p>
+<p>In this section, we discuss the class of piece-wise polynomial relationships, in their implicit and explicit forms.</p>
 <p>But let us first justify the reason for which these relationships might be of great help in characterizing the normality in industrial time-series and hence in detecting unmodelled anomalies in industrial equipments.</p>
 <section id="why" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="why"><span class="header-section-number">1</span> Why?</h2>
@@ -495,14 +516,14 @@ Piece-wise polynomials
 <p>the feature space is <em>partitioned</em> into a set of regions over each of which a polynomial relationship captures the dependencies that hold on that specific region.</p>
 </div>
 </div>
-<p>In the industrial context, the regions mentioned above can be the result of <strong>different contexts</strong> of use that might encompass different tunings of controller, different values of the set-points or different configurations of the system.</p>
+<p>In the industrial context, the regions mentioned above can be the result of <strong>different contexts</strong> of use that might encompass different tunings of controller, different values of the set-points (which might be absent from the set of measurement contained in the dataset) or different configurations of the system.</p>
 </section>
 <section id="examples" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="examples"><span class="header-section-number">2</span> Examples</h2>
 <p>One can simply think about a controlled system that tracks some reference signal <span class="math inline">\(\texttt{y\_ref}\)</span> and depending on the error <span class="math inline">\(e=y-\texttt{y\_ref}\)</span> between the regulated signal <span class="math inline">\(y\)</span> and that reference <span class="math inline">\(\texttt{y\_ref}\)</span>. In order to avoid overshoots, it is common to define a <strong>gain scheduled</strong> feedback which applies a control voltage, say <span class="math inline">\(u\)</span> which is propotional to the error with a proportional gain <span class="math inline">\(K\)</span> that is:</p>
 <ul>
-<li>High when small tracking errors are measured and</li>
-<li>Low when high tracking errors are measured.</li>
+<li><strong>High</strong> when small tracking errors are measured and</li>
+<li><strong>Low</strong> when high tracking errors are measured.</li>
 </ul>
 <p>Namely</p>
 <p><span id="eq-conditionalgain"><span class="math display">\[
@@ -513,7 +534,7 @@ u = \left\{
 \end{array}
 \right.
 \tag{1}\]</span></span></p>
-<p>This obviously splits the space (via the condition <span class="math inline">\(\vert y-\texttt{y\_{ref}}\vert\le \epsilon\)</span>) into two regions over each of which the relationship between the features <span class="math inline">\((y,\texttt{y\_ref})\)</span> and the targeted label <span class="math inline">\(u\)</span> is polynomial (linear in the specific example) but there is no a single polynomial relationship that matches the relationship <a href="#eq-conditionalgain" class="quarto-xref">Equation&nbsp;1</a> on the whole space of features.</p>
+<p>This obviously splits the space (via the condition <span class="math inline">\(\vert y-\texttt{y\_{ref}}\vert\le \epsilon\)</span>) into two regions over each of which the relationship between the features <span class="math inline">\((y,\texttt{y\_ref})\)</span> and the targeted label <span class="math inline">\(u\)</span> is polynomial (linear in the specific example) but there is no a single polynomial relationship that matches <a href="#eq-conditionalgain" class="quarto-xref">Equation&nbsp;1</a> on the whole space of features.</p>
 <p>This example is quite simple compared to industrial context where so many parameters might be involved in the definition of the so-called context. The latter is rarely available to the engineer in charge of designing anomaly detection algorithms. This means that:</p>
 <div class="callout callout-style-default callout-warning callout-titled" title="Blind handling of context">
 <div class="callout-header d-flex align-content-center">
@@ -541,6 +562,7 @@ y = P_i(x)\quad x\in \mathcal R_i\quad i\in \{1,\dots,4\}
 <p><img src="images/pwregions.png" class="img-fluid"></p>
 </div>
 </div>
+<p>Beside the examples discussed above which are induced by the presence of different operational modes, the need for piece-wise polynomial structures can be triggered by the need to approximate non rigorously polynomial relationships between the sensors involved.</p>
 </section>
 <section id="explicit-form" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="explicit-form"><span class="header-section-number">3</span> Explicit form</h2>
@@ -553,7 +575,6 @@ x\in \mathcal R_{i^\star(x)}
 <p><span id="eq-explicit-error"><span class="math display">\[
 e = \mu\Bigl(\overbrace{P_{i^\star(x)}(x)}^{\hat y(x)}-y\Bigr)
 \tag{4}\]</span></span></p>
-<p>The <code>xpwpol</code> module of the <code>MizoPol</code> package enables to derive this kind of explicit relationships in some parituclar use-cases. More details in the <a href="./xpwpol_intro.html"><code>xpwpol</code> module’ section</a> and the sections that follow it where some examples are given.</p>
 <p>Although the explicit piece-wise polynomial form is even larger than the explicit single unique polynomial form, it is sometimes hard to find for the reasons invoked in the following section.</p>
 <section id="the-need-for-an-implicit-form" class="level3" data-number="3.1">
 <h3 data-number="3.1" class="anchored" data-anchor-id="the-need-for-an-implicit-form"><span class="header-section-number">3.1</span> The need for an implicit form</h3>
@@ -565,7 +586,7 @@ e = \mu\Bigl(\overbrace{P_{i^\star(x)}(x)}^{\hat y(x)}-y\Bigr)
 <p><span class="math display">\[
 y = F(x, z)\quad  \text{$z$ not available}
 \]</span></p>
-<p>where <span class="math inline">\(z\)</span> is a context variable having a finite set of unknown values that do not depend on the vector <span class="math inline">\(x\)</span> of features<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Obviously, since in this case, the context does not depend on the features, it is impossible to identify the index map from the sole knowledge of <span class="math inline">\(x\)</span> as <span class="math inline">\(z\)</span> which is a crucial information that is needed to define the region, is simply not available.</p></li>
+<p>where <span class="math inline">\(z\)</span> is a context variable having a finite set of unknown values that do not <strong>uniquely</strong> depend on the vector <span class="math inline">\(x\)</span> of features<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Obviously, since in this case, the context does not depend on the features, it is impossible to identify the index map from the sole knowledge of <span class="math inline">\(x\)</span> as <span class="math inline">\(z\)</span> which is a crucial information that is needed to define the region, is simply not available.</p></li>
 </ol>
 <p>Here is where the implicit form of the piece-wise relationships enter into the scene. This is explained in the next section.</p>
 </section>
@@ -589,9 +610,9 @@ No predicted value of <span class="math inline">\(y\)</span>
 </div>
 <div class="callout-body-container callout-body">
 <p>The relationship <a href="#eq-implicit-pwpol" class="quarto-xref">Equation&nbsp;5</a> that determines the residual <span class="math inline">\(e\)</span> expresses the distance of the measurement <span class="math inline">\(y\)</span> to the closest value among the set of values provided by the set of polynomials at <span class="math inline">\(x\)</span>, namely:</p>
-<p><span class="math display">\[\Bigl\{\hat y_i(x):=P_i(x)\Bigr\}_{i\le n_r}\]</span></p>
+<p><span class="math display">\[\text{Set of values of the implicit model at $x$}\qquad \Bigl\{\hat y_i(x):=P_i(x)\Bigr\}_{i\le n_r}\]</span></p>
 <p>There is no way to compute the predicted value of <span class="math inline">\(y\)</span> (by the model) before the true value of <span class="math inline">\(y\)</span> is known.</p>
-<p>In other words, in the absence of <span class="math inline">\(y\)</span>, there is no way to determine which one of the values <span class="math inline">\(P_i(x)\)</span> is the closest to the true value <span class="math inline">\(y\)</span>.</p>
+<p>In other words, in the absence of <span class="math inline">\(y\)</span>, there is no way to determine which one of the values <span class="math inline">\(P_i(x)\)</span> is the closest to the true value <span class="math inline">\(y\)</span>. Nevetheless, whey <span class="math inline">\((x,y)\)</span> is available, a residual (distance to normality) can be computed by <a href="#eq-implicit-pwpol" class="quarto-xref">Equation&nbsp;5</a>.</p>
 </div>
 </div>
 <p>This is why the implicit relationships are mainly used to characterize the normality and hence to <strong>raise alarms</strong> when the residual goes beyond some pre-defined threshold.</p>
@@ -610,10 +631,10 @@ All raltionships are parsimoniously identified
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>whether they are implicit or explicit, the polynomial relationships that are identified by the modules of the MizoPol suite are all <strong>parsimonious</strong>.</p>
+<p>whether they are implicit or explicit, the polynomial relationships that are identified by the modules of the <code>MizoPol</code> suite are all <strong>parsimonious</strong>.</p>
 </div>
 </div>
-<p>The reasons for which parsimony is a key element in the context of processing industrial and technological time-series are discussed in the next section.</p>
+<p>The reasons for which parsimony is a key element in the context of processing industrial and technological time-series are discussed in the <a href="./parsimony.html">parsimony-dedicated section</a>.</p>
 
 
 </section>

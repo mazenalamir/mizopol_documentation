@@ -5,7 +5,7 @@ subtitle: On the relevance of introducing delays in the relationships
 
 *** 
 
-In this section, an example is introduced that shows that introducing delayed versions of the sensors time-series as additional features might be crucial in getting successful identification of sparse and precise relationships. 
+In this section, an example is proposed that shows that introducing delayed versions of the sensors time-series as additional features might be crucial in getting successful identification of sparse and precise relationships. 
 
 This is shown using the example of the hydraulic rig that is extensively studied in [ the related section](g2sys_zema.qmd). 
 

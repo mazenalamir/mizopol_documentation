@@ -35,25 +35,6 @@ The `plars` module is detailed [here](plars_intro.qmd).
 
 
 
-```python
-from plars import PLARS, predict 
-
-# Create an instance of the PLARS class
-pl = PLARS(
-        deg=3, 
-        window=1000, 
-        nModes=10, 
-        nModels=10, 
-        eps=0.05
-)
-
-# Fit the data and get the solution 
-sol = pl.fit(X, y , ...)
-
-# Predict on new data with sol 
-ypred = predict(Xtest, sol)
-```
-
 Notice that `plars` is the fundamental building brick of the whole package in the sense that all the other modules call it at some stage of their execution. 
 
 
@@ -63,7 +44,6 @@ Given sensors $s_1$, ..., $s_n$,
 fit a set of relationships of one of the following two forms: 
 
 :::{.callout-note title='Static'}
-**Static**
 $$
 s_i(k)=F_i\left(\{s_j(k-\sigma\times d_i)\}_{(j\neq i,\sigma\in \{0,\dots,m_i\})}\right)
 $$
@@ -72,16 +52,14 @@ $$
 
 
 :::{.callout-note title='Dynamic'}
-
-**Dynamic**
 $$
-\Delta^{(m_i)} s_i(k)=F_i\left(\begin{array}
+\bigl[\Delta^{(m_i)} s_i\bigr](k)=F_i\left(\begin{array}
 \{s_i(k-\sigma\times d_i)\}_{\sigma\in \{1,\dots,m_i\}}\cr 
 \{s_j(k-\sigma\times d_i)\}_{(j\neq i,\sigma\in \{0,\dots,m_i\})}
 \end{array}
 \right)
 $$
-$\rightarrow$ The increment $\Delta^{(m_i)} s_i(k)$ represents the discrete version, at instant $k$, of the $m_i$ derivatives of $s_i$.
+$\rightarrow$ The increment $\bigl[\Delta^{(m_i)} s_i\bigr](k)$ represents the discrete version, at instant $k$, of the $m_i$ derivatives of $s_i$.
 :::
 Can be use to achieve the following tasks: 
 
@@ -167,6 +145,6 @@ This generalizes the polynomial structure targeted by `plars`.
 Notice however that this is only the starting point, the results obviously offer a much wider generalization than simply fractional representation when $r>1$. 
 :::
 
-# Undergoing develoment
+# Undergoing research
 
-`MizoPol` is a research steered package. New features and modules are expected to be added continuously as the research goes. 
+`MizoPol` is a research-steered package. New features and modules are expected to be added continuously as the research goes. 

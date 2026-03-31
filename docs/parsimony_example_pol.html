@@ -188,6 +188,10 @@ window.Quarto = {
 <span class="menu-text">Graph</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./api-documentation-intro.html"> 
+<span class="menu-text">API-Docs</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -459,6 +463,23 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>API documentation</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./api-documentation-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
@@ -586,11 +607,8 @@ Use of validation subset
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>model_ridge.fit(Xtrain, ytrain)</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>cpu_ridge <span class="op">=</span> time() <span class="op">-</span> t0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>A last model that is obtained using the <a href="./plars_intro.html"><code>plars</code> module</a> of the <code>MizoPol</code> package which seeks a <strong>parsimonious</strong> multivariate polynomial:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plars <span class="im">import</span> PLARS, predict, normalized_error</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pl <span class="op">=</span> PLARS(window<span class="op">=</span><span class="dv">2000</span>, deg<span class="op">=</span>deg, nModels<span class="op">=</span><span class="dv">20</span>, nModes<span class="op">=</span><span class="dv">20</span>, eps<span class="op">=</span><span class="fl">0.05</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time()</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> pl.fit(Xtrain, ytrain)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>cpu_pl <span class="op">=</span> time() <span class="op">-</span> t0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.plars_api <span class="im">import</span> predict, fit</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>sol, cpu <span class="op">=</span> fit(X, y, ...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul>
 </section>
 <section id="the-test-dataset" class="level3" data-number="1.3">
@@ -612,7 +630,7 @@ Use of validation subset
 <p>The statistics on the extrapolation error (residual on the sample in the test dataset) are expressed in terms of normalized percentile, namely:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/ey.png" class="img-fluid figure-img" style="width:65.0%"></p>
+<p><img src="images/ey.png" class="img-fluid figure-img" style="width:55.0%"></p>
 <figcaption><strong>Regression error</strong>: (For instance, <span class="math inline">\(e_y=0.1\)</span> means that 95% of the errors are 10 times lower than the median of the norm of <span class="math inline">\(y\)</span>).</figcaption>
 </figure>
 </div>
@@ -627,7 +645,7 @@ Use of validation subset
 </div>
 </div>
 </div>
-<p>Obviously, the above table show how bad is the generalization power of the DNN-based models. The non sparse solver remains quite good in the absence of noise and starts to seriously be affected as soon measurement noise is added. On the contrary, the sparse model resists in all circumstances.</p>
+<p>Obviously, the above tables show how bad is the generalization power of the DNN-based models. The non sparse solver remains quite good in the absence of noise and starts to be seriously deteriorated as soon as measurement noise is added. On the contrary, the sparse model resists in all circumstances.</p>
 </section>
 <section id="residual-vs-regions" class="level3" data-number="2.2">
 <h3 data-number="2.2" class="anchored" data-anchor-id="residual-vs-regions"><span class="header-section-number">2.2</span> Residual vs regions</h3>
@@ -671,7 +689,7 @@ Use of validation subset
 </div>
 </div>
 </div>
-<p>In the next section, we dig a little bit deeper inside an equipment in order to understand what are the different reasons that induce ambiguity in the diagnosis of normality.</p>
+<p>In the next <a href="./state_context_anomalies.html">true/false anomaly section</a>, we dig a little bit deeper inside an equipment in order to understand what are the different reasons that induce ambiguity in the diagnosis of normality.</p>
 
 
 </section>

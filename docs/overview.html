@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -186,6 +152,10 @@ window.Quarto = {
   <li class="nav-item">
     <a class="nav-link" href="./graph_intro.html"> 
 <span class="menu-text">Graph</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./api-documentation-intro.html"> 
+<span class="menu-text">API-Docs</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
@@ -459,6 +429,23 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>API documentation</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./api-documentation-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./about.html" class="sidebar-item-text sidebar-link">
@@ -479,7 +466,7 @@ window.Quarto = {
   <li><a href="#g2sys" id="toc-g2sys" class="nav-link" data-scroll-target="#g2sys"><span class="header-section-number">2</span> <code>g2sys</code></a></li>
   <li><a href="#pwpol" id="toc-pwpol" class="nav-link" data-scroll-target="#pwpol"><span class="header-section-number">3</span> <code>pwpol</code></a></li>
   <li><a href="#rlars" id="toc-rlars" class="nav-link" data-scroll-target="#rlars"><span class="header-section-number">4</span> <code>rlars</code></a></li>
-  <li><a href="#undergoing-develoment" id="toc-undergoing-develoment" class="nav-link" data-scroll-target="#undergoing-develoment"><span class="header-section-number">5</span> Undergoing develoment</a></li>
+  <li><a href="#undergoing-research" id="toc-undergoing-research" class="nav-link" data-scroll-target="#undergoing-research"><span class="header-section-number">5</span> Undergoing research</a></li>
   </ul>
 </nav>
     </div>
@@ -531,22 +518,6 @@ Important
 <p><strong>M. Alamir</strong>, Nonlinear control of uncertain systems: conventional and data driven alternatives with python. <strong>Springer-Nature</strong>, November, 2025</p>
 </div>
 <hr>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plars <span class="im">import</span> PLARS, predict </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an instance of the PLARS class</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>pl <span class="op">=</span> PLARS(</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        deg<span class="op">=</span><span class="dv">3</span>, </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        window<span class="op">=</span><span class="dv">1000</span>, </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        nModes<span class="op">=</span><span class="dv">10</span>, </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        nModels<span class="op">=</span><span class="dv">10</span>, </span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        eps<span class="op">=</span><span class="fl">0.05</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the data and get the solution </span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> pl.fit(X, y , ...)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on new data with sol </span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>ypred <span class="op">=</span> predict(Xtest, sol)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Notice that <code>plars</code> is the fundamental building brick of the whole package in the sense that all the other modules call it at some stage of their execution.</p>
 </section>
 <section id="g2sys" class="level1" data-number="2">
@@ -562,7 +533,7 @@ Static
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Static</strong> <span class="math display">\[
+<p><span class="math display">\[
 s_i(k)=F_i\left(\{s_j(k-\sigma\times d_i)\}_{(j\neq i,\sigma\in \{0,\dots,m_i\})}\right)
 \]</span> <span class="math inline">\(\rightarrow\)</span> <span class="math inline">\(s_i\)</span> is a static function of the other sensors and their past values up to <span class="math inline">\(m_i\times d_i\)</span>.</p>
 </div>
@@ -577,13 +548,13 @@ Dynamic
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Dynamic</strong> <span class="math display">\[
-\Delta^{(m_i)} s_i(k)=F_i\left(\begin{array}
+<p><span class="math display">\[
+\bigl[\Delta^{(m_i)} s_i\bigr](k)=F_i\left(\begin{array}
 \{s_i(k-\sigma\times d_i)\}_{\sigma\in \{1,\dots,m_i\}}\cr
 \{s_j(k-\sigma\times d_i)\}_{(j\neq i,\sigma\in \{0,\dots,m_i\})}
 \end{array}
 \right)
-\]</span> <span class="math inline">\(\rightarrow\)</span> The increment <span class="math inline">\(\Delta^{(m_i)} s_i(k)\)</span> represents the discrete version, at instant <span class="math inline">\(k\)</span>, of the <span class="math inline">\(m_i\)</span> derivatives of <span class="math inline">\(s_i\)</span>.</p>
+\]</span> <span class="math inline">\(\rightarrow\)</span> The increment <span class="math inline">\(\bigl[\Delta^{(m_i)} s_i\bigr](k)\)</span> represents the discrete version, at instant <span class="math inline">\(k\)</span>, of the <span class="math inline">\(m_i\)</span> derivatives of <span class="math inline">\(s_i\)</span>.</p>
 </div>
 </div>
 <p>Can be use to achieve the following tasks:</p>
@@ -675,9 +646,9 @@ y = -\dfrac{c_0(x)}{c_1(x)}
 </div>
 </div>
 </section>
-<section id="undergoing-develoment" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Undergoing develoment</h1>
-<p><code>MizoPol</code> is a research steered package. New features and modules are expected to be added continuously as the research goes.</p>
+<section id="undergoing-research" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Undergoing research</h1>
+<p><code>MizoPol</code> is a research-steered package. New features and modules are expected to be added continuously as the research goes.</p>
 
 
 </section>

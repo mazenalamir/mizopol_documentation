@@ -91,11 +91,8 @@ Notice that following the good practice, the depth of the fit process is supervi
 - A last model that is obtained using the [`plars` module](plars_intro.qmd) of the `MizoPol` package which seeks a **parsimonious** multivariate polynomial: 
 
     ```python
-    from plars import PLARS, predict, normalized_error
-    pl = PLARS(window=2000, deg=deg, nModels=20, nModes=20, eps=0.05)
-    t0 = time()
-    sol = pl.fit(Xtrain, ytrain)
-    cpu_pl = time() - t0
+    from mizopol.plars_api import predict, fit
+    sol, cpu = fit(X, y, ...)
     ```
 
 ### The test dataset
@@ -120,7 +117,7 @@ This might be viewed as an instantiation of a new context in which the features 
 
 The statistics on the extrapolation error (residual on the sample in the test dataset) are expressed in terms of normalized percentile, namely:
 
-![**Regression error**: (For instance, $e_y=0.1$ means that 95\% of the errors are 10 times lower than the median of the norm of $y$).](images/ey.png){width="65%"}
+![**Regression error**: (For instance, $e_y=0.1$ means that 95\% of the errors are 10 times lower than the median of the norm of $y$).](images/ey.png){width="55%"}
 
 :::{.panel-tabset}
 
@@ -134,7 +131,7 @@ The statistics on the extrapolation error (residual on the sample in the test da
 
 :::
 
-Obviously, the above table show how bad is the generalization power of the DNN-based models. The non sparse solver remains quite good in the absence of noise and starts to seriously be affected as soon measurement noise is added. On the contrary, the sparse model resists in all circumstances. 
+Obviously, the above tables show how bad is the generalization power of the DNN-based models. The non sparse solver remains quite good in the absence of noise and starts to be seriously deteriorated as soon as measurement noise is added. On the contrary, the sparse model resists in all circumstances. 
 
 ### Residual vs regions 
 
@@ -190,4 +187,4 @@ Notice that the most important features are those shared with the plars solution
 
 [^seepol]: See the section on the definition of [multivariate polynomials](polynomials.qmd).
 
-In the next section, we dig a little bit deeper inside an equipment in order to understand what are the different reasons that induce ambiguity in the diagnosis of normality. 
+In the next [true/false anomaly section](state_context_anomalies.qmd), we dig a little bit deeper inside an equipment in order to understand what are the different reasons that induce ambiguity in the diagnosis of normality. 
