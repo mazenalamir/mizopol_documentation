@@ -962,11 +962,59 @@
     ]
   },
   {
-    "objectID": "plars_docs.html#example-of-use",
-    "href": "plars_docs.html#example-of-use",
+    "objectID": "plars_docs.html#sec-plars-fit-example",
+    "href": "plars_docs.html#sec-plars-fit-example",
     "title": "plars",
     "section": "2.3 Example of use",
     "text": "2.3 Example of use\nimport numpy as np\nfrom mizopol.plars_api import predict, fit, monomials_contrib\n\nnt = 20000\nnx = 7\nX = 1.0 + np.random.randn(nt, nx)\ny = 12 * X[:, 0] + 10.3 * X[:, 1] * X[:, 2] - 2 * X[:, 1] ** 4 - 12.0\n\ndic_plars = dict(deg=4, nModes=10, nModels=6, window=100, eps=5e-2)\n\n# Comment the colNames argument | try nfeats = 5\ndic_plars_fit = dict(\n    compute_contributions=False,\n    colNames=[f'S{i + 1}' for i in range(X.shape[1])],\n    nfeats=None,\n)\n\nsol, cpu = fit(X, y, dic_plars=dic_plars, dic_plars_fit=dic_plars_fit)\nIn the following section, we dive more deeply in the returned arguments sol and cpu that are returned by the fit method.",
+    "crumbs": [
+      "Home",
+      "**API documentation**",
+      "plars documentation"
+    ]
+  },
+  {
+    "objectID": "plars_docs.html#sec-retunred-args-fit",
+    "href": "plars_docs.html#sec-retunred-args-fit",
+    "title": "plars",
+    "section": "2.4 Returned arguments",
+    "text": "2.4 Returned arguments\nThe fit method returns two arguments:\n\nsol: A dictionary containing the solution and some corresponding fitting results that are detailed below.\ncpu: a tuple (cpu[0], cpu[1]) such that\n\ncpu[0]: is the computation time from the user’s perspective. Namley, this includes the communication with the endpoint, potentially the time needed by the server to warm up the docker image and the time needed to serialize and send back the results.\ncpu[1]: is the computation time needed at the server side which gives a faithful information regarding the efficiency of the algorithm putting aside all the delays that are induced by the cloud and the distant deployment. This information might be interesting for the evaluation of local use of the MizoPol package which might be possible under certain circumstances.\n\n\nAs for the first argument sol, it is a dictionary whose content is detailed in the following table:\n\n2.4.1 The sol dictionary\n\n\n\n\nTable 4: The content of the sol dictionary returned by the fit method of the mizopol.plars_api module.\n\n\n\n\n\n\n\n\n\n\n\nParameter\nType\nDescription\n\n\n\n\n\nnfeat\nint\nThe number of candidate monomials before selection\n\n\n\nindices\nlist[int]\nThe indices of the selected monomial among the polynomial-features generated ones\n\n\n\npowers\nlist[list[int]]\nThe matrix of powers that defines the selected monomials\n\n\n\ncoefs\nlist[float]\nThe associated vector of coefficients\n\n\n\ncard\nint\nThe cardinality of the solution (number of retained monomials)\n\n\n\nerror\nfloat\nThe value of the eta quantile of the error\n\n\n\ncpu\nfloat\nThe computation time (in sec)\n\n\n\ncols\nlist[str]\ncolumns names in accordance with the maatrix of powers\n\n\n\ndf_contrib\npandas dataframe\nDataframe showing the normalized contributions of the selected monomial in reconstructing the label (available only if compute_contributions is set ton True in the dic_plars_fit dictionary)\n\n\n\ndf_sol\npandas dataframe\nSummary datafreame showing a more detailed statistics of the monomial contribution together with their associated coefficients in the solutions (available only if compute_contributions is set ton True in the dic_plars_fit dictionary)\n\n\n\ndfe_train\npandas dataframe\nDataframe showing the percentiles of error\n\n\n\neta\nint\nRecalling the eta used to produce the normalized percentile of errors",
+    "crumbs": [
+      "Home",
+      "**API documentation**",
+      "plars documentation"
+    ]
+  },
+  {
+    "objectID": "plars_docs.html#example-of-returned-results",
+    "href": "plars_docs.html#example-of-returned-results",
+    "title": "plars",
+    "section": "2.5 Example of returned results",
+    "text": "2.5 Example of returned results\nSo let us examine the returned sol and cpu resulted from our last script used in Section 2.3 by executing the following script:\nfor k, value in sol.items():\n    print(k)\n    print(value)\n    print('---')\n\nprint(f'cpu all = {cpu[0]:1.3} | cpu distant = {cpu[1]:1.3}')\nBelow are the printed messages:\nnfeat\n330\n---\nindices\n[0, 1, 204, 16]\n---\npowers\n[[0, 4, 0, 0, 0, 0, 0], [0, 1, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]\n---\ncoefs\n[-1.9999998958050205, 10.299963148684332, 11.999881943977648, -11.999786769721386]\n---\ncard\n4\n---\nerror\n3.671939849565719e-06\n---\ncpu\n0.11779189109802246\n---\ncols\n['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7']\n---\nbias_to_add\n0.0\n---\ndf_contrib\n   Monomial  Contribution       std\n0    (S2)^4     -0.333409  0.088181\n1  (S2)(S3)      0.236548  0.029214\n2      (S1)      0.232246  0.016285\n3         1     -0.197798  0.000000\n---\ndf_sol\n   S1  S2  S3  S4  S5  S6  S7  Contribution       std      coefs\n0   0   4   0   0   0   0   0     -0.333409  0.088181  -2.000000\n1   0   1   1   0   0   0   0      0.236548  0.029214  10.299963\n2   1   0   0   0   0   0   0      0.232246  0.016285  11.999882\n3   0   0   0   0   0   0   0     -0.197798  0.000000 -11.999787\n---\ndfe_train\n         Error\n50%   0.000001\n80%   0.000002\n90%   0.000003\n95%   0.000004\n98%   0.000004\n99%   0.000005\n100%  0.000008\n---\neta\n95",
+    "crumbs": [
+      "Home",
+      "**API documentation**",
+      "plars documentation"
+    ]
+  },
+  {
+    "objectID": "plars_docs.html#importing-the-monomials_contrib-method",
+    "href": "plars_docs.html#importing-the-monomials_contrib-method",
+    "title": "plars",
+    "section": "3.1 Importing the monomials_contrib method",
+    "text": "3.1 Importing the monomials_contrib method\nThis is done using the monomials_contrib method that can be imported as using\nfrom mizopol.plars_api import monomials_contrib",
+    "crumbs": [
+      "Home",
+      "**API documentation**",
+      "plars documentation"
+    ]
+  },
+  {
+    "objectID": "plars_docs.html#input-arguments-1",
+    "href": "plars_docs.html#input-arguments-1",
+    "title": "plars",
+    "section": "3.2 Input arguments",
+    "text": "3.2 Input arguments\n\n\n\n\nTable 5: Input arguments of the monomials_contrib method of the plars_api module.\n\n\n\n\n\n\n\n\n\n\n\nParameter\nType\nUsed for\nDefault\n\n\n\n\ndf\npandas dataframe\nThe working dataframe\nuser-defined\n\n\nsol\ndict\nsolution returned by the fit method\nuser-defined\n\n\nwin\nint\nThe window used in evaluating the contribution by random sampling\n200\n\n\nnBatch\nint\nNumber of sampled window used in the evaluation\n25\n\n\n\n\n\n\n\ndf_contrib, (cpu1, cpu2) = monomials_contrib(df, sol, win=200, nBatch=25)",
     "crumbs": [
       "Home",
       "**API documentation**",
@@ -1244,78 +1292,6 @@
       "Home",
       "**Preliminaries**",
       "Parsimony: Intro"
-    ]
-  },
-  {
-    "objectID": "plars_docs.html#sec-plars-fit-example",
-    "href": "plars_docs.html#sec-plars-fit-example",
-    "title": "plars",
-    "section": "2.3 Example of use",
-    "text": "2.3 Example of use\nimport numpy as np\nfrom mizopol.plars_api import predict, fit, monomials_contrib\n\nnt = 20000\nnx = 7\nX = 1.0 + np.random.randn(nt, nx)\ny = 12 * X[:, 0] + 10.3 * X[:, 1] * X[:, 2] - 2 * X[:, 1] ** 4 - 12.0\n\ndic_plars = dict(deg=4, nModes=10, nModels=6, window=100, eps=5e-2)\n\n# Comment the colNames argument | try nfeats = 5\ndic_plars_fit = dict(\n    compute_contributions=False,\n    colNames=[f'S{i + 1}' for i in range(X.shape[1])],\n    nfeats=None,\n)\n\nsol, cpu = fit(X, y, dic_plars=dic_plars, dic_plars_fit=dic_plars_fit)\nIn the following section, we dive more deeply in the returned arguments sol and cpu that are returned by the fit method.",
-    "crumbs": [
-      "Home",
-      "**API documentation**",
-      "plars documentation"
-    ]
-  },
-  {
-    "objectID": "plars_docs.html#example-of-returned-results",
-    "href": "plars_docs.html#example-of-returned-results",
-    "title": "plars",
-    "section": "2.5 Example of returned results",
-    "text": "2.5 Example of returned results\nSo let us examine the returned sol and cpu resulted from our last script used in Section 2.3 by executing the following script:\nfor k, value in sol.items():\n    print(k)\n    print(value)\n    print('---')\n\nprint(f'cpu all = {cpu[0]:1.3} | cpu distant = {cpu[1]:1.3}')\nBelow are the printed messages:\nnfeat\n330\n---\nindices\n[0, 1, 204, 16]\n---\npowers\n[[0, 4, 0, 0, 0, 0, 0], [0, 1, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]\n---\ncoefs\n[-1.9999998958050205, 10.299963148684332, 11.999881943977648, -11.999786769721386]\n---\ncard\n4\n---\nerror\n3.671939849565719e-06\n---\ncpu\n0.11779189109802246\n---\ncols\n['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7']\n---\nbias_to_add\n0.0\n---\ndf_contrib\n   Monomial  Contribution       std\n0    (S2)^4     -0.333409  0.088181\n1  (S2)(S3)      0.236548  0.029214\n2      (S1)      0.232246  0.016285\n3         1     -0.197798  0.000000\n---\ndf_sol\n   S1  S2  S3  S4  S5  S6  S7  Contribution       std      coefs\n0   0   4   0   0   0   0   0     -0.333409  0.088181  -2.000000\n1   0   1   1   0   0   0   0      0.236548  0.029214  10.299963\n2   1   0   0   0   0   0   0      0.232246  0.016285  11.999882\n3   0   0   0   0   0   0   0     -0.197798  0.000000 -11.999787\n---\ndfe_train\n         Error\n50%   0.000001\n80%   0.000002\n90%   0.000003\n95%   0.000004\n98%   0.000004\n99%   0.000005\n100%  0.000008\n---\neta\n95",
-    "crumbs": [
-      "Home",
-      "**API documentation**",
-      "plars documentation"
-    ]
-  },
-  {
-    "objectID": "plars_docs.html#importing-the-monomials_contrib-method",
-    "href": "plars_docs.html#importing-the-monomials_contrib-method",
-    "title": "plars",
-    "section": "3.1 Importing the monomials_contrib method",
-    "text": "3.1 Importing the monomials_contrib method\nThis is done using the monomials_contrib method that can be imported as using\nfrom mizopol.plars_api import monomials_contrib",
-    "crumbs": [
-      "Home",
-      "**API documentation**",
-      "plars documentation"
-    ]
-  },
-  {
-    "objectID": "plars_docs.html#input-arguments-1",
-    "href": "plars_docs.html#input-arguments-1",
-    "title": "plars",
-    "section": "3.2 Input arguments",
-    "text": "3.2 Input arguments\n\n\n\n\nTable 5: Input arguments of the monomials_contrib method of the plars_api module.\n\n\n\n\n\n\n\n\n\n\n\nParameter\nType\nUsed for\nDefault\n\n\n\n\ndf\npandas dataframe\nThe working dataframe\nuser-defined\n\n\nsol\ndict\nsolution returned by the fit method\nuser-defined\n\n\nwin\nint\nThe window used in evaluating the contribution by random sampling\n200\n\n\nnBatch\nint\nNumber of sampled window used in the evaluation\n25\n\n\n\n\n\n\n\ndf_contrib, (cpu1, cpu2) = monomials_contrib(df, sol, win=200, nBatch=25)",
-    "crumbs": [
-      "Home",
-      "**API documentation**",
-      "plars documentation"
-    ]
-  },
-  {
-    "objectID": "plars_docs.html#returned-arguments-1",
-    "href": "plars_docs.html#returned-arguments-1",
-    "title": "plars",
-    "section": "3.3 Returned arguments",
-    "text": "3.3 Returned arguments\nThe monomials_contrib method returns:\n\ndf_contrib: a pandas dataframe taking the same form as the one contained in the fitted sol (provided that the compute_contributions field is set to True in the dic_plars_fit dictionary)\nThe tuple cpu containing the computation time (user and distant cpu).",
-    "crumbs": [
-      "Home",
-      "**API documentation**",
-      "plars documentation"
-    ]
-  },
-  {
-    "objectID": "plars_docs.html#sec-retunred-args-fit",
-    "href": "plars_docs.html#sec-retunred-args-fit",
-    "title": "plars",
-    "section": "2.4 Returned arguments",
-    "text": "2.4 Returned arguments\nThe fit method returns two arguments:\n\nsol: A dictionary containing the solution and some corresponding fitting results that are detailed below.\ncpu: a tuple (cpu[0], cpu[1]) such that\n\ncpu[0]: is the computation time from the user’s perspective. Namley, this includes the communication with the endpoint, potentially the time needed by the server to warm up the docker image and the time needed to serialize and send back the results.\ncpu[1]: is the computation time needed at the server side which gives a faithful information regarding the efficiency of the algorithm putting aside all the delays that are induced by the cloud and the distant deployment. This information might be interesting for the evaluation of local use of the MizoPol package which might be possible under certain circumstances.\n\n\nAs for the first argument sol, it is a dictionary whose content is detailed in the following table:\n\n2.4.1 The sol dictionary\n\n\n\n\nTable 4: The content of the sol dictionary returned by the fit method of the mizopol.plars_api module.\n\n\n\n\n\n\n\n\n\n\n\nParameter\nType\nDescription\n\n\n\n\n\nnfeat\nint\nThe number of candidate monomials before selection\n\n\n\nindices\nlist[int]\nThe indices of the selected monomial among the polynomial-features generated ones\n\n\n\npowers\nlist[list[int]]\nThe matrix of powers that defines the selected monomials\n\n\n\ncoefs\nlist[float]\nThe associated vector of coefficients\n\n\n\ncard\nint\nThe cardinality of the solution (number of retained monomials)\n\n\n\nerror\nfloat\nThe value of the eta quantile of the error\n\n\n\ncpu\nfloat\nThe computation time (in sec)\n\n\n\ncols\nlist[str]\ncolumns names in accordance with the maatrix of powers\n\n\n\ndf_contrib\npandas dataframe\nDataframe showing the normalized contributions of the selected monomial in reconstructing the label (available only if compute_contributions is set ton True in the dic_plars_fit dictionary)\n\n\n\ndf_sol\npandas dataframe\nSummary datafreame showing a more detailed statistics of the monomial contribution together with their associated coefficients in the solutions (available only if compute_contributions is set ton True in the dic_plars_fit dictionary)\n\n\n\ndfe_train\npandas dataframe\nDataframe showing the percentiles of error\n\n\n\neta\nint\nRecalling the eta used to produce the normalized percentile of errors",
-    "crumbs": [
-      "Home",
-      "**API documentation**",
-      "plars documentation"
     ]
   }
 ]
