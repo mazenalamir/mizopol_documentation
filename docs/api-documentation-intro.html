@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -29,7 +63,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./about.html" rel="next">
+<link href="./plars_docs.html" rel="next">
 <link href="./graph_zema.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -415,6 +449,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Installation</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./plars_docs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">plars documentation</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -428,8 +468,15 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#deployment-architecture" id="toc-deployment-architecture" class="nav-link active" data-scroll-target="#deployment-architecture"><span class="header-section-number">1</span> Deployment architecture</a></li>
+  <li><a href="#the-mizopol-interface-module-installation" id="toc-the-mizopol-interface-module-installation" class="nav-link" data-scroll-target="#the-mizopol-interface-module-installation"><span class="header-section-number">2</span> The mizopol interface module | installation</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -454,9 +501,72 @@ ul.task-list li input[type="checkbox"] {
 
 
 <hr>
-<p>In progress.</p>
+<section id="deployment-architecture" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Deployment architecture</h1>
+<p>The general deployment architecture used for the <code>MizoPol</code> package is shown in Figure <a href="#fig-deployment" class="quarto-xref">Figure&nbsp;1</a> below.</p>
+<div id="fig-deployment" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-deployment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/deployment.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-deployment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Deployment architecture for the <code>MizoPol</code> package.
+</figcaption>
+</figure>
+</div>
+<p>More precisely, a local continuously enriched features package is developed locally and periodically deployed on cloud via a docker-based images. The continuous deployment is done through a private Git-hub repository. This enables to deploy a set of endpoints that corresponds to the package exposed methods that are described in the following sections.</p>
+</section>
+<section id="the-mizopol-interface-module-installation" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> The mizopol interface module | installation</h1>
+<p>In order to use these endpoints while making total abstraction of the technicalities of the deployment, a module is developped and made freely downloadable from a public repository so that the endpoints be accessible from the user side.</p>
+<p>The interface module can be doanloaded or cloned from:</p>
+<hr>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">https://github.com/mazenalamir/mizopol_api.git</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p>Once downloaded, the folder containing the interface module shows the following architecture</p>
+<div class="small">
+<pre class="shell"><code>.
+├── README.md
+├── mizopol
+│&nbsp;&nbsp; ├── __init__.py
+│&nbsp;&nbsp; ├── __pycache__
+│&nbsp;&nbsp; ├── g2sys_api.py
+│&nbsp;&nbsp; ├── plars_api.py
+│&nbsp;&nbsp; ├── pwpol_api.py
+│&nbsp;&nbsp; ├── rlars_api.py
+│&nbsp;&nbsp; └── utils_api.py
+├── pyproject.toml
+├── test_g2sys.py
+├── test_plars.py
+├── test_plars_doc.py
+├── test_pwpol.py
+├── test_rlars.py
+└── uv.lock</code></pre>
+</div>
+<p>The components of this folder are the following:</p>
+<dl>
+<dt><strong>1. The <code>MizoPol</code> interface modules folder</strong></dt>
+<dd>
+This folder contains the modules that are designed to call the cloud deployed endpoints as shown in Figure <a href="#fig-deployment" class="quarto-xref">Figure&nbsp;1</a>. For instance, in order to fit a <code>plars</code> model, the user would use the following import statement:
+</dd>
+</dl>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.plars_api <span class="im">import</span> fit </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<dl>
+<dt><strong>2. A set of test python files</strong></dt>
+<dd>
+These files are provided as example of use of the available method in the <code>MizoPol</code> api. They cover the use of <code>plars</code>, <code>g2sys</code> (scripting version not the streamlit one), <code>pwpol</code> and <code>rlars</code>. Notice however that these files do not necessarily explore all possible parameters setting. To this end, reading the API documentation provided in the next section is necessary to fully exploit the capabilities of the <code>MizoPol</code> package.
+</dd>
+<dt><strong>3. The virtual environment uv utilities</strong></dt>
+<dd>
+This includes the <code>uv.lock</code> and the <code>project.toml</code> files. These files enables an easy creation of the virtual environment through the command:
+</dd>
+</dl>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> sync</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>It is possible that some of the test files make reference to dataset downloading. In such cases, the corresponding downloading instruction should be replaced by the user’s own files.</p>
+<p>In the following section, the information needed to use the modules contained in the mizpol folder of the above shown architecture are detailed.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -886,8 +996,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./about.html" class="pagination-link" aria-label="About mizopol">
-        <span class="nav-page-text">About mizopol</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./plars_docs.html" class="pagination-link" aria-label="plars documentation">
+        <span class="nav-page-text">plars documentation</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -10,7 +10,7 @@ subtitle: Characterizing normality in anaesthesia-related sensors
 :::{.columns}
 
 :::{.column width=65%}
-In this section, it is shown how the identification of multivariate piece-wise polynomial invariants involving a set of sensors might be used to characterize the normality and hence help **detecting abnormal events during intervention in the operation room**. 
+In this section, it is shown how the identification (via the `pwpol` module of the `MizoPol` package) of multivariate piece-wise polynomial invariants involving a set of sensors might be used to characterize the normality and hence help **detecting abnormal events during intervention in the operation room**. 
 
 The dataset used in this work is a subset of the well known $\texttt{vitalDB}$ dataset @lee_vitaldb_2022
 :::
@@ -35,6 +35,7 @@ The objective behind establishing invariant relationships can be stated as follo
 Use some recorded sensors' measurements under *normal conditions* in order to:
 
 - Characterize normality 
+
 - Use the characterization to 
     - detect events (anomalies) or 
     - derive an automatic annotation tool.
@@ -51,7 +52,7 @@ Use some recorded sensors' measurements under *normal conditions* in order to:
 
 :::
 
-Obviously, these goal can be progressively achieved by iterations between the algorithm and experts annotating/correcting the early labelling by the automatic tool. This is sketched in the following scheme: 
+Obviously, these goals can be progressively achieved by iterations between the algorithm and experts annotating/correcting the early labelling by the automatic tool. This is sketched in the following scheme: 
 
 ![The principle of annotation/training/annotation cycle towards building a reliable events detection algorithm. (1) A first version of the algorithm is used to fit a model (2). This model can be used to annotate (3) a new subset of the dataset experts confirm/correct/annotate this new part (4). The resulting extended set is used to re-train the automatic annotator (5) and so on.](images/principle_annotation.png)
 
@@ -81,7 +82,7 @@ We work on a dataset involving **19 patients** having different kinds of surgeri
 **ETCO2**
 : End-Tidal Carbon Dioxide (ETCO2).
 
-Nevertheless, it is worth amphasizing that the methodology is perfetcly generic and might be successfully applied to any extended set of sensors[^sampling] (and not necessarily those linked to anaesthesia).
+Nevertheless, it is worth emphasizing that the methodology is perfetcly generic and might be successfully applied to any extended set of sensors[^sampling] (and not necessarily those linked to anaesthesia).
 
 ## The priniciple 
 

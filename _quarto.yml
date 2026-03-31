@@ -123,6 +123,8 @@ website:
         contents:
           - text: Installation 
             href: api-documentation-intro.qmd
+          - text: plars documentation 
+            href: plars_docs.qmd
       - about.qmd
 
 format:

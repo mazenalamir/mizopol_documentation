@@ -125,19 +125,25 @@ The following script and dataframe showing the statistics of the normalized erro
 ### Python script | cardinality
 
 ```python
-from plars import PLARS, predict
+from mizopol.plars_api import predict, fit
 import pandas as pd 
 from sklearn.model_selection import train_test_split
 
 
-window=1000
-deg=3
-nModels = 40
-nModes = 20
-eps = 0.02
-test_size=0.1
+dic_args = dict(
+    window=1000
+    deg=3
+    nModels = 40
+    nModes = 20
+    eps = 0.02
+    test_size=0.1
+)
 
-pl = PLARS(window=window, deg=deg, nModels=nModels, nModes=nModes, eps=eps)
+dic_plars_fit = dict(
+        compute_contributions=False,
+        colNames=[f'S{i + 1}' for i in range(X.shape[1])],
+        nfeats=None,
+    )
 
 panel_plars = []
 
@@ -145,9 +151,12 @@ i = 1
 for z in [y1, y2, y3]:
 
     Xid = (X-X.mean(axis=0))/X.std(axis=0)
-    Xtrain, Xtest, ytrain, ytest = train_test_split(Xid, z, test_size=test_size, shuffle=False)
+    Xtrain, Xtest, ytrain, ytest = train_test_split(Xid, z, 
+                                    test_size=test_size, 
+                                    shuffle=False)
 
-    solution  = pl.fit(Xtrain, ytrain)
+    solution, _ = fit(Xtrain, ytrain, dic_args, dic_argsFit)
+
     print(f"plars solution's cardinality for y{i} = {solution['card']}")
     dfi = solution['dfe_train']
     dfi.columns = [f'Error on y{i}']
@@ -181,20 +190,20 @@ In this attemps, we use the same parameters except the degree that is reduced to
 ### Python script | cardinality
 
 ```python
-from rlars import RLARS, compute_c_pol
-from plars import normalized_error
+from mizopol.rlars_api import fit, predict
 import pandas as pd 
 from sklearn.model_selection import train_test_split
 
+dic = dict(deg=2, window=1000, nModes=40, nModels=20, eps=2e-2)
 
-window=1000
-deg=2
-nModels = 40
-nModes = 20
-eps = 0.02
+dic_fit = dict(
+    colNames=[f's{i + 1}' for i in range(nx)],
+    compute_contributions=True,
+    nfeats=None,
+    th_monomial=1e-4
+)
+
 test_size=0.4
-
-rl = RLARS(window=window, deg=deg, nModels=nModels, nModes=nModes, eps=eps)
 
 panel_rlars_train = []
 panel_rlars_test = []
@@ -204,10 +213,13 @@ for z in [y1, y2, y3]:
 
     # prepare the train and test data
     Xid = (X-X.mean(axis=0))/X.std(axis=0)
-    Xtrain, Xtest, ytrain, ytest = train_test_split(Xid, z, test_size=test_size, shuffle=False)
+    Xtrain, Xtest, ytrain, ytest = train_test_split(Xid, z, 
+                                                    test_size=test_size, 
+                                                    shuffle=False)
 
     # fit the rlars instance
-    solution  = rl.fit(Xtrain, ytrain)
+    solution, (cpu1, cpu2) = fit(X=X, y=y, dic_rlars=dic, dic_rlars_fit=dic_fit)
+
     print(f"rlars solution's cardinality for y{i} = {solution['card']}")
     dfi = solution['dfe_train']
     dfi.columns = [f'Residual on y{i}']
