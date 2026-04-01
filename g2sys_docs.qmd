@@ -1,0 +1,241 @@
+---
+title: g2sys
+subtitle: API Documenation
+---
+
+***
+
+This documentation concerns the scripting version of `g2sys`. For the use of the `streamlit` version, refer to the movies provided in the [`g2sys`-dedicated section](g2sys_intro.qmd) and those which follow it. 
+
+# The `g2sys` Fit arguments dictionary {#sec-g2sys-dict}
+
+Following the same scheme as the one used for the `plars` module, the use of `g2sys` needs a list of arguments that are gathered in a dictionary. For instance, the following script shows how the `fit` method can be called:
+
+```python 
+from mizopol.g2sys_api import fit
+
+# Download the working dataframe
+df = pd.read_csv("datasets/zema.csv", index_col=0)
+
+# set the arguments dictionary 
+args = dict(deg=3,
+            d=20,
+            nd=2,
+            list_of_c=['PS4', 'PS6'],
+            nModes=20,
+            nModels=10,
+            nfeat_max=25,
+            index_range=(0.0, 0.2),
+            include_plots=True,
+            recursive=True,
+)
+
+# Fit a g2sys model 
+dic_solutions, dic_figs, cpu = fit(df, args)
+```
+
+where one first download the working dataframe, set the arguments dictionary described below and then run the `fit` method of the `g2sys_api` module. Notice that as it is described in the `plars` documentation, the list of (keyword,value) pairs gathers only those parameters the user intended to set, other pairs are used behnd the scene with their default values.
+
+As the `g2sys` module is based on the `plars` module to parsimoniously identify polynomial relationships, One might observe that the presence of the already seen parameters: `nModels`, `nModes`, `deg` which belongs to the arguments dictionart of `plars` (the `window` is not set here as the user is ok with the default value). 
+
+Notice also the presence of the list of labels `['PS4', 'PS6']` for which one is seeking models. This is because `g2sys` is designed to work in a Batch mode on a set of targets. 
+
+The following table provides a list of available parameters for the `g2sys` module. 
+
+:::{.small}
+::: {#tbl-params-g2sys}
+| Parameter | Type | Used for | Default | 
+|:-----------|:----|:----------------------------------| ------:|
+| `deg`     | `int` | The degree of the polynomial to be identified | `1` |
+| `window`  | `int` | number of samples per window (window width) | `200` |
+| `nModels` | `int` | Number of sampled window for alignement evaluation | `10` |
+| `nModes`  | `int` | Number of selected monomials per window| `10` |
+| `eps`     | `float` | precision for the final least squares solution  | `5e-2` |
+| `nBatch`     | `int` | Number of window used to determine monomials contributions  | `25` |
+| `eta`     | `float` | The quantile used to compute the error dataframe  | `50` |
+| `d`     | `int` | The amount of delay used (multiple of sampling time)  | `0` |
+| `nd`     | `int` | The number of delayed instances per sensors to be used  | `0` |
+| `list_of_c`     | `list[str]` | The list of sensors' labels to model  | user-defined |
+| `recursive`     | `boolean` | If True, dynamic relationships are looked for otherwise static | `False` |
+| `nSlices`     | `int` | Number of random slices to use in the search for relevant columns to include | `20` |
+| `nSelect`     | `int` | Number of columns to be selected at each slice | `10` |
+| `nfeat_max`     | `int` | Maximum number of  columns incuded before polynomial expansion| `20` |
+| `include_plots`     | `boolean` | If true, fitting plots are provided | `False` |
+| `index_range`     | `tuple(float, float)` | the interval for train as fraction of the dataset's length | `(0.0, 0.25)` |
+| `th_monomials`     | `float` | Threshold for the inclusion of monomials in the solution  | `1e-4` |
+: Possible entries in the ```args``` dictionary for `g2sys`.
+:::
+:::
+
+:::{.callout-warning}
+Regarding the `list_of_c` argument, notice that even when a single label, say `c` is targeted, the syntax is to call the `fit` method with the list `[c]`. 
+:::
+
+# The `fit` method
+
+## Inputs arguments 
+
+:::{.small}
+::: {#tbl-params-g2sys-fit}
+| Parameter | Type | Description | Default | 
+|:-----------|:----|:----------------------------------| ------:|
+| `df`     | `pandas dataframe` | The working dataframe for training | user-defined |
+| `args`  | `dict` | The dictionary of arguments (see section @sec-g2sys-dict) | user-defined |
+
+: Input arguments for the `fit` method of `g2ys`.
+:::
+:::
+
+## Returned arguments 
+
+:::{.small}
+::: {#tbl-params-g2sys-fit}
+| Parameter | Type | Description | 
+|:-----------|:----|:----------------------------------| 
+| `dic_solutions`     | `dict` | Dictionary where the keys are the elements of `list_of_c` and the values are `plars` solutions as described in Section dedicated to the [plars documentation](plars_docs.qmd) | 
+| `dic_figs`  | `dict` | Dictionary where the keys are the elements of `list_of_c` and the values are plotly figures representing the fitting result. **The figures are present only if** the field `include_plots` is set to `True` in the arguments of the `fit` otherwise, None is returned |
+| `cpu`  | `tuple` | The local and distance computation times as described in the [plars documentation](plars_docs.qmd) |
+: Argument returned by the `fit` method of `g2ys`.
+:::
+:::
+
+The execution of the script shown in section @sec-g2sys-dict, produce the following intermediate log results during the fitting:
+
+```shell
+python -m test_g2sys
+g2sys ---- test of fit
+--> PS4              error = 0.12 |                      align : 0.967 |  nfeat = 6 / 2024
+--> PS6              error = 0.07 |                      align : 0.995 |  nfeat = 3 / 2024
+```
+
+which shows the fitting performance in terms of errors, alignement between the label and the features-based predicted on as well as the number of used monomials reported to the total number of eligible ones. 
+
+# The `predict` method
+
+Once a dictionary of solutions, say `dic_solutions`, indexed by the items in the `list_of_c` list, the solutions can be used to predict the associated label for a new dataframe `df` using the following script: 
+
+```python 
+from mizopol.g2sys_api import predict
+
+y, ypred, (cpu1, cpu2) = predict(df, dic_solutions['PS4'])
+```
+
+in which `y` is simply `df['PS4'].values` while `ypred` is its prediced values based on the solution `dic_solutions['PS4']`. As for the computation times `cpu1` and `cpu2`, they represent the user viewed computation time and the host side computation time (generally lower than the first one which incorporates the communication and warming server delays). 
+
+# The `monomials_contrib` method
+
+As in the case of `plars` module, the `g2sys` module provides a method that compute the contributions of the different monomials inside a solution. The following script shows how the solution associated to the sensor `PS6` is used to compute the contributions of the different monomials over a working dataframe `df`: 
+
+```python 
+from mizopol.g2sys_api import monomials_contrib
+
+df = pd.read_csv("datasets/zema.csv", index_col=0)
+    
+args = dict(deg=1,
+            d=20,
+            nd=3,
+            list_of_c=['PS4', 'PS6'],
+            nModes=20,
+            nModels=10,
+            nfeat_max=25,
+            index_range=(0.0, 0.2),
+            include_plots=False,
+            recursive=True,
+            only_train=False,
+            th_monomial=1e-2,
+            )
+
+dic_solutions, dic_figs, cpu = fit(df, args)
+
+sol = dic_solutions['PS6']
+df_contrib, (cpu1, cpu2) = monomials_contrib(df, sol, win=200, nBatch=25)
+
+print(df_contrib)
+print(f'fitting error: {sol["error"]} | card = {sol["card"]}')
+print(f'cpu all = {cpu1:1.3} | cpu distant = {cpu2:1.3}')
+```
+
+Notice that the meaning of the input arguments `win` and `nBatch` is exactly the same as the one provided in the [`plars` documentation](plars_docs.qmd#computing-monomial-contributions). The results of the previous script are shown below: 
+
+```shell
+--> PS4              error = 0.17 |     align : 0.990 |  nfeat = 6 / 29
+--> PS6              error = 0.04 |     align : 0.999 |  nfeat = 4 / 29
+
+      Monomial  Contribution       std
+0  (PS6(k-20))     -0.404991  0.001812
+1  (PS6(k-40))      0.403470  0.001734
+2     (PS5(k))      0.096090  0.000403
+3  (PS6(k-60))     -0.095449  0.000386
+
+fitting error: 0.042079054813895324 | card = 4
+cpu all = 1.11 | cpu distant = 0.552
+```
+
+From these results it comes out that because of the presence of delays, it is not obvious how to evaluate the importance of a particular **sensor** (and not monomial) in the solution. This is because a sensor might participate through different delayed terms. That is the reason why the `g2sys` module proposes also the `sensors_contrib` method that is descibed in the next section. 
+
+# The `sensors_contrib` method
+
+The following script fits a `g2sys` models for `PS4` and `PS6` sensors, then compute, **for each of the two resulting models**, the contributions of sensors: 
+
+```python 
+from mizopol.g2sys_api import fit, sensors_contrib
+
+df = pd.read_csv("datasets/zema.csv", index_col=0)
+
+args = dict(deg=1,
+            d=20,
+            nd=3,
+            list_of_c=['PS4', 'PS6'],
+            nModes=20,
+            nModels=10,
+            nfeat_max=25,
+            index_range=(0.0, 0.2),
+            include_plots=False,
+            recursive=True,
+            only_train=False,
+            th_monomial=1e-2,
+            )
+
+dic_solutions, dic_figs, cpu = fit(df, args)
+
+for c in args['list_of_c']:
+    sol = dic_solutions[c]
+    #---------------------------------------------------
+    df_contrib, (cpu1, cpu2) = sensors_contrib(df, sol)
+    #---------------------------------------------------
+    print('sensors contribution in ', c)
+    print(df_contrib)
+    print(f'fitting error: {sol["error"]} | card = {sol["card"]}')
+    print(f'cpu all = {cpu1:1.3} | cpu distant = {cpu2:1.3}')
+    print('----')
+```
+
+output: 
+
+```shell
+--> PS4              error = 0.07 |     align : 0.990 |  nfeat = 7 / 29
+--> PS6              error = 0.06 |     align : 0.999 |  nfeat = 4 / 29
+
+sensors contribution in  PS4
+      contrib
+PS4  0.739079
+PS5  0.133793
+PS6  0.127128
+
+fitting error: 0.06515230111229599 | card = 7
+cpu all = 1.25 | cpu distant = 0.671
+----
+
+sensors contribution in  PS6
+      contrib
+PS5  0.095567
+PS6  0.904433
+
+fitting error: 0.05536495997206507 | card = 4
+cpu all = 1.22 | cpu distant = 0.525
+----
+```
+
+
+
+

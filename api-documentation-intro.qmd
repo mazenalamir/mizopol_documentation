@@ -16,7 +16,7 @@ More precisely, a local continuously enriched features package is developed loca
 
 In order to use these endpoints while making total abstraction of the technicalities of the deployment, a module is developped and made freely downloadable from a public repository so that the endpoints be accessible from the user side. 
 
-The interface module can be doanloaded or cloned from:  
+The interface module will shortly be downloadble or cloned from the following public repository (*I'm working on it*):  
 
 ***
 

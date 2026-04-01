@@ -22,8 +22,6 @@ website:
         href: g2sys_intro.qmd
       - text: pwpol
         href: pwp_intro.qmd
-      - text: xpwpol
-        href: xpwpol_intro.qmd
       - text: rlars
         href: rlars_intro.qmd
       - text: Graph
@@ -95,12 +93,6 @@ website:
             href: pwpol_anaesthesia.qmd
           - text: "pwpol: The benchmark"
             href: pwpol_bench.qmd
-      #- section: "**explicit pwpol**"
-      #  contents:
-      #    - text: "xpwpol: Intro"
-      #      href: xpwpol_intro.qmd
-      #    - text: "xpwpol: Robotic"
-      #      href: xpwpol_robot.qmd
       - section: "**rlars**"
         contents:
           - text: "rlars: Intro"
@@ -113,18 +105,14 @@ website:
             href: graph_intro.qmd
           - text: "Graph: g2sys|Hydraulic rig"
             href: graph_zema.qmd
-      # - section: "**Digital twins**"
-      #   contents:
-      #     - text: "DT: Introduction"
-      #       href: digital_twins_intro.qmd
-      #     - text: "DT: Example 1"
-      #       href: digital_twins_zema.qmd
       - section: "**API documentation**"
         contents:
           - text: Installation 
             href: api-documentation-intro.qmd
           - text: plars documentation 
             href: plars_docs.qmd
+          - text: g2sys documentation 
+            href: g2sys_docs.qmd
       - about.qmd
 
 format:

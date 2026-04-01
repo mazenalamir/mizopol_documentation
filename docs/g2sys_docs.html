@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>xpwpol – MizoPol</title>
+<title>g2sys – MizoPol</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -29,6 +63,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./about.html" rel="next">
+<link href="./plars_docs.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -66,35 +102,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles/styles.css">
 </head>
@@ -140,10 +147,6 @@ window.Quarto = {
 <span class="menu-text">pwpol</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./xpwpol_intro.html"> 
-<span class="menu-text">xpwpol</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./rlars_intro.html"> 
 <span class="menu-text">rlars</span></a>
   </li>  
@@ -181,7 +184,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">xpwpol</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./api-documentation-intro.html"><strong>API documentation</strong></a></li><li class="breadcrumb-item"><a href="./g2sys_docs.html">g2sys documentation</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -448,6 +451,12 @@ window.Quarto = {
  <span class="menu-text">plars documentation</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./g2sys_docs.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">g2sys documentation</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -466,19 +475,25 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#why" id="toc-why" class="nav-link active" data-scroll-target="#why"><span class="header-section-number">1</span> Why?</a></li>
-  <li><a href="#explicit-relationships" id="toc-explicit-relationships" class="nav-link" data-scroll-target="#explicit-relationships"><span class="header-section-number">2</span> Explicit relationships</a></li>
-  <li><a href="#link-to-plars" id="toc-link-to-plars" class="nav-link" data-scroll-target="#link-to-plars"><span class="header-section-number">3</span> Link to <code>plars</code></a></li>
+  <li><a href="#sec-g2sys-dict" id="toc-sec-g2sys-dict" class="nav-link active" data-scroll-target="#sec-g2sys-dict"><span class="header-section-number">1</span> The <code>g2sys</code> Fit arguments dictionary</a></li>
+  <li><a href="#the-fit-method" id="toc-the-fit-method" class="nav-link" data-scroll-target="#the-fit-method"><span class="header-section-number">2</span> The <code>fit</code> method</a>
+  <ul class="collapse">
+  <li><a href="#inputs-arguments" id="toc-inputs-arguments" class="nav-link" data-scroll-target="#inputs-arguments"><span class="header-section-number">2.1</span> Inputs arguments</a></li>
+  <li><a href="#returned-arguments" id="toc-returned-arguments" class="nav-link" data-scroll-target="#returned-arguments"><span class="header-section-number">2.2</span> Returned arguments</a></li>
+  </ul></li>
+  <li><a href="#the-predict-method" id="toc-the-predict-method" class="nav-link" data-scroll-target="#the-predict-method"><span class="header-section-number">3</span> The <code>predict</code> method</a></li>
+  <li><a href="#the-monomials_contrib-method" id="toc-the-monomials_contrib-method" class="nav-link" data-scroll-target="#the-monomials_contrib-method"><span class="header-section-number">4</span> The <code>monomials_contrib</code> method</a></li>
+  <li><a href="#the-sensors_contrib-method" id="toc-the-sensors_contrib-method" class="nav-link" data-scroll-target="#the-sensors_contrib-method"><span class="header-section-number">5</span> The <code>sensors_contrib</code> method</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./api-documentation-intro.html"><strong>API documentation</strong></a></li><li class="breadcrumb-item"><a href="./g2sys_docs.html">g2sys documentation</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">xpwpol</h1>
-<p class="subtitle lead">Explicit piece-wise polynomial relationships</p>
+<h1 class="title">g2sys</h1>
+<p class="subtitle lead">API Documenation</p>
 </div>
 
 
@@ -496,33 +511,378 @@ window.Quarto = {
 
 
 <hr>
-<section id="why" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="why"><span class="header-section-number">1</span> Why?</h2>
-<p>While the implicit relationships that are designed using the <a href="./pwp_intro.html">pwpol</a> section enables normality characterization and anomaly detection, it does not enable prediction of the label <span class="math inline">\(y\)</span> given the vector of features <span class="math inline">\(x\)</span>.</p>
-<p>In some applications, such as the data-driven state estimation of nonlinear systems to cite but a single example, one would like to have a prediction of non measured quantities that are not necessarily given by purely polynomial expressions of the <span class="math inline">\(x\)</span>. Here is where the <code>xpwpol</code> module comes handy.</p>
+<p>This documentation concerns the scripting version of <code>g2sys</code>. For the use of the <code>streamlit</code> version, refer to the movies provided in the <a href="./g2sys_intro.html"><code>g2sys</code>-dedicated section</a> and those which follow it.</p>
+<section id="sec-g2sys-dict" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> The <code>g2sys</code> Fit arguments dictionary</h1>
+<p>Following the same scheme as the one used for the <code>plars</code> module, the use of <code>g2sys</code> needs a list of arguments that are gathered in a dictionary. For instance, the following script shows how the <code>fit</code> method can be called:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.g2sys_api <span class="im">import</span> fit</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the working dataframe</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"datasets/zema.csv"</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># set the arguments dictionary </span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>args <span class="op">=</span> <span class="bu">dict</span>(deg<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>            d<span class="op">=</span><span class="dv">20</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            nd<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>            list_of_c<span class="op">=</span>[<span class="st">'PS4'</span>, <span class="st">'PS6'</span>],</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            nModes<span class="op">=</span><span class="dv">20</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            nModels<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>            nfeat_max<span class="op">=</span><span class="dv">25</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>            index_range<span class="op">=</span>(<span class="fl">0.0</span>, <span class="fl">0.2</span>),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>            include_plots<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            recursive<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a g2sys model </span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>dic_solutions, dic_figs, cpu <span class="op">=</span> fit(df, args)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>where one first download the working dataframe, set the arguments dictionary described below and then run the <code>fit</code> method of the <code>g2sys_api</code> module. Notice that as it is described in the <code>plars</code> documentation, the list of (keyword,value) pairs gathers only those parameters the user intended to set, other pairs are used behnd the scene with their default values.</p>
+<p>As the <code>g2sys</code> module is based on the <code>plars</code> module to parsimoniously identify polynomial relationships, One might observe that the presence of the already seen parameters: <code>nModels</code>, <code>nModes</code>, <code>deg</code> which belongs to the arguments dictionart of <code>plars</code> (the <code>window</code> is not set here as the user is ok with the default value).</p>
+<p>Notice also the presence of the list of labels <code>['PS4', 'PS6']</code> for which one is seeking models. This is because <code>g2sys</code> is designed to work in a Batch mode on a set of targets.</p>
+<p>The following table provides a list of available parameters for the <code>g2sys</code> module.</p>
+<div class="small">
+<div id="tbl-params-g2sys" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-params-g2sys-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Possible entries in the <code>args</code> dictionary for <code>g2sys</code>.
+</figcaption>
+<div aria-describedby="tbl-params-g2sys-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 8%">
+<col style="width: 59%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Used for</th>
+<th style="text-align: right;">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>deg</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">The degree of the polynomial to be identified</td>
+<td style="text-align: right;"><code>1</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>window</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">number of samples per window (window width)</td>
+<td style="text-align: right;"><code>200</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>nModels</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">Number of sampled window for alignement evaluation</td>
+<td style="text-align: right;"><code>10</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>nModes</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">Number of selected monomials per window</td>
+<td style="text-align: right;"><code>10</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>eps</code></td>
+<td style="text-align: left;"><code>float</code></td>
+<td style="text-align: left;">precision for the final least squares solution</td>
+<td style="text-align: right;"><code>5e-2</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>nBatch</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">Number of window used to determine monomials contributions</td>
+<td style="text-align: right;"><code>25</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>eta</code></td>
+<td style="text-align: left;"><code>float</code></td>
+<td style="text-align: left;">The quantile used to compute the error dataframe</td>
+<td style="text-align: right;"><code>50</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>d</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">The amount of delay used (multiple of sampling time)</td>
+<td style="text-align: right;"><code>0</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>nd</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">The number of delayed instances per sensors to be used</td>
+<td style="text-align: right;"><code>0</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>list_of_c</code></td>
+<td style="text-align: left;"><code>list[str]</code></td>
+<td style="text-align: left;">The list of sensors’ labels to model</td>
+<td style="text-align: right;">user-defined</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>recursive</code></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;">If True, dynamic relationships are looked for otherwise static</td>
+<td style="text-align: right;"><code>False</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>nSlices</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">Number of random slices to use in the search for relevant columns to include</td>
+<td style="text-align: right;"><code>20</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>nSelect</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">Number of columns to be selected at each slice</td>
+<td style="text-align: right;"><code>10</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>nfeat_max</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">Maximum number of columns incuded before polynomial expansion</td>
+<td style="text-align: right;"><code>20</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>include_plots</code></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;">If true, fitting plots are provided</td>
+<td style="text-align: right;"><code>False</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>index_range</code></td>
+<td style="text-align: left;"><code>tuple(float, float)</code></td>
+<td style="text-align: left;">the interval for train as fraction of the dataset’s length</td>
+<td style="text-align: right;"><code>(0.0, 0.25)</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>th_monomials</code></td>
+<td style="text-align: left;"><code>float</code></td>
+<td style="text-align: left;">Threshold for the inclusion of monomials in the solution</td>
+<td style="text-align: right;"><code>1e-4</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Regarding the <code>list_of_c</code> argument, notice that even when a single label, say <code>c</code> is targeted, the syntax is to call the <code>fit</code> method with the list <code>[c]</code>.</p>
+</div>
+</div>
 </section>
-<section id="explicit-relationships" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="explicit-relationships"><span class="header-section-number">2</span> Explicit relationships</h2>
-<p>Indeed, the <code>xpwpol</code> module enables to design relationships of the form:</p>
-<p><span class="math display">\[
-y = P_{\mathcal R(x)}(x)\quad \texttt{where}\quad  \mathcal R(x)\in \{1,\dots,n_r\}
-\]</span></p>
-<p>in which:</p>
-<ul>
-<li><p><span class="math inline">\(n_r\in \mathbb N\)</span> is the <strong>number of polynomials</strong> involved, each associated to an explicitly defined region of the features space.</p></li>
-<li><p><span class="math inline">\(\mathcal R:\mathbb R^n\rightarrow \{1,\dots,n_r\}\)</span> is the <strong>region’s index map</strong> that associates to each value of the features vector a region’s number which designates a specific region in the features space and hence the associated specific polynomial.</p></li>
-<li><p><span class="math inline">\(P_j\)</span> for some <span class="math inline">\(j\in \{1,\dots, n_r\}\)</span> is the multi-variate polynomial that represents the relationships between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> in the associated region of the features space.</p></li>
-</ul>
+<section id="the-fit-method" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> The <code>fit</code> method</h1>
+<section id="inputs-arguments" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="inputs-arguments"><span class="header-section-number">2.1</span> Inputs arguments</h2>
+<div class="small">
+<div id="tbl-params-g2sys-fit" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-params-g2sys-fit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Input arguments for the <code>fit</code> method of <code>g2ys</code>.
+</figcaption>
+<div aria-describedby="tbl-params-g2sys-fit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 8%">
+<col style="width: 59%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: right;">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>df</code></td>
+<td style="text-align: left;"><code>pandas dataframe</code></td>
+<td style="text-align: left;">The working dataframe for training</td>
+<td style="text-align: right;">user-defined</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>args</code></td>
+<td style="text-align: left;"><code>dict</code></td>
+<td style="text-align: left;">The dictionary of arguments (see section <a href="#sec-g2sys-dict" class="quarto-xref">Section&nbsp;1</a>)</td>
+<td style="text-align: right;">user-defined</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
 </section>
-<section id="link-to-plars" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="link-to-plars"><span class="header-section-number">3</span> Link to <code>plars</code></h2>
-<p>The <code>xpwpol</code> module is built on the top of the <code>plars</code> module with the following obviously needed additional features:</p>
-<ul>
-<li><p>The solutions is a list of <code>plars</code>-like solution, each is defined on a specific region.</p></li>
-<li><p>The solution incoporates the regions’ map classifier (denoted by <span class="math inline">\(\mathcal R\)</span>) in the previous section.</p></li>
-<li><p>The computation of the sensors contribution is made a little bit more complicated as there is a list of <code>PLARS</code> instances participating each to a global contribution analyser that should also take into account the sizes of the different regions.</p></li>
-</ul>
-<p>In the next section, a use-case is shown to illustrate the relevance of the <code>xpwpol</code> module in capturing non strictly polynomial relationships.</p>
+<section id="returned-arguments" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="returned-arguments"><span class="header-section-number">2.2</span> Returned arguments</h2>
+<div class="small">
+<div id="tbl-params-g2sys-fit" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-params-g2sys-fit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Argument returned by the <code>fit</code> method of <code>g2ys</code>.
+</figcaption>
+<div aria-describedby="tbl-params-g2sys-fit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>dic_solutions</code></td>
+<td style="text-align: left;"><code>dict</code></td>
+<td style="text-align: left;">Dictionary where the keys are the elements of <code>list_of_c</code> and the values are <code>plars</code> solutions as described in Section dedicated to the <a href="./plars_docs.html">plars documentation</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>dic_figs</code></td>
+<td style="text-align: left;"><code>dict</code></td>
+<td style="text-align: left;">Dictionary where the keys are the elements of <code>list_of_c</code> and the values are plotly figures representing the fitting result. <strong>The figures are present only if</strong> the field <code>include_plots</code> is set to <code>True</code> in the arguments of the <code>fit</code> otherwise, None is returned</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>cpu</code></td>
+<td style="text-align: left;"><code>tuple</code></td>
+<td style="text-align: left;">The local and distance computation times as described in the <a href="./plars_docs.html">plars documentation</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+<p>The execution of the script shown in section <a href="#sec-g2sys-dict" class="quarto-xref">Section&nbsp;1</a>, produce the following intermediate log results during the fitting:</p>
+<pre class="shell"><code>python -m test_g2sys
+g2sys ---- test of fit
+--&gt; PS4              error = 0.12 |                      align : 0.967 |  nfeat = 6 / 2024
+--&gt; PS6              error = 0.07 |                      align : 0.995 |  nfeat = 3 / 2024</code></pre>
+<p>which shows the fitting performance in terms of errors, alignement between the label and the features-based predicted on as well as the number of used monomials reported to the total number of eligible ones.</p>
+</section>
+</section>
+<section id="the-predict-method" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> The <code>predict</code> method</h1>
+<p>Once a dictionary of solutions, say <code>dic_solutions</code>, indexed by the items in the <code>list_of_c</code> list, the solutions can be used to predict the associated label for a new dataframe <code>df</code> using the following script:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.g2sys_api <span class="im">import</span> predict</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>y, ypred, (cpu1, cpu2) <span class="op">=</span> predict(df, dic_solutions[<span class="st">'PS4'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>in which <code>y</code> is simply <code>df['PS4'].values</code> while <code>ypred</code> is its prediced values based on the solution <code>dic_solutions['PS4']</code>. As for the computation times <code>cpu1</code> and <code>cpu2</code>, they represent the user viewed computation time and the host side computation time (generally lower than the first one which incorporates the communication and warming server delays).</p>
+</section>
+<section id="the-monomials_contrib-method" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> The <code>monomials_contrib</code> method</h1>
+<p>As in the case of <code>plars</code> module, the <code>g2sys</code> module provides a method that compute the contributions of the different monomials inside a solution. The following script shows how the solution associated to the sensor <code>PS6</code> is used to compute the contributions of the different monomials over a working dataframe <code>df</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.g2sys_api <span class="im">import</span> monomials_contrib</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"datasets/zema.csv"</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>args <span class="op">=</span> <span class="bu">dict</span>(deg<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>            d<span class="op">=</span><span class="dv">20</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            nd<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>            list_of_c<span class="op">=</span>[<span class="st">'PS4'</span>, <span class="st">'PS6'</span>],</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>            nModes<span class="op">=</span><span class="dv">20</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>            nModels<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            nfeat_max<span class="op">=</span><span class="dv">25</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            index_range<span class="op">=</span>(<span class="fl">0.0</span>, <span class="fl">0.2</span>),</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            include_plots<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            recursive<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            only_train<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            th_monomial<span class="op">=</span><span class="fl">1e-2</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>dic_solutions, dic_figs, cpu <span class="op">=</span> fit(df, args)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> dic_solutions[<span class="st">'PS6'</span>]</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>df_contrib, (cpu1, cpu2) <span class="op">=</span> monomials_contrib(df, sol, win<span class="op">=</span><span class="dv">200</span>, nBatch<span class="op">=</span><span class="dv">25</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_contrib)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'fitting error: </span><span class="sc">{</span>sol[<span class="st">"error"</span>]<span class="sc">}</span><span class="ss"> | card = </span><span class="sc">{</span>sol[<span class="st">"card"</span>]<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'cpu all = </span><span class="sc">{</span>cpu1<span class="sc">:1.3}</span><span class="ss"> | cpu distant = </span><span class="sc">{</span>cpu2<span class="sc">:1.3}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Notice that the meaning of the input arguments <code>win</code> and <code>nBatch</code> is exactly the same as the one provided in the <a href="./plars_docs.html#computing-monomial-contributions"><code>plars</code> documentation</a>. The results of the previous script are shown below:</p>
+<pre class="shell"><code>--&gt; PS4              error = 0.17 |     align : 0.990 |  nfeat = 6 / 29
+--&gt; PS6              error = 0.04 |     align : 0.999 |  nfeat = 4 / 29
+
+      Monomial  Contribution       std
+0  (PS6(k-20))     -0.404991  0.001812
+1  (PS6(k-40))      0.403470  0.001734
+2     (PS5(k))      0.096090  0.000403
+3  (PS6(k-60))     -0.095449  0.000386
+
+fitting error: 0.042079054813895324 | card = 4
+cpu all = 1.11 | cpu distant = 0.552</code></pre>
+<p>From these results it comes out that because of the presence of delays, it is not obvious how to evaluate the importance of a particular <strong>sensor</strong> (and not monomial) in the solution. This is because a sensor might participate through different delayed terms. That is the reason why the <code>g2sys</code> module proposes also the <code>sensors_contrib</code> method that is descibed in the next section.</p>
+</section>
+<section id="the-sensors_contrib-method" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> The <code>sensors_contrib</code> method</h1>
+<p>The following script fits a <code>g2sys</code> models for <code>PS4</code> and <code>PS6</code> sensors, then compute, <strong>for each of the two resulting models</strong>, the contributions of sensors:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.g2sys_api <span class="im">import</span> fit, sensors_contrib</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"datasets/zema.csv"</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>args <span class="op">=</span> <span class="bu">dict</span>(deg<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            d<span class="op">=</span><span class="dv">20</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            nd<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            list_of_c<span class="op">=</span>[<span class="st">'PS4'</span>, <span class="st">'PS6'</span>],</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            nModes<span class="op">=</span><span class="dv">20</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>            nModels<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>            nfeat_max<span class="op">=</span><span class="dv">25</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>            index_range<span class="op">=</span>(<span class="fl">0.0</span>, <span class="fl">0.2</span>),</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>            include_plots<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>            recursive<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>            only_train<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>            th_monomial<span class="op">=</span><span class="fl">1e-2</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>dic_solutions, dic_figs, cpu <span class="op">=</span> fit(df, args)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> args[<span class="st">'list_of_c'</span>]:</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    sol <span class="op">=</span> dic_solutions[c]</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">#---------------------------------------------------</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    df_contrib, (cpu1, cpu2) <span class="op">=</span> sensors_contrib(df, sol)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#---------------------------------------------------</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'sensors contribution in '</span>, c)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(df_contrib)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'fitting error: </span><span class="sc">{</span>sol[<span class="st">"error"</span>]<span class="sc">}</span><span class="ss"> | card = </span><span class="sc">{</span>sol[<span class="st">"card"</span>]<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'cpu all = </span><span class="sc">{</span>cpu1<span class="sc">:1.3}</span><span class="ss"> | cpu distant = </span><span class="sc">{</span>cpu2<span class="sc">:1.3}</span><span class="ss">'</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'----'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>output:</p>
+<pre class="shell"><code>--&gt; PS4              error = 0.07 |     align : 0.990 |  nfeat = 7 / 29
+--&gt; PS6              error = 0.06 |     align : 0.999 |  nfeat = 4 / 29
+
+sensors contribution in  PS4
+      contrib
+PS4  0.739079
+PS5  0.133793
+PS6  0.127128
+
+fitting error: 0.06515230111229599 | card = 7
+cpu all = 1.25 | cpu distant = 0.671
+----
+
+sensors contribution in  PS6
+      contrib
+PS5  0.095567
+PS6  0.904433
+
+fitting error: 0.05536495997206507 | card = 4
+cpu all = 1.22 | cpu distant = 0.525
+----</code></pre>
 
 
 </section>
@@ -948,6 +1308,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./plars_docs.html" class="pagination-link" aria-label="plars documentation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">plars documentation</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./about.html" class="pagination-link" aria-label="About mizopol">
+        <span class="nav-page-text">About mizopol</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 
