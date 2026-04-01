@@ -381,7 +381,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>implicit pwpol</strong></span></a>
+ <span class="menu-text"><strong>pwpol</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -486,6 +486,12 @@ window.Quarto = {
  <span class="menu-text">g2sys documentation</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pwpol_docs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">pwpol documentation</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -555,9 +561,12 @@ window.Quarto = {
 
 
 <hr>
+<p>Recall that the objective of <code>plars</code> is to fit a polynomial <span class="math inline">\(P\)</span> such that</p>
+<p><span class="math display">\[y\approx P(x)\]</span></p>
+<p>where <span class="math inline">\(y\)</span> is a label while <span class="math inline">\(x\)</span> is a vector of features.</p>
 <section id="sec-dictionaries" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> (Instance | Fit) dictionaries</h1>
-<p>Before we detail the parameters of the <code>plars</code> call. Let us examine the simplest way to call for a fit of a <code>plars</code> model using the defatult parameters. Recall that the objective of <code>plars</code> is to fit a polynomial <span class="math inline">\(P\)</span> such that <span class="math inline">\(y\approx P(x)\)</span>.</p>
+<p>Before we detail the parameters of the <code>plars</code> call. Let us examine the simplest way to call for a fit of a <code>plars</code> model using the defatult parameters.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.plars_api <span class="im">import</span> fit </span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the default parameters for the plars instance</span></span>

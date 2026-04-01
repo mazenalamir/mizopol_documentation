@@ -83,7 +83,7 @@ website:
             href: g2sys_valves.qmd
           - text: "g2sys: turbofan"
             href: g2sys_turbofan.qmd
-      - section: "**implicit pwpol**"
+      - section: "**pwpol**"
         contents:
           - text: "pwpol: Intro"
             href: pwp_intro.qmd
@@ -113,6 +113,8 @@ website:
             href: plars_docs.qmd
           - text: g2sys documentation 
             href: g2sys_docs.qmd
+          - text: pwpol documentation 
+            href: pwpol_docs.qmd
       - about.qmd
 
 format:

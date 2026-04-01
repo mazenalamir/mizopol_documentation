@@ -5,9 +5,15 @@ subtitle: API Documenation
 
 ***
 
+Recall that the objective of `plars` is to fit a polynomial $P$ such that 
+
+$$y\approx P(x)$$
+
+where $y$ is a label while $x$ is a vector of features.
+
 # (Instance | Fit) dictionaries {#sec-dictionaries}
 
-Before we detail the parameters of the `plars` call. Let us examine the simplest way to call for a fit of a `plars` model using the defatult parameters. Recall that the objective of `plars` is to fit a polynomial $P$ such that $y\approx P(x)$. 
+Before we detail the parameters of the `plars` call. Let us examine the simplest way to call for a fit of a `plars` model using the defatult parameters. 
 
 
 ```python
