@@ -1198,11 +1198,35 @@
     ]
   },
   {
-    "objectID": "rlars_docs.html",
-    "href": "rlars_docs.html",
+    "objectID": "rlars_docs.html#general-case",
+    "href": "rlars_docs.html#general-case",
     "title": "qlars",
-    "section": "",
-    "text": "1 Recall on the rlars module’s objective\nThe objective of the rlars module of the MizoPol package is described in a previous dedicated section. Nevertheless, let us summarize it briefly for the reader’s convenience.\nIn its more general form, the rlars enable to characterize the normality of a pair \\((x,y)\\) consisting in.a features vector \\(x\\) and a label \\(y\\) by the fact that the resisual defined by:\n\\[\nR(x,y) = y-\\sum_{k=0}^{n_m}c_k(x)y^k \\approx 0\n\\tag{1}\\]\nor equivalently:\n\\[\nR(x,y) = \\sum_{k=0}^{n_m}\\bar c_k(x)y^k \\approx 0\\quad \\text{where}\\qquad \\bar c_k := \\left\\{\\begin{array}{ll}\nc_k & \\text{if $k\\neq 1$}\\\\\nc_k-1& \\text{if $k=1$}\n\\end{array}\\right.\n\\tag{2}\\]\nwhich can be simply stated as follows:\n\n\n\n\n\n\nTip\n\n\n\nThe normality is characterized by \\(y\\) being a root of a polynomial whose coefficient are polynomial in \\(x\\). rlars attempt to find such polynomial if possible.",
+    "section": "1.1 General case",
+    "text": "1.1 General case\nIn its more general form, the rlars enable to characterize the normality of a pair \\((x,y)\\) consisting in.a features vector \\(x\\) and a label \\(y\\) by the fact that the resisual defined by:\n\\[\nR(x,y) = y-\\sum_{k=0}^{n_m}c_k(x)y^k \\approx 0\n\\tag{1}\\]\nor equivalently:\n\\[\nR(x,y) = \\sum_{k=0}^{n_m}\\bar c_k(x)y^k \\approx 0\\quad\\vert \\quad \\bar c_k := \\left\\{\\begin{array}{ll}\nc_k & \\text{if $k\\neq 1$}\\\\\nc_k-1& \\text{if $k=1$}\n\\end{array}\\right.\n\\tag{2}\\]\nwhich can be simply stated as follows:\n\n\n\n\n\n\nrlarsnormality characterization\n\n\n\nThe normality is characterized by \\(y\\) being a root of a polynomial whose coefficient are polynomial in \\(x\\). rlars attempt to find such polynomial if possible.",
+    "crumbs": [
+      "Home",
+      "**API documentation**",
+      "rlars documentation"
+    ]
+  },
+  {
+    "objectID": "rlars_docs.html#special-case-of-rational-representation",
+    "href": "rlars_docs.html#special-case-of-rational-representation",
+    "title": "qlars",
+    "section": "1.2 Special case of rational representation",
+    "text": "1.2 Special case of rational representation\nIn the spectic case where the degree \\(n_m=1\\), the rlars module delivers a rational expression of the label as a function of the vecteur of features \\(x\\), namely:\n\\[\ny = -\\dfrac{\\bar c_0(x)}{\\bar c_1(x)}\n\\tag{3}\\]\nwhere both \\(\\bar c_0\\) and \\(\\bar c_1\\) are multi-variate polynomials in potentially higher degree.\n\n\n\n\n\n\nMeaning of \\(n_m=1\\)\n\n\n\nNotice that \\(n_m=1\\) in Equation 2 does not mean that the polynomials \\(\\bar c_k(x)\\) are of degree 1. It is the maximum power of \\(y\\) that is equal to \\(1\\) and not the degrees of the polynomials \\(\\bar c_k(\\cdot)\\) that is concerned.\n\n\nAs such, this special case for its own is a generalization of the structure that is searched for by the plars module where \\(\\bar c_1(\\cdot) \\equiv 1\\).",
+    "crumbs": [
+      "Home",
+      "**API documentation**",
+      "rlars documentation"
+    ]
+  },
+  {
+    "objectID": "rlars_docs.html#ouput-arguments-of-predict",
+    "href": "rlars_docs.html#ouput-arguments-of-predict",
+    "title": "qlars",
+    "section": "3.1 Ouput arguments of predict",
+    "text": "3.1 Ouput arguments of predict\n\n\n\n\nTable 1: output arguments of the predict method of the rlars module.\n\n\n\n\n\n\n\n\n\n\nParameter\nType\nUsed for\n\n\n\n\nR\nlist[list[complex]]\nlist of roots of the \\(y\\) equation Equation 2\n\n\nresidual\nlist[float]\nResidual of the \\(y\\) equation Equation 2 at \\(y\\)\n\n\ndf_res\npandas dataframe\nNormalized residual dataframe",
     "crumbs": [
       "Home",
       "**API documentation**",
@@ -1399,66 +1423,6 @@
       "Home",
       "**Preliminaries**",
       "Parsimony: Intro"
-    ]
-  },
-  {
-    "objectID": "rlars_docs.html#general-case",
-    "href": "rlars_docs.html#general-case",
-    "title": "qlars",
-    "section": "1.1 General case",
-    "text": "1.1 General case\nIn its more general form, the rlars enable to characterize the normality of a pair \\((x,y)\\) consisting in.a features vector \\(x\\) and a label \\(y\\) by the fact that the resisual defined by:\n\\[\nR(x,y) = y-\\sum_{k=0}^{n_m}c_k(x)y^k \\approx 0\n\\tag{1}\\]\nor equivalently:\n\\[\nR(x,y) = \\sum_{k=0}^{n_m}\\bar c_k(x)y^k \\approx 0\\quad\\vert \\quad \\bar c_k := \\left\\{\\begin{array}{ll}\nc_k & \\text{if $k\\neq 1$}\\\\\nc_k-1& \\text{if $k=1$}\n\\end{array}\\right.\n\\tag{2}\\]\nwhich can be simply stated as follows:\n\n\n\n\n\n\nrlarsnormality characterization\n\n\n\nThe normality is characterized by \\(y\\) being a root of a polynomial whose coefficient are polynomial in \\(x\\). rlars attempt to find such polynomial if possible.",
-    "crumbs": [
-      "Home",
-      "**API documentation**",
-      "rlars documentation"
-    ]
-  },
-  {
-    "objectID": "rlars_docs.html#special-case-of-rational-function",
-    "href": "rlars_docs.html#special-case-of-rational-function",
-    "title": "qlars",
-    "section": "1.2 Special case of rational function",
-    "text": "1.2 Special case of rational function\nIn the spectic case where the degree \\(n_m=1\\), the rlars module delivers a rational expression of the label as a function of the vecteur of features \\(x\\), namely:\n\\[\ny = -\\dfrac{\\bar c_0(x)}{\\bar c_1(x)}\n\\tag{3}\\]\nwhere both \\(\\bar c_0\\) and \\(\\bar c_1\\) are multi-variate polynomials in potentially higher degree.\n\n\n\n\n\n\nImportant\n\n\n\nNotice that \\(n_m=1\\) in Equation 2 does not mean that the polynomials \\(\\bar c_k(x)\\) are of degree 1. It is the maximum power of \\(y\\) that is equal to \\(1\\) and not the degrees of the polynomials \\(\\bar c_k(\\cdot)\\) that is concerned.",
-    "crumbs": [
-      "Home",
-      "**API documentation**",
-      "rlars documentation"
-    ]
-  },
-  {
-    "objectID": "rlars_docs.html#special-case-of-rational-representation",
-    "href": "rlars_docs.html#special-case-of-rational-representation",
-    "title": "qlars",
-    "section": "1.2 Special case of rational representation",
-    "text": "1.2 Special case of rational representation\nIn the spectic case where the degree \\(n_m=1\\), the rlars module delivers a rational expression of the label as a function of the vecteur of features \\(x\\), namely:\n\\[\ny = -\\dfrac{\\bar c_0(x)}{\\bar c_1(x)}\n\\tag{3}\\]\nwhere both \\(\\bar c_0\\) and \\(\\bar c_1\\) are multi-variate polynomials in potentially higher degree.\n\n\n\n\n\n\nMeaning of \\(n_m=1\\)\n\n\n\nNotice that \\(n_m=1\\) in Equation 2 does not mean that the polynomials \\(\\bar c_k(x)\\) are of degree 1. It is the maximum power of \\(y\\) that is equal to \\(1\\) and not the degrees of the polynomials \\(\\bar c_k(\\cdot)\\) that is concerned.\n\n\nAs such, this special case for its own is a generalization of the structure that is searched for by the plars module where \\(\\bar c_1(\\cdot) \\equiv 1\\).",
-    "crumbs": [
-      "Home",
-      "**API documentation**",
-      "rlars documentation"
-    ]
-  },
-  {
-    "objectID": "rlars_docs.html#ouput-arguments-of-the-predict-method",
-    "href": "rlars_docs.html#ouput-arguments-of-the-predict-method",
-    "title": "qlars",
-    "section": "3.1 Ouput arguments of the predict method",
-    "text": "3.1 Ouput arguments of the predict method\n\n\n\n\nTable 1: output arguments of the predict method of the rlars module.\n\n\n\n\n\n\n\n\n\n\nParameter\nType\nUsed for\n\n\n\n\nR\nlist[list[complex]]\nlist of roots of the \\(y\\) equation Equation 2\n\n\nresidual\nlist[float]\nResidual of the \\(y\\) equation Equation 2 at \\(y\\)\n\n\ndf_res\npandas dataframe\nNormalized residual dataframe",
-    "crumbs": [
-      "Home",
-      "**API documentation**",
-      "rlars documentation"
-    ]
-  },
-  {
-    "objectID": "rlars_docs.html#ouput-arguments-of-predict",
-    "href": "rlars_docs.html#ouput-arguments-of-predict",
-    "title": "qlars",
-    "section": "3.1 Ouput arguments of predict",
-    "text": "3.1 Ouput arguments of predict\n\n\n\n\nTable 1: output arguments of the predict method of the rlars module.\n\n\n\n\n\n\n\n\n\n\nParameter\nType\nUsed for\n\n\n\n\nR\nlist[list[complex]]\nlist of roots of the \\(y\\) equation Equation 2\n\n\nresidual\nlist[float]\nResidual of the \\(y\\) equation Equation 2 at \\(y\\)\n\n\ndf_res\npandas dataframe\nNormalized residual dataframe",
-    "crumbs": [
-      "Home",
-      "**API documentation**",
-      "rlars documentation"
     ]
   }
 ]
