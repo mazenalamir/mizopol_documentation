@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>rlars – MizoPol</title>
+<title>qlars – MizoPol</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -29,8 +63,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./rlars_twin.html" rel="next">
-<link href="./pwpol_bench.html" rel="prev">
+<link href="./about.html" rel="next">
+<link href="./pwpol_docs.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -179,7 +213,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./rlars_intro.html"><strong>rlars</strong></a></li><li class="breadcrumb-item"><a href="./rlars_intro.html">rlars: Intro</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./api-documentation-intro.html"><strong>API documentation</strong></a></li><li class="breadcrumb-item"><a href="./rlars_docs.html">rlars documentation</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -390,7 +424,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./rlars_intro.html" class="sidebar-item-text sidebar-link active">
+  <a href="./rlars_intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">rlars: Intro</span></a>
   </div>
 </li>
@@ -460,7 +494,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./rlars_docs.html" class="sidebar-item-text sidebar-link">
+  <a href="./rlars_docs.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">rlars documentation</span></a>
   </div>
 </li>
@@ -482,23 +516,26 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#why" id="toc-why" class="nav-link active" data-scroll-target="#why"><span class="header-section-number">1</span> Why?</a></li>
-  <li><a href="#mathematical-structure" id="toc-mathematical-structure" class="nav-link" data-scroll-target="#mathematical-structure"><span class="header-section-number">2</span> Mathematical structure</a>
+  <li><a href="#the-rlars-modules-objective" id="toc-the-rlars-modules-objective" class="nav-link active" data-scroll-target="#the-rlars-modules-objective"><span class="header-section-number">1</span> The <code>rlars</code> module’s objective</a>
   <ul class="collapse">
-  <li><a href="#y-as-a-root-of-a-polynomial-with-x-dependent-polynomial-coefficients" id="toc-y-as-a-root-of-a-polynomial-with-x-dependent-polynomial-coefficients" class="nav-link" data-scroll-target="#y-as-a-root-of-a-polynomial-with-x-dependent-polynomial-coefficients"><span class="header-section-number">2.1</span> <span class="math inline">\(y\)</span> as a root of a polynomial with <span class="math inline">\(x\)</span>-dependent polynomial coefficients</a></li>
-  <li><a href="#structure-of-the-relationships" id="toc-structure-of-the-relationships" class="nav-link" data-scroll-target="#structure-of-the-relationships"><span class="header-section-number">2.2</span> Structure of the relationships</a></li>
+  <li><a href="#general-case" id="toc-general-case" class="nav-link" data-scroll-target="#general-case"><span class="header-section-number">1.1</span> General case</a></li>
+  <li><a href="#special-case-of-rational-representation" id="toc-special-case-of-rational-representation" class="nav-link" data-scroll-target="#special-case-of-rational-representation"><span class="header-section-number">1.2</span> Special case of rational representation</a></li>
   </ul></li>
-  <li><a href="#computation-flow" id="toc-computation-flow" class="nav-link" data-scroll-target="#computation-flow"><span class="header-section-number">3</span> Computation flow</a></li>
+  <li><a href="#the-fit-method" id="toc-the-fit-method" class="nav-link" data-scroll-target="#the-fit-method"><span class="header-section-number">2</span> The <code>fit</code> method</a></li>
+  <li><a href="#the-predict-method" id="toc-the-predict-method" class="nav-link" data-scroll-target="#the-predict-method"><span class="header-section-number">3</span> The <code>predict</code> method</a>
+  <ul class="collapse">
+  <li><a href="#ouput-arguments-of-predict" id="toc-ouput-arguments-of-predict" class="nav-link" data-scroll-target="#ouput-arguments-of-predict"><span class="header-section-number">3.1</span> Ouput arguments of <code>predict</code></a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./rlars_intro.html"><strong>rlars</strong></a></li><li class="breadcrumb-item"><a href="./rlars_intro.html">rlars: Intro</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./api-documentation-intro.html"><strong>API documentation</strong></a></li><li class="breadcrumb-item"><a href="./rlars_docs.html">rlars documentation</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">rlars</h1>
-<p class="subtitle lead">labels as roots of a polynomials with features-dependent coefficients.</p>
+<h1 class="title">qlars</h1>
+<p class="subtitle lead">API documentation</p>
 </div>
 
 
@@ -516,101 +553,213 @@ window.Quarto = {
 
 
 <hr>
-<section id="why" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Why?</h1>
-<p>Despite the fact that single multi-variate polynomials<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> is a decently wide class, it obviously does not covre all possible relationships. In particular, rational relationships such as: <span id="eq-rational"><span class="math display">\[
-y = \dfrac{c_0(x)}{c_1(x)}
+<section id="the-rlars-modules-objective" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> The <code>rlars</code> module’s objective</h1>
+<p>The objective of the <code>rlars</code> module of the <code>MizoPol</code> package is described in a previous <a href="./rlars_intro.html">dedicated section</a>. Nevertheless, let us summarize it briefly for the reader’s convenience.</p>
+<section id="general-case" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="general-case"><span class="header-section-number">1.1</span> General case</h2>
+<p>In its more general form, the <code>rlars</code> enable to characterize the normality of a pair <span class="math inline">\((x,y)\)</span> consisting in.a features vector <span class="math inline">\(x\)</span> and a label <span class="math inline">\(y\)</span> by the fact that the resisual defined by:</p>
+<p><span id="eq-racine_1"><span class="math display">\[
+R(x,y) = y-\sum_{k=0}^{n_m}c_k(x)y^k \approx 0
 \tag{1}\]</span></span></p>
-<p>is widely present in the expressions of physical laws.</p>
-<p>Think about Euler-Lagrange equations that characterize the majority of mechanical systems where the ineria matrix might depend on the angular positions making the expression of the external torque more in the form of <a href="#eq-rational" class="quarto-xref">Equation&nbsp;1</a> than <em>single polynomials</em>.</p>
-<p>the <code>rlars</code> module of the <strong>MizoPol</strong> suite has been initiated to address this specific case and as a matter of fact, when a pure rational relationship is present, <code>rlars</code> provides an explicit and elegant way to capture it.</p>
-<p>Meanwhile, it rapidly came out that in the general case, the identification of the relationships, as it is done in <code>rlars</code> generally leads to <strong><span class="math inline">\(y\)</span> being a root of a multivariate polynomials of degree <span class="math inline">\(r\ge 1\)</span> where the coefficients themselves, are polynomials in <span class="math inline">\(x\)</span></strong>.</p>
-<p>As a matter of fact, <a href="#eq-rational" class="quarto-xref">Equation&nbsp;1</a> is simple the explicit expression of <span class="math inline">\(y\)</span> being the root of the polynomial: <span class="math display">\[c_1(x)y-c_0(x)\]</span></p>
-<p>and it is only in this case (where the degree <span class="math inline">\(r=1\)</span>) that <span class="math inline">\(y\)</span> can be <strong>explicitly</strong> expressed as a function of the features vector <span class="math inline">\(x\)</span>. In the other cases, any one of the real multiple roots of the polynomial is an eligible candidate to be the value of <span class="math inline">\(y\)</span>.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="implicit characterization when $r>1$">
+<p>or equivalently:</p>
+<p><span id="eq-racine_2"><span class="math display">\[
+R(x,y) = \sum_{k=0}^{n_m}\bar c_k(x)y^k \approx 0\quad\vert \quad \bar c_k := \left\{\begin{array}{ll}
+c_k &amp; \text{if $k\neq 1$}\\
+c_k-1&amp; \text{if $k=1$}
+\end{array}\right.
+\tag{2}\]</span></span></p>
+<p>which can be simply stated as follows:</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="`rlars`normality characterization">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-implicit characterization when <span class="math inline">\(r&gt;1\)</span>
+<code>rlars</code>normality characterization
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In this last case (<span class="math inline">\(r&gt;0\)</span>) the <code>rlars</code> residual provides an implicit characterization of normality. However, this implicit characterization differs from the one provided by the <code>pwpol</code> module <a href="./pwpolynomials.html">(see the dedicated section)</a> in the way the residual is computed. The better choice is obviously problem-dependent.</p>
-<p>There is obviously a major difference which is that the number of piece-wise models in <code>rlars</code> cannot exceed the degree of the polynomials as implemented in <code>plars</code> (namely something around <span class="math inline">\(10\)</span>) while the <code>pwpol</code> module might involved unlimited number of sub-models to capture complex relationships.</p>
+<p>The normality is characterized by <span class="math inline">\(y\)</span> being a root of a polynomial whose coefficient are polynomial in <span class="math inline">\(x\)</span>. <code>rlars</code> attempt to find such polynomial if possible.</p>
 </div>
 </div>
-<p>In the following section, some more detailed and formal description of the mathematical structure describing the link between the label <span class="math inline">\(y\)</span> and the vector of features <span class="math inline">\(x\)</span> as expressed in a model provided by the <strong>rlars</strong> module is proposed.</p>
 </section>
-<section id="mathematical-structure" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Mathematical structure</h1>
-<section id="y-as-a-root-of-a-polynomial-with-x-dependent-polynomial-coefficients" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="y-as-a-root-of-a-polynomial-with-x-dependent-polynomial-coefficients"><span class="header-section-number">2.1</span> <span class="math inline">\(y\)</span> as a root of a polynomial with <span class="math inline">\(x\)</span>-dependent polynomial coefficients</h2>
-<p>Given,</p>
-<ul>
-<li>a <strong>vector of features</strong> <span class="math inline">\(x\)</span> and</li>
-<li>a <strong>label</strong> <span class="math inline">\(y\)</span>,</li>
-</ul>
-<p><code>rlars</code> looks for a set of multi-variate polynomials:</p>
-<p><span class="math display">\[
-c_0(x),\dots, c_r(x)
-\]</span></p>
-<p>such that <span class="math inline">\(y\)</span> is a root of the following scalar polyomial (in the unknown <span class="math inline">\(z\)</span>):</p>
-<p><span class="math display">\[
-c_r(x)z^r+\dots+c_1(x)z+c_0(x)
-\]</span></p>
-<p>More precisely, the following can be viewed as a residual for the normality characterization of the pair <span class="math inline">\((x,y)\)</span>:</p>
-<p><span id="eq-residualofrlars"><span class="math display">\[
-R(x,y):=c_r(x)y^r+\dots+c_0(x)
-\tag{2}\]</span></span></p>
-<p>that can be for instance used in anomaly detection.</p>
-<p>Moreover, as it is discussed in the previous section, when <span class="math inline">\(r=1\)</span>, the solution provides an explicit prediction formulae for the label <span class="math inline">\(y\)</span> as a rational explicit function of the vector of features <span class="math inline">\(x\)</span>.</p>
-</section>
-<section id="structure-of-the-relationships" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="structure-of-the-relationships"><span class="header-section-number">2.2</span> Structure of the relationships</h2>
-<p>In order to get a <em>feeling</em> regarding the class of relationships involved in the general case, some known facts are worth recalling.</p>
-<p>Let the polynomial be <span class="math display">\[
-p(z) = c_{r}(x) z^{r} + c_{r-1} z^{r-1} + \cdots + c_1(x)z + c_0,
-\]</span> and let its roots be <span class="math inline">\(z_1, z_2, \ldots, z_{r}\)</span> (which are generally complex numbers).</p>
-<p>Then Vieta’s formulas state that: <span class="math display">\[
-\begin{aligned}
-z_1 + z_2 + \cdots + z_{r} &amp;= -\frac{c_{r-1}(x)}{c_{r}(x)}, \\
-\sum_{1 \le i &lt; j \le r} z_i z_j &amp;= \frac{c_{r-2}(x)}{c_{r}(x)}, \\
-\sum_{1 \le i &lt; j &lt; k \le r} z_i z_j z_k &amp;= -\frac{c_{r-3}(x)}{c_{r}(x)}, \\
-&amp;\quad \vdots \\
-z_1 z_2 \cdots z_{r} &amp;= (-1)^{r} \frac{c_0(x)}{c_{r}(x)}.
-\end{aligned}
-\]</span></p>
-<p>This equations underlines the fact that the relationships are mainly composed transformations of rational relationships. This makes them quite rich compared to <em>simple</em> polynomial be it multivariate, and hence suggests that sparser relationships might be so expressed.</p>
-<p>At least, this discussion suggests that the two possibly implicit characterization provided by the <code>pwpol</code> and the <code>rlars</code> modules are complementary.</p>
-</section>
-</section>
-<section id="computation-flow" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Computation flow</h1>
-<p>In order to clarify the concept of <span class="math inline">\(y\)</span> being a root of a polynomial with <span class="math inline">\(x\)</span>-dependent polynomial coefficients and how this can be used to generate residuals, the following Figure gives a graphical representation of the computation flow:</p>
-<div id="fig-rlarsflow" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-rlarsflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/rlarsFlow.png" class="img-fluid figure-img">
+<section id="special-case-of-rational-representation" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="special-case-of-rational-representation"><span class="header-section-number">1.2</span> Special case of rational representation</h2>
+<p>In the spectic case where the degree <span class="math inline">\(n_m=1\)</span>, the <code>rlars</code> module delivers a rational expression of the label as a function of the vecteur of features <span class="math inline">\(x\)</span>, namely:</p>
+<p><span id="eq-rlars-rational"><span class="math display">\[
+y = -\dfrac{\bar c_0(x)}{\bar c_1(x)}
+\tag{3}\]</span></span></p>
+<p>where both <span class="math inline">\(\bar c_0\)</span> and <span class="math inline">\(\bar c_1\)</span> are multi-variate polynomials in potentially higher degree.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Meaning of $n_m=1$">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rlarsflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Illustration of the computation flow associated to the fitting of a plars instance followed by the computation of the coefficietns of the polynomial for which <span class="math inline">\(y\)</span> is expected to be a root. The evaluation of the polynomial at a value of a label enables to define the residual.
+<div class="callout-title-container flex-fill">
+Meaning of <span class="math inline">\(n_m=1\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notice that <span class="math inline">\(n_m=1\)</span> in <a href="#eq-racine_2" class="quarto-xref">Equation&nbsp;2</a> does not mean that the polynomials <span class="math inline">\(\bar c_k(x)\)</span> are of degree 1. It is the maximum power of <span class="math inline">\(y\)</span> that is equal to <span class="math inline">\(1\)</span> and not the degrees of the polynomials <span class="math inline">\(\bar c_k(\cdot)\)</span> that is concerned.</p>
+</div>
+</div>
+<p>As such, this special case for its own is a generalization of the structure that is searched for by the <code>plars</code> module where <span class="math inline">\(\bar c_1(\cdot) \equiv 1\)</span>.</p>
+</section>
+</section>
+<section id="the-fit-method" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> The <code>fit</code> method</h1>
+<p>The good news is that the calling arguments for the <code>rlars</code> module are exactly the same as the ones used for the <code>plars</code> (<a href="./plars_docs.html">see the dedicated section</a>).</p>
+<p>The following scripts create a rational function using a polynomial dedicated utilities which are available in the <code>mizopol.utils</code> module and then call <code>rlars</code> to fit a relationship:</p>
+<div class="small">
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.utils_api <span class="im">import</span> generate_pol, Polynomial</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mizopol.rlars_api <span class="im">import</span> fit</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>nx <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">100000</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.random.randn(N, nx)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate numerator and denominator polynomials</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>Pnum <span class="op">=</span> generate_pol(nx, deg<span class="op">=</span><span class="dv">3</span>, nModes<span class="op">=</span><span class="dv">4</span>, intercept<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>Pden <span class="op">=</span> generate_pol(nx, deg<span class="op">=</span><span class="dv">2</span>, nModes<span class="op">=</span><span class="dv">2</span>, intercept<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># compute gamma to avoid division by zero</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>den <span class="op">=</span> Pden(X)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>gamma <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> <span class="bu">abs</span>(den.<span class="bu">min</span>())</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># compute</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> Pnum(X) <span class="op">/</span> (gamma <span class="op">+</span> Pden(X))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> <span class="bu">dict</span>(deg<span class="op">=</span><span class="dv">4</span>, window<span class="op">=</span><span class="dv">100</span>, nModes<span class="op">=</span><span class="dv">40</span>, nModels<span class="op">=</span><span class="dv">20</span>, eps<span class="op">=</span><span class="fl">1e-3</span>, eta<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>dic_fit <span class="op">=</span> <span class="bu">dict</span>(</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    colNames<span class="op">=</span>[<span class="ss">f's</span><span class="sc">{</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(nx)],</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    compute_contributions<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    nfeats<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    th_monomial<span class="op">=</span><span class="fl">1e-4</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>sol, (cpu1, cpu2) <span class="op">=</span> fit(X<span class="op">=</span>X, y<span class="op">=</span>y, dic_rlars<span class="op">=</span>dic, dic_rlars_fit<span class="op">=</span>dic_fit)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sol.keys())</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'dfe_train = </span><span class="ch">\n</span><span class="st">'</span>, sol[<span class="st">'dfe_train'</span>])</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'------'</span>)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'df_contrib = </span><span class="ch">\n</span><span class="st">'</span>, sol[<span class="st">'df_contrib'</span>])</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'------'</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'df_sol = </span><span class="ch">\n</span><span class="st">'</span>, sol[<span class="st">'df_sol'</span>])</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'------'</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'cardinality = </span><span class="ch">\n</span><span class="st">'</span>, sol[<span class="st">'card'</span>])</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'------'</span>)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'cpu all=</span><span class="sc">{</span>cpu1<span class="sc">:2.3f}</span><span class="ss"> | cpu-distant=</span><span class="sc">{</span>cpu2<span class="sc">:2.3f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Results</p>
+<div class="very_small">
+<pre class="shell"><code>dict_keys(['nfeat', 'indices', 'powers', 'coefs', 'card', 'error', 'cpu', 'cols', 'bias_to_add', 'df_contrib', 'df_sol', 'dfe_train', 'eta', 'colNames', 'ymin', 'ymax'])
+dfe_train = 
+          Error
+50%   0.000052
+80%   0.000256
+90%   0.000583
+95%   0.001067
+98%   0.002070
+99%   0.002966
+100%  0.015861
+------
+df_contrib = 
+        Monomial  Contribution       std
+0          (s2)     -0.357707  0.025013
+1      (s1)(s2)      0.249449  0.021815
+2    (s2)(s3)^2     -0.182015  0.029892
+3        (s2)^3      0.170861  0.033580
+4  (s1)(s3!*!y)     -0.029507  0.008883
+5  (s2)(s2!*!y)      0.009927  0.001891
+------
+df_sol = 
+    s1  s2  s3  s1!*!y  s2!*!y  s3!*!y  Contribution       std     coefs  y_powers
+0   0   1   0       0       0       0     -0.357707  0.025013 -0.072478         0
+1   1   1   0       0       0       0      0.249449  0.021815  0.061161         0
+2   0   1   2       0       0       0     -0.182015  0.029892 -0.036096         0
+3   0   3   0       0       0       0      0.170861  0.033580  0.016694         0
+4   1   0   0       0       0       1     -0.029507  0.008883 -0.069995         1
+5   0   1   0       0       1       0      0.009927  0.001891  0.014073         1
+------
+cardinality = 
+ 6
+------
+cpu all=0.681 | cpu-distant=0.536</code></pre>
+</div>
+<p>Notice that the <code>df_sol</code> field of the returned solution <code>sol</code> informs about the degree <span class="math inline">\(n_m\)</span> of the polynomial (in <span class="math inline">\(y\)</span>) which is obviously here equal to one. This means that we have a purely rational function that has been identified. This might be tigthly related to the <code>th_monomial</code> value that is taked quite large!.</p>
+</section>
+<section id="the-predict-method" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> The <code>predict</code> method</h1>
+<p>Once a solution <code>sol</code> is fitted using the <code>fit</code> method, it can be used to predict the residual corresponding to a new pair <span class="math inline">\((X,y)\)</span> of features matrix <span class="math inline">\(X\)</span> and a label vector <span class="math inline">\(y\)</span>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>R, residual, df_res, (cpu1, cpu2) <span class="op">=</span> predict(X, y, sol<span class="op">=</span>sol, eta<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'df_res = </span><span class="ch">\n</span><span class="st">'</span>, df_res)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'cpu-total = </span><span class="sc">{</span>cpu1<span class="sc">:2.3f}</span><span class="ss"> | cpu-distant = </span><span class="sc">{</span>cpu2<span class="sc">:2.3f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Results</p>
+<div class="very_small">
+<pre class="shell"><code>df_res = 
+       per-Error
+50%    0.000177
+80%    0.000870
+90%    0.001982
+95%    0.003625
+98%    0.007033
+99%    0.010077
+100%   0.053887
+cpu-total = 1.093 | cpu-distant = 0.753</code></pre>
+</div>
+<section id="ouput-arguments-of-predict" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="ouput-arguments-of-predict"><span class="header-section-number">3.1</span> Ouput arguments of <code>predict</code></h2>
+<div class="small">
+<div id="tbl-rlars-returned" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-rlars-returned-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: output arguments of the <code>predict</code> method of the <code>rlars</code> module.
 </figcaption>
+<div aria-describedby="tbl-rlars-returned-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 9%">
+<col style="width: 67%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>R</code></td>
+<td style="text-align: left;"><code>list[list[complex]]</code></td>
+<td style="text-align: left;">list of roots of the <span class="math inline">\(y\)</span> equation <a href="#eq-racine_2" class="quarto-xref">Equation&nbsp;2</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>residual</code></td>
+<td style="text-align: left;"><code>list[float]</code></td>
+<td style="text-align: left;">Residual of the <span class="math inline">\(y\)</span> equation <a href="#eq-racine_2" class="quarto-xref">Equation&nbsp;2</a> at <span class="math inline">\(y\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>df_res</code></td>
+<td style="text-align: left;"><code>pandas dataframe</code></td>
+<td style="text-align: left;">Normalized residual dataframe</td>
+</tr>
+</tbody>
+</table>
+</div>
 </figure>
 </div>
-<p>In the following section, an example is provided that illustrates the use of the <em>rlars</em> in designing invariant relationships that hold for the twing pendulum system.</p>
+</div>
 
 
 </section>
+</section>
 
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>Meaning single multi-variate polynomials and not explicit piece-wise polynomials class which can be viewed as universal and complete class of relationships.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1033,13 +1182,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./pwpol_bench.html" class="pagination-link" aria-label="pwpol: The benchmark">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">pwpol: The benchmark</span>
+      <a href="./pwpol_docs.html" class="pagination-link" aria-label="pwpol documentation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">pwpol documentation</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./rlars_twin.html" class="pagination-link" aria-label="rlars: Twin-pendulum">
-        <span class="nav-page-text">rlars: Twin-pendulum</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./about.html" class="pagination-link" aria-label="About mizopol">
+        <span class="nav-page-text">About mizopol</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

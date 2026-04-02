@@ -1,0 +1,185 @@
+---
+title: qlars
+subtitle: API documentation 
+---
+
+***
+
+# The `rlars` module's objective
+
+The objective of the `rlars` module of the `MizoPol` package is described in a previous [dedicated section](rlars_intro.qmd). Nevertheless, let us summarize it briefly for the reader's convenience. 
+
+## General case 
+
+In its more general form, the `rlars` enable to characterize the normality of a pair $(x,y)$ consisting in.a features vector $x$ and a label $y$ by the fact that the resisual defined by:
+
+$$
+R(x,y) = y-\sum_{k=0}^{n_m}c_k(x)y^k \approx 0
+$${#eq-racine_1}
+
+or equivalently: 
+
+$$
+R(x,y) = \sum_{k=0}^{n_m}\bar c_k(x)y^k \approx 0\quad\vert \quad \bar c_k := \left\{\begin{array}{ll}
+c_k & \text{if $k\neq 1$}\\
+c_k-1& \text{if $k=1$}
+\end{array}\right.
+$${#eq-racine_2}
+
+which can be simply stated as follows:
+
+:::{.callout-tip title="`rlars`normality characterization"}
+The normality is characterized by $y$ being a root of a polynomial whose coefficient are polynomial in $x$. `rlars` attempt to find such polynomial if possible. 
+:::
+
+## Special case of rational representation  
+
+In the spectic case where the degree $n_m=1$, the `rlars` module delivers a rational expression of the label as a function of the vecteur of features $x$, namely: 
+
+$$
+y = -\dfrac{\bar c_0(x)}{\bar c_1(x)}
+$${#eq-rlars-rational}
+
+where both $\bar c_0$ and $\bar c_1$ are multi-variate polynomials in potentially higher degree. 
+
+:::{.callout-important title="Meaning of $n_m=1$"}
+Notice that $n_m=1$ in @eq-racine_2 does not mean that the polynomials $\bar c_k(x)$ are of degree 1. It is the maximum power of $y$ that is equal to $1$ and not the degrees of the polynomials $\bar c_k(\cdot)$ that is concerned. 
+:::
+
+As such, this special case for its own is a generalization of the structure that is searched for by the `plars` module where $\bar c_1(\cdot) \equiv 1$. 
+
+# The `fit` method
+
+The good news is that the calling arguments for the `rlars` module are exactly the same as the ones used for the `plars` ([see the dedicated section](plars_docs.qmd)). 
+
+The following scripts create a rational function using a polynomial dedicated utilities which are available in the `mizopol.utils` module and then call `rlars` to fit a relationship: 
+
+:::{.small}
+```python 
+from mizopol.utils_api import generate_pol, Polynomial
+from mizopol.rlars_api import fit
+
+nx = 3
+N = 100000
+X = np.random.randn(N, nx)
+
+# Generate numerator and denominator polynomials
+Pnum = generate_pol(nx, deg=3, nModes=4, intercept=True)
+Pden = generate_pol(nx, deg=2, nModes=2, intercept=False)
+
+# compute gamma to avoid division by zero
+den = Pden(X)
+gamma = 2 * abs(den.min())
+
+# compute
+y = Pnum(X) / (gamma + Pden(X))
+
+dic = dict(deg=4, window=100, nModes=40, nModels=20, eps=1e-3, eta=90)
+
+dic_fit = dict(
+    colNames=[f's{i + 1}' for i in range(nx)],
+    compute_contributions=True,
+    nfeats=None,
+    th_monomial=1e-4
+)
+
+sol, (cpu1, cpu2) = fit(X=X, y=y, dic_rlars=dic, dic_rlars_fit=dic_fit)
+
+print(sol.keys())
+print('dfe_train = \n', sol['dfe_train'])
+print('------')
+print('df_contrib = \n', sol['df_contrib'])
+print('------')
+print('df_sol = \n', sol['df_sol'])
+print('------')
+print('cardinality = \n', sol['card'])
+print('------')
+print(f'cpu all={cpu1:2.3f} | cpu-distant={cpu2:2.3f}')
+```
+:::
+
+Results
+
+:::{.very_small}
+```shell
+dict_keys(['nfeat', 'indices', 'powers', 'coefs', 'card', 'error', 'cpu', 'cols', 'bias_to_add', 'df_contrib', 'df_sol', 'dfe_train', 'eta', 'colNames', 'ymin', 'ymax'])
+dfe_train = 
+          Error
+50%   0.000052
+80%   0.000256
+90%   0.000583
+95%   0.001067
+98%   0.002070
+99%   0.002966
+100%  0.015861
+------
+df_contrib = 
+        Monomial  Contribution       std
+0          (s2)     -0.357707  0.025013
+1      (s1)(s2)      0.249449  0.021815
+2    (s2)(s3)^2     -0.182015  0.029892
+3        (s2)^3      0.170861  0.033580
+4  (s1)(s3!*!y)     -0.029507  0.008883
+5  (s2)(s2!*!y)      0.009927  0.001891
+------
+df_sol = 
+    s1  s2  s3  s1!*!y  s2!*!y  s3!*!y  Contribution       std     coefs  y_powers
+0   0   1   0       0       0       0     -0.357707  0.025013 -0.072478         0
+1   1   1   0       0       0       0      0.249449  0.021815  0.061161         0
+2   0   1   2       0       0       0     -0.182015  0.029892 -0.036096         0
+3   0   3   0       0       0       0      0.170861  0.033580  0.016694         0
+4   1   0   0       0       0       1     -0.029507  0.008883 -0.069995         1
+5   0   1   0       0       1       0      0.009927  0.001891  0.014073         1
+------
+cardinality = 
+ 6
+------
+cpu all=0.681 | cpu-distant=0.536
+```
+:::
+
+Notice that the `df_sol` field of the returned solution `sol` informs about the degree $n_m$ of the polynomial (in $y$) which is obviously here equal to one. This means that we have a purely rational function that has been identified. This might be tigthly related to the `th_monomial` value that is taked quite large!. 
+
+# The `predict` method 
+
+Once a solution `sol` is fitted using the `fit` method, it can be used to predict the residual corresponding to a new pair $(X,y)$ of features matrix $X$ and a label vector $y$. 
+
+```python 
+R, residual, df_res, (cpu1, cpu2) = predict(X, y, sol=sol, eta=50)
+
+print('df_res = \n', df_res)
+print(f'cpu-total = {cpu1:2.3f} | cpu-distant = {cpu2:2.3f}')
+```
+
+Results
+
+:::{.very_small}
+```shell
+df_res = 
+       per-Error
+50%    0.000177
+80%    0.000870
+90%    0.001982
+95%    0.003625
+98%    0.007033
+99%    0.010077
+100%   0.053887
+cpu-total = 1.093 | cpu-distant = 0.753
+```
+:::
+
+## Ouput arguments of `predict` 
+
+:::{.small}
+::: {#tbl-rlars-returned}
+| Parameter | Type | Used for | Default | 
+|:-----------|:----|:----------------------------------| 
+| `R`     | `list[list[complex]]` | list of roots of the $y$ equation @eq-racine_2 | 
+| `residual`  | `list[float]` | Residual of the $y$ equation @eq-racine_2 at $y$|
+| `df_res` | `pandas dataframe` | Normalized residual dataframe 
+
+: output arguments of the `predict` method of the `rlars` module.
+:::
+:::
+
+

@@ -115,6 +115,8 @@ website:
             href: g2sys_docs.qmd
           - text: pwpol documentation 
             href: pwpol_docs.qmd
+          - text: rlars documentation 
+            href: rlars_docs.qmd 
       - about.qmd
 
 format:
