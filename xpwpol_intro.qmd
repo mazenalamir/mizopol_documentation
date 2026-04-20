@@ -1,0 +1,24 @@
+---
+title: xpwpol
+subtitle: Explicit piece-wise polynomial representation.
+---
+
+***
+
+Unlike the implicit relationships provided by the `pwpol` module which can only provides normality residuals, Explicit piece-wise polynomial representations provide **explicit** prediction of a label. 
+
+This prediction is generally **more precise** that the one provided by a single polynomial explicit representation returned by `plars`. On the other hand, when used only to compute normality residuals, it might be less tight than the one provided by the `pwpol` implicit represenation. 
+
+The computation architecture that is adopted inisde the `xpwpol` module is schematically shown in the Figure below: 
+
+![Schematic view of the principle of the xpwpol module](./images/scheme_xpwpol.png){#fig-selectors}
+
+More precisely: 
+
+- The module uses the `pwpol` module to compute a reduced number of multi-variate polynomials ($P_i$, $i=1,\dots,n_r$) which captures the relationships in different regions of the features spaces. The issues is that it generally impossible to compute a high fidelity regions' classifiers. 
+
+- Here is where the `xpwpol` attempts a heuristic solution *encompassing an amount of randomness* in order to define multiple voters. Each of these voters possess a partitioning tools that decomposes the featurs spaces in a scalable way providing for each sub-region a specific choice of the polynomial to be used. This mechanism is represented in @fig-selectors by the selectors (in orange). 
+
+- For any new (unseen) given vector of features, each of the voter provides an estimation `y_i` of the label which are then aggregated to provide the final estimation. 
+
+More details on the associated API and the available tuning parameters are provided in the related [API-documentation section](xpwpol_docs.qmd). 

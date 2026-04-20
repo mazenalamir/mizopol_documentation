@@ -1,0 +1,118 @@
+---
+title: xpwpol
+subtitle: Example of explicit piewe-wise polynomial representation of a manipulator robot.
+---
+
+*** 
+
+![The manipulator robot with 4-axis](images/staubliPhoto.png){width="20%" fig-align="left"}
+
+We consdier the same manipulator robot that is used in the [`plars` section](plars_staubli_4.qmd) and the [`pwpol` section](pwpol_robot.qmd) in order to illustrate the use of the `xpwpol` module. 
+
+Notice that regarding the script provided in the present section, they are provided to give a brief illustration. For the detailed description of the syntax and the available parameters, please refer to the related [API-documentation section](xpwpol_docs.qmd).
+
+## Data Preparation 
+
+:::{.small}
+```python 
+df_robot = pd.read_csv('../datasets/robot_staubli_4axes.csv', index_col=0)
+
+test_size = 0.8
+nTrain = int((1-test_size)*len(df_robot))
+dfTrain = df_robot.iloc[0:nTrain]
+dfTest = df_robot.iloc[nTrain:]
+```
+:::
+
+## Fit the supporting `pwpol` implicit model 
+
+Recall that we first need to obtain a `pwpol` model. So we start by setting the parameters for the `pwpol` model fitting. 
+
+:::{.small}
+```python
+from mizopol.pwpol_api import  fit as pwpol_fit
+
+# set the parameters of the solution 
+args = dict(
+        colX=colX,
+        coly=coly,
+        th=0.15,
+        deg=3,
+        window=2000,
+        eps=1e-2,
+        compute_contributions=True,
+        th_monomial=1e-5,
+        eta=50,
+    )
+
+# fit the pwpol model.
+pwpModel, (cpu1, cpu2) = pwpol_fit(df=dfTrain, args=args)
+```
+:::
+
+## Fit the `xpwpol` model 
+
+:::{.small}
+```python 
+from mizopol.xpwpol_api import fit 
+
+# set the parameters of the solution 
+argsx = dict(
+    nDiv=500,
+    nVoters_max=100,
+    nModesRegions=5,
+    degPolRegions=3,
+    qmaxNormalization=99,
+    nJumpFit=20,
+    qOpt=95,
+    revise=True,
+    contractionFac=0.95,
+)
+
+# Use the pwpol obtained above to fit the xpwpol model
+model, (cpu1, cpu2) = fit(dfTrain, pwpModel, argsx)
+```
+:::
+
+A typical log of the `xpwpol` fit method is given below: 
+
+:::{.very_small}
+```shell
+Iter: 0, | error: [0.215, 0.376, 0.488, 0.601, 0.755, 0.903, 1.858] |nVoters: 1
+Iter: 17, | error: [0.187, 0.349, 0.456, 0.569, 0.721, 0.86, 2.635] |nVoters: 2
+```
+:::
+
+where, in this case, only two voters were found appropriate, given the maximum number of attempts allowed by the setting `nVoters_max=100`. 
+
+## Comparison
+
+The following residuals are computed on the `dfTest` test dataset for the three representation of normality, namely, the implicit one associated to the use of the `pwpol` modules and the two explicit representatin (predictive), namely:
+
+- The explicit piece-wise polynomial representation provided by the `xpwpol` module. 
+- The explicit single polynomial representation provided by the `plars` module. 
+
+all the representations use polynomials of maximum degree $3$. 
+
+::: {.columns}
+
+::: {.column width="31%"}
+![`pwpol` residuals (Implicit)](./images/xpwpol_comparison_pwpol.png)
+:::
+
+::: {.column width="1%"}
+:::
+
+::: {.column width="31.5%"}
+![`xpwpol` residuals (Explicit)](./images/xpwpol_comparison_xpwpol.png)
+:::
+
+::: {.column width="1%"}
+:::
+
+::: {.column width="31%"}
+![`plars` residuals (Explicit)](./images/xpwpol_comparison_plars.png)
+:::
+:::
+
+These comparisons shows that the `xpwpol` provides significantly improved precision when compared to a single polynomial explicit representation. 

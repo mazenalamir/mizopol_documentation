@@ -103,6 +103,22 @@ The **pwpol** module is detailed [here](pwp_intro.qmd).
 
 ![Schematic view of a piece-wise defined relationship with two regions $\mathcal R_a$ and $\mathcal R_b$ and the random search hypercubes used in the `pwpol` module.](images/piece_wise.png){width=100%} 
 
+# `xpwpol` 
+
+This module builds on the previous one, namely `pwpol` in order to provides an explicit piece-wise polynomial representation. More precisely, this is done in two steps: 
+
+1. First an impicit piece-wise polynomial representation is obtained by using `pwpol`. This provides the set of polynomials $P_\sigma$ mentioned in @eq-residual-implicit.
+
+2. Then the new tools available in `xwpol` works on the above resulting set in order to provide an explicit representation of the form: 
+
+$$
+\hat y = \dfrac{1}{n_v} \sum_{\kappa=1}^{n_v}P_{\sigma(x\vert \kappa)}(x)\quad \text{where}\quad \sigma(x\vert \kappa)\in \{1,\dots,n_r\}
+$${#eq-xpwpol-charac}
+
+where $n_v$ is an integer representing a number of voters while $\sigma(x\vert i_v)$ is the index of the selected polynomial at the vector of features $x$ for the $i_v$-th voter. 
+
+More detailed are provided in the [`xpwpol`-dedicated section](xpwpol_intro.qmd).
+
 
 # `rlars`
 

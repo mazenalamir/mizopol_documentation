@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Piece-wise polynomials – MizoPol</title>
+<title>xpwpol – MizoPol</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -29,8 +29,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./parsimony.html" rel="next">
-<link href="./polynomials.html" rel="prev">
+<link href="./xpwpol_robotic.html" rel="next">
+<link href="./pwpol_bench.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -183,7 +183,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./overview.html"><strong>Preliminaries</strong></a></li><li class="breadcrumb-item"><a href="./pwpolynomials.html">piewe-wise polynomials</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./xpwpol_intro.html"><strong>xpwpol</strong></a></li><li class="breadcrumb-item"><a href="./xpwpol_intro.html">xpwpol: Intro</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -224,7 +224,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pwpolynomials.html" class="sidebar-item-text sidebar-link active">
+  <a href="./pwpolynomials.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">piewe-wise polynomials</span></a>
   </div>
 </li>
@@ -394,7 +394,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./xpwpol_intro.html" class="sidebar-item-text sidebar-link">
+  <a href="./xpwpol_intro.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">xpwpol: Intro</span></a>
   </div>
 </li>
@@ -510,29 +510,16 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#why" id="toc-why" class="nav-link active" data-scroll-target="#why"><span class="header-section-number">1</span> Why?</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">2</span> Examples</a></li>
-  <li><a href="#explicit-form" id="toc-explicit-form" class="nav-link" data-scroll-target="#explicit-form"><span class="header-section-number">3</span> Explicit form</a>
-  <ul class="collapse">
-  <li><a href="#the-need-for-an-implicit-form" id="toc-the-need-for-an-implicit-form" class="nav-link" data-scroll-target="#the-need-for-an-implicit-form"><span class="header-section-number">3.1</span> The need for an implicit form</a></li>
-  </ul></li>
-  <li><a href="#implicit-form" id="toc-implicit-form" class="nav-link" data-scroll-target="#implicit-form"><span class="header-section-number">4</span> Implicit form</a></li>
-  <li><a href="#all-the-identification-are-parsimonious" id="toc-all-the-identification-are-parsimonious" class="nav-link" data-scroll-target="#all-the-identification-are-parsimonious"><span class="header-section-number">5</span> All the identification are parsimonious</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./overview.html"><strong>Preliminaries</strong></a></li><li class="breadcrumb-item"><a href="./pwpolynomials.html">piewe-wise polynomials</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./xpwpol_intro.html"><strong>xpwpol</strong></a></li><li class="breadcrumb-item"><a href="./xpwpol_intro.html">xpwpol: Intro</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Piece-wise polynomials</h1>
-<p class="subtitle lead">On the rationale behind and the explicit/implicit forms of piece-wise polynomial residuals and their potential use.</p>
+<h1 class="title">xpwpol</h1>
+<p class="subtitle lead">Explicit piece-wise polynomial representation.</p>
 </div>
 
 
@@ -550,156 +537,30 @@ window.Quarto = {
 
 
 <hr>
-<p>In this section, we discuss the class of piece-wise polynomial relationships, in their implicit and explicit forms.</p>
-<p>But let us first justify the reason for which these relationships might be of great help in characterizing the normality in industrial time-series and hence in detecting unmodelled anomalies in industrial equipments.</p>
-<section id="why" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="why"><span class="header-section-number">1</span> Why?</h2>
-<p>Although multi-variate polynomials relationhips cover a wide class of physical laws, it is obvious that they do not cover every possibility. Think about the relationship involving trigonometric functions, square roots, exponential or rational relationships<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-<p>However, any smooth relationship can be represented by <strong>region-dependent</strong> polynomials, namely:</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Piece-wise polynomials">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p>Unlike the implicit relationships provided by the <code>pwpol</code> module which can only provides normality residuals, Explicit piece-wise polynomial representations provide <strong>explicit</strong> prediction of a label.</p>
+<p>This prediction is generally <strong>more precise</strong> that the one provided by a single polynomial explicit representation returned by <code>plars</code>. On the other hand, when used only to compute normality residuals, it might be less tight than the one provided by the <code>pwpol</code> implicit represenation.</p>
+<p>The computation architecture that is adopted inisde the <code>xpwpol</code> module is schematically shown in the Figure below:</p>
+<div id="fig-selectors" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-selectors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/scheme_xpwpol.png" class="img-fluid figure-img">
 </div>
-<div class="callout-title-container flex-fill">
-Piece-wise polynomials
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-selectors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Schematic view of the principle of the xpwpol module
+</figcaption>
+</figure>
 </div>
-</div>
-<div class="callout-body-container callout-body">
-<p>the feature space is <em>partitioned</em> into a set of regions over each of which a polynomial relationship captures the dependencies that hold on that specific region.</p>
-</div>
-</div>
-<p>In the industrial context, the regions mentioned above can be the result of <strong>different contexts</strong> of use that might encompass different tunings of controller, different values of the set-points (which might be absent from the set of measurement contained in the dataset) or different configurations of the system.</p>
-</section>
-<section id="examples" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="examples"><span class="header-section-number">2</span> Examples</h2>
-<p>One can simply think about a controlled system that tracks some reference signal <span class="math inline">\(\texttt{y\_ref}\)</span> and depending on the error <span class="math inline">\(e=y-\texttt{y\_ref}\)</span> between the regulated signal <span class="math inline">\(y\)</span> and that reference <span class="math inline">\(\texttt{y\_ref}\)</span>. In order to avoid overshoots, it is common to define a <strong>gain scheduled</strong> feedback which applies a control voltage, say <span class="math inline">\(u\)</span> which is propotional to the error with a proportional gain <span class="math inline">\(K\)</span> that is:</p>
+<p>More precisely:</p>
 <ul>
-<li><strong>High</strong> when small tracking errors are measured and</li>
-<li><strong>Low</strong> when high tracking errors are measured.</li>
+<li><p>The module uses the <code>pwpol</code> module to compute a reduced number of multi-variate polynomials (<span class="math inline">\(P_i\)</span>, <span class="math inline">\(i=1,\dots,n_r\)</span>) which captures the relationships in different regions of the features spaces. The issues is that it generally impossible to compute a high fidelity regions’ classifiers.</p></li>
+<li><p>Here is where the <code>xpwpol</code> attempts a heuristic solution <em>encompassing an amount of randomness</em> in order to define multiple voters. Each of these voters possess a partitioning tools that decomposes the featurs spaces in a scalable way providing for each sub-region a specific choice of the polynomial to be used. This mechanism is represented in <a href="#fig-selectors" class="quarto-xref">Figure&nbsp;1</a> by the selectors (in orange).</p></li>
+<li><p>For any new (unseen) given vector of features, each of the voter provides an estimation <code>y_i</code> of the label which are then aggregated to provide the final estimation.</p></li>
 </ul>
-<p>Namely</p>
-<p><span id="eq-conditionalgain"><span class="math display">\[
-u = \left\{
-\begin{array}{ll}
--K_h\times e\quad &amp; \text{if $\vert e\vert \le \epsilon$}\\
--K_\ell\times e\quad &amp; \text{otherwise}\\
-\end{array}
-\right.
-\tag{1}\]</span></span></p>
-<p>This obviously splits the space (via the condition <span class="math inline">\(\vert y-\texttt{y\_{ref}}\vert\le \epsilon\)</span>) into two regions over each of which the relationship between the features <span class="math inline">\((y,\texttt{y\_ref})\)</span> and the targeted label <span class="math inline">\(u\)</span> is polynomial (linear in the specific example) but there is no a single polynomial relationship that matches <a href="#eq-conditionalgain" class="quarto-xref">Equation&nbsp;1</a> on the whole space of features.</p>
-<p>This example is quite simple compared to industrial context where so many parameters might be involved in the definition of the so-called context. The latter is rarely available to the engineer in charge of designing anomaly detection algorithms. This means that:</p>
-<div class="callout callout-style-default callout-warning callout-titled" title="Blind handling of context">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Blind handling of context
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The normality characterization algorithm should be unaware of the parameters that defines the context (the different regions of smooth relationships). The piece-wise relationships should be built <strong>without the knowlege</strong> of the precise definition of the unknown region.</p>
-</div>
-</div>
-<div class="columns">
-<div class="column" style="width:65%;">
-<p>The figure aside shows another examples that comes from the <a href="https://www.kaggle.com/datasets/mazenalamir/parametric-anomaly-detection-in-time-series">Kaggle dataset</a> dedicated to the parameteric anomaly detection in time-series.</p>
-<p>Over each of the four regions, a sensor <span class="math inline">\(y\)</span> depends on the features vector <span class="math inline">\(x\in \mathbb R^2\)</span> through different polynomials, namely:</p>
-<p><span id="eq-explicit"><span class="math display">\[
-y = P_i(x)\quad x\in \mathcal R_i\quad i\in \{1,\dots,4\}
-\tag{2}\]</span></span></p>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:30%;">
-<p><img src="images/pwregions.png" class="img-fluid"></p>
-</div>
-</div>
-<p>Beside the examples discussed above which are induced by the presence of different operational modes, the need for piece-wise polynomial structures can be triggered by the need to approximate non rigorously polynomial relationships between the sensors involved.</p>
-</section>
-<section id="explicit-form" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="explicit-form"><span class="header-section-number">3</span> Explicit form</h2>
-<p>When the region is known, namely when it is possible, knowing <span class="math inline">\(x\)</span> to associate the index <span class="math inline">\(i\)</span> of the region as shown in <a href="#eq-explicit" class="quarto-xref">Equation&nbsp;2</a>, the relationship is called <strong>explicit piewe-wise polynomial</strong>.</p>
-<p>More precisely, in the case of explicit piece-wise relationships, there exists a known integer values map <span class="math inline">\(i^\star\)</span> such that for a given <span class="math inline">\(x\)</span>, <span class="math inline">\(i^\star(x)\)</span> denotes the index of the region to which belong the features vector <span class="math inline">\(x\)</span>:</p>
-<p><span id="eq-indexmap"><span class="math display">\[
-x\in \mathcal R_{i^\star(x)}
-\tag{3}\]</span></span></p>
-<p>In this case, the relationship <a href="#eq-explicit" class="quarto-xref">Equation&nbsp;2</a> enables to <em>predict</em> the value of the label <span class="math inline">\(y\)</span> for a given value of the features vector <span class="math inline">\(x\)</span>. The normality is then associated to the so-called <strong>prediction error</strong> given by:</p>
-<p><span id="eq-explicit-error"><span class="math display">\[
-e = \mu\Bigl(\overbrace{P_{i^\star(x)}(x)}^{\hat y(x)}-y\Bigr)
-\tag{4}\]</span></span></p>
-<p>Although the explicit piece-wise polynomial form is even larger than the explicit single unique polynomial form, it is sometimes hard to find for the reasons invoked in the following section.</p>
-<section id="the-need-for-an-implicit-form" class="level3" data-number="3.1">
-<h3 data-number="3.1" class="anchored" data-anchor-id="the-need-for-an-implicit-form"><span class="header-section-number">3.1</span> The need for an implicit form</h3>
-<p>Unfortunately, as it has been mentioned earlier, it is not always possible to identify the region’s index map <a href="#eq-indexmap" class="quarto-xref">Equation&nbsp;3</a> in real-life situations. There are two reasons for this impossibility:</p>
-<ol type="1">
-<li><p>The first lies in the difficulties associated to the identification of the classifier represented by the index region map <span class="math inline">\(i^\star(x)\)</span> even when it factually exists.</p></li>
-<li><p>More importantly, it is possible that there is no explicit relationship between the feature vector <span class="math inline">\(x\)</span> and the label <span class="math inline">\(y\)</span> because the information contained in <span class="math inline">\(x\)</span> is not complete.</p>
-<p>This is the case for instance when the true <em>hidden</em> relationship that governs <span class="math inline">\(y\)</span> takes the following form:</p>
-<p><span class="math display">\[
-y = F(x, z)\quad  \text{$z$ not available}
-\]</span></p>
-<p>where <span class="math inline">\(z\)</span> is a context variable having a finite set of unknown values that do not <strong>uniquely</strong> depend on the vector <span class="math inline">\(x\)</span> of features<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Obviously, since in this case, the context does not depend on the features, it is impossible to identify the index map from the sole knowledge of <span class="math inline">\(x\)</span> as <span class="math inline">\(z\)</span> which is a crucial information that is needed to define the region, is simply not available.</p></li>
-</ol>
-<p>Here is where the implicit form of the piece-wise relationships enter into the scene. This is explained in the next section.</p>
-</section>
-</section>
-<section id="implicit-form" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="implicit-form"><span class="header-section-number">4</span> Implicit form</h2>
-<p>In the implicit form of the normality characterization via piece-wise polynomial relationships, the residual is defined by the following equality:</p>
-<p><span id="eq-implicit-pwpol"><span class="math display">\[
-e = \min_{i=1}^{n_r} \left\vert y - P_i(x)\right\vert
-\tag{5}\]</span></span></p>
-<p>where <span class="math inline">\(n_r\)</span> is the number of multi-variate polynomials that are involved in the implicit relationship.</p>
-<p>It is important to notice that:</p>
-<div class="callout callout-style-default callout-warning callout-titled" title="No predicted value of $y$">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-No predicted value of <span class="math inline">\(y\)</span>
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The relationship <a href="#eq-implicit-pwpol" class="quarto-xref">Equation&nbsp;5</a> that determines the residual <span class="math inline">\(e\)</span> expresses the distance of the measurement <span class="math inline">\(y\)</span> to the closest value among the set of values provided by the set of polynomials at <span class="math inline">\(x\)</span>, namely:</p>
-<p><span class="math display">\[\text{Set of values of the implicit model at $x$}\qquad \Bigl\{\hat y_i(x):=P_i(x)\Bigr\}_{i\le n_r}\]</span></p>
-<p>There is no way to compute the predicted value of <span class="math inline">\(y\)</span> (by the model) before the true value of <span class="math inline">\(y\)</span> is known.</p>
-<p>In other words, in the absence of <span class="math inline">\(y\)</span>, there is no way to determine which one of the values <span class="math inline">\(P_i(x)\)</span> is the closest to the true value <span class="math inline">\(y\)</span>. Nevetheless, whey <span class="math inline">\((x,y)\)</span> is available, a residual (distance to normality) can be computed by <a href="#eq-implicit-pwpol" class="quarto-xref">Equation&nbsp;5</a>.</p>
-</div>
-</div>
-<p>This is why the implicit relationships are mainly used to characterize the normality and hence to <strong>raise alarms</strong> when the residual goes beyond some pre-defined threshold.</p>
-<p>The explicit form might be used for both anomalies detection and digital twin enhancement. But the latter is less common to be found.</p>
-</section>
-<section id="all-the-identification-are-parsimonious" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="all-the-identification-are-parsimonious"><span class="header-section-number">5</span> All the identification are parsimonious</h2>
-<p>In the above discussion, we did not recall the fact that:</p>
-<div class="callout callout-style-default callout-note callout-titled" title="All raltionships are parsimoniously identified">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-All raltionships are parsimoniously identified
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>whether they are implicit or explicit, the polynomial relationships that are identified by the modules of the <code>MizoPol</code> suite are all <strong>parsimonious</strong>.</p>
-</div>
-</div>
-<p>The reasons for which parsimony is a key element in the context of processing industrial and technological time-series are discussed in the <a href="./parsimony.html">parsimony-dedicated section</a>.</p>
+<p>More details on the associated API and the available tuning parameters are provided in the related <a href="./xpwpol_docs.html">API-documentation section</a>.</p>
 
 
-</section>
 
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>Notice however that if these non polynomial maps are a priori known, a virtual components might be added to the vector of features <span class="math inline">\(x\)</span> so that the standard polynomial structure become appropriate to capture the originally non polynomial relationships. But we do not consider this case here.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Think about a robot performing a set of different tasks involving pieces of different weights and/or moments of ineria.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1122,13 +983,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./polynomials.html" class="pagination-link" aria-label="Polynomials">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Polynomials</span>
+      <a href="./pwpol_bench.html" class="pagination-link" aria-label="pwpol: The benchmark">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">pwpol: The benchmark</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./parsimony.html" class="pagination-link" aria-label="Parsimony: Intro">
-        <span class="nav-page-text">Parsimony: Intro</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./xpwpol_robotic.html" class="pagination-link" aria-label="xpwpol: Robotic">
+        <span class="nav-page-text">xpwpol: Robotic</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

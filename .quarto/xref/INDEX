@@ -106,5 +106,14 @@
   },
   "graph_intro.qmd": {
     "graph_intro.html": "dbbb6796"
+  },
+  "xpwpol_intro.qmd": {
+    "xpwpol_intro.html": "65b3516f"
+  },
+  "xpwpol_docs.qmd": {
+    "xpwpol_docs.html": "6ce7b5de"
+  },
+  "xpwpol_robotic.qmd": {
+    "xpwpol_robotic.html": "1eabed11"
   }
 }
