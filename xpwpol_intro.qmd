@@ -9,9 +9,15 @@ Unlike the implicit relationships provided by the `pwpol` module which can only 
 
 This prediction is generally **more precise** that the one provided by a single polynomial explicit representation returned by `plars`. On the other hand, when used only to compute normality residuals, it might be less tight than the one provided by the `pwpol` implicit represenation. 
 
+The explicit relationship provided by the `xpwpol` module takes the following form:
+
+$$
+\hat y = \dfrac{1}{n_v} \sum_{\kappa=1}^{n_v}P_{\sigma(x\vert \kappa)}(x)\quad \text{where}\quad \sigma(x\vert \kappa)\in \{1,\dots,n_r\}
+$${#eq-xpwpol-charac-bis}
+
 The computation architecture that is adopted inisde the `xpwpol` module is schematically shown in the Figure below: 
 
-![Schematic view of the principle of the xpwpol module](./images/scheme_xpwpol.png){#fig-selectors}
+![Schematic view of the principle of the xpwpol module. The number $n$ of voters is precisely the integer $n_v$ used in @eq-xpwpol-charac-bis. The aggregation box performs the average of the values predicted by the different voters although any different kind of aggregation can be implemented. ](./images/scheme_xpwpol.png){#fig-selectors}
 
 More precisely: 
 

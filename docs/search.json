@@ -1286,7 +1286,7 @@
     "href": "xpwpol_intro.html",
     "title": "xpwpol",
     "section": "",
-    "text": "Unlike the implicit relationships provided by the pwpol module which can only provides normality residuals, Explicit piece-wise polynomial representations provide explicit prediction of a label.\nThis prediction is generally more precise that the one provided by a single polynomial explicit representation returned by plars. On the other hand, when used only to compute normality residuals, it might be less tight than the one provided by the pwpol implicit represenation.\nThe computation architecture that is adopted inisde the xpwpol module is schematically shown in the Figure below:\n\n\n\n\n\n\nFigure 1: Schematic view of the principle of the xpwpol module\n\n\n\nMore precisely:\n\nThe module uses the pwpol module to compute a reduced number of multi-variate polynomials (\\(P_i\\), \\(i=1,\\dots,n_r\\)) which captures the relationships in different regions of the features spaces. The issues is that it generally impossible to compute a high fidelity regions’ classifiers.\nHere is where the xpwpol attempts a heuristic solution encompassing an amount of randomness in order to define multiple voters. Each of these voters possess a partitioning tools that decomposes the featurs spaces in a scalable way providing for each sub-region a specific choice of the polynomial to be used. This mechanism is represented in Figure 1 by the selectors (in orange).\nFor any new (unseen) given vector of features, each of the voter provides an estimation y_i of the label which are then aggregated to provide the final estimation.\n\nMore details on the associated API and the available tuning parameters are provided in the related API-documentation section.",
+    "text": "Unlike the implicit relationships provided by the pwpol module which can only provides normality residuals, Explicit piece-wise polynomial representations provide explicit prediction of a label.\nThis prediction is generally more precise that the one provided by a single polynomial explicit representation returned by plars. On the other hand, when used only to compute normality residuals, it might be less tight than the one provided by the pwpol implicit represenation.\nThe explicit relationship provided by the xpwpol module takes the following form:\n\\[\n\\hat y = \\dfrac{1}{n_v} \\sum_{\\kappa=1}^{n_v}P_{\\sigma(x\\vert \\kappa)}(x)\\quad \\text{where}\\quad \\sigma(x\\vert \\kappa)\\in \\{1,\\dots,n_r\\}\n\\tag{1}\\]\nThe computation architecture that is adopted inisde the xpwpol module is schematically shown in the Figure below:\n\n\n\n\n\n\nFigure 1: Schematic view of the principle of the xpwpol module. The number \\(n\\) of voters is precisely the integer \\(n_v\\) used in Equation 1. The aggregation box performs the average of the values predicted by the different voters although any different kind of aggregation can be implemented.\n\n\n\nMore precisely:\n\nThe module uses the pwpol module to compute a reduced number of multi-variate polynomials (\\(P_i\\), \\(i=1,\\dots,n_r\\)) which captures the relationships in different regions of the features spaces. The issues is that it generally impossible to compute a high fidelity regions’ classifiers.\nHere is where the xpwpol attempts a heuristic solution encompassing an amount of randomness in order to define multiple voters. Each of these voters possess a partitioning tools that decomposes the featurs spaces in a scalable way providing for each sub-region a specific choice of the polynomial to be used. This mechanism is represented in Figure 1 by the selectors (in orange).\nFor any new (unseen) given vector of features, each of the voter provides an estimation y_i of the label which are then aggregated to provide the final estimation.\n\nMore details on the associated API and the available tuning parameters are provided in the related API-documentation section.",
     "crumbs": [
       "Home",
       "**xpwpol**",
@@ -1507,6 +1507,102 @@
       "Home",
       "**xpwpol**",
       "xpwpol: Robotic"
+    ]
+  },
+  {
+    "objectID": "xpwpol_docs.html",
+    "href": "xpwpol_docs.html",
+    "title": "xpwpol",
+    "section": "",
+    "text": "As it has been briefly mentioned in the introductory section, the xpwpol module enables to parsimoniously identify an explicit piece-wise polynomial relationships of the form:\n\\[\n\\hat y = \\dfrac{1}{n_v} \\sum_{\\kappa=1}^{n_v}P_{\\sigma(x\\vert \\kappa)}(x)\\quad \\text{where}\\quad \\sigma(x\\vert \\kappa)\\in \\{1,\\dots,n_r\\}\n\\tag{1}\\]\nwhere the multivariate polynomials \\(P_\\sigma\\), \\(\\sigma=1,\\dots,n_r\\) are those associated to the implicit piece-wise model pwpModel that is an input argument of the call of the xpwpol module. The pwpModel is issued from the fit method of the pwpol module.",
+    "crumbs": [
+      "Home",
+      "**API documentation**",
+      "xpwpol documentation"
+    ]
+  },
+  {
+    "objectID": "xpwpol_docs.html#the-voters",
+    "href": "xpwpol_docs.html#the-voters",
+    "title": "xpwpol",
+    "section": "2 The Voters",
+    "text": "2 The Voters\nThe concept of voter stems from the difficulties of fitting a good classifier for the regions where each of the polynomials \\(P_\\sigma\\) holds, on the one hand, and from the difficulty to define a scalable systematic partitionning of the features space (as the number of regions exponentially grows in the number of features) on the other hand.\nThe idea is then to use a set of \\(n_v\\) scalar partitionning of the features space using another set of polynomials, denoted hereafter by \\(\\pi_\\kappa(x)\\) so that the \\(\\kappa\\)-th voter partitions the features space according to the nDiv quantiles of the scalar \\(z_\\kappa = \\pi_\\kappa(x-x^{(\\kappa)}_c)\\):\n\\[\n\\texttt{per}^{(\\kappa)}:=\\texttt{percentile}\\Big(\\pi_k(X_\\texttt{train}-X_c^{(k)}), q=Q(\\texttt{nDiv})\\Bigr)\n\\]{eq-percentiles}\nwhere:\n\\[\nQ(\\texttt{nDiv}) := \\Biggl\\{\\dfrac{1}{\\texttt{nDiv}},\\dots, \\dfrac{1-\\texttt{nDiv}}{\\texttt{nDiv}}\\Biggr\\}\\times 100\n\\tag{2}\\]\nBy so doing, the voter indexed by \\(\\kappa\\) associated to any vector of features \\(x\\) a region’s index \\(i_\\kappa(x)\\) that is defined by:\n\\[\ni_\\kappa(x) := \\min_j\\Bigl\\{\\texttt{per}_j^{(\\kappa)}\\ge \\pi_\\kappa(x-x_c^{(\\kappa)})\\Bigr\\}\n\\tag{3}\\]\nThe last step is then to associated to each of the nDiv possible value of \\(i_\\kappa(x)\\), the associated polynomial \\(P_\\sigma\\) to be used. This is summarized in a dictionary with \\((\\kappa, i)\\) as keys:\n\\[\n\\texttt{dicSol}(\\kappa, i): \\sigma\\quad (\\kappa,i)\\in \\{1,\\dots,n_v\\}\\times \\{1,\\dots,n_r\\}\n\\tag{4}\\]\nwhich explicits the notation \\(\\sigma(x\\vert \\kappa)\\) used in Equation 1, namely:\n\\[\n\\sigma(x\\vert \\kappa) = \\texttt{dicSol}[\\kappa,i_\\kappa(x)]\n\\tag{5}\\]",
+    "crumbs": [
+      "Home",
+      "**API documentation**",
+      "xpwpol documentation"
+    ]
+  },
+  {
+    "objectID": "xpwpol_docs.html#recall-of-the-structure-of-the-model",
+    "href": "xpwpol_docs.html#recall-of-the-structure-of-the-model",
+    "title": "xpwpol",
+    "section": "1 Recall of the structure of the model",
+    "text": "1 Recall of the structure of the model\nAs it has been briefly mentioned in the introductory section, the xpwpol module enables to parsimoniously identify an explicit piece-wise polynomial relationships of the form:\n\\[\n\\hat y = \\dfrac{1}{n_v} \\sum_{\\kappa=1}^{n_v}P_{\\sigma(x\\vert \\kappa)}(x)\\quad \\text{where}\\quad \\sigma(x\\vert \\kappa)\\in \\{1,\\dots,n_r\\}\n\\tag{1}\\]\nwhere the multivariate polynomials \\(P_\\sigma\\), \\(\\sigma=1,\\dots,n_r\\) are those associated to the implicit piece-wise model pwpModel that is an input argument of the call of the xpwpol module. The pwpModel is issued from the fit method of the pwpol module.\n\n\n\n\n\n\nxpwpol needs pwpol\n\n\n\nBefore using the xpwpol module, an implicit model pwpModel needs to be fitted as it is used as one of the input arguments of the xpwpol module.",
+    "crumbs": [
+      "Home",
+      "**API documentation**",
+      "xpwpol documentation"
+    ]
+  },
+  {
+    "objectID": "xpwpol_docs.html#the-structure-of-the-model",
+    "href": "xpwpol_docs.html#the-structure-of-the-model",
+    "title": "xpwpol",
+    "section": "1 The structure of the model",
+    "text": "1 The structure of the model\nAs it has been briefly mentioned in the introductory section, the xpwpol module enables to parsimoniously identify an explicit piece-wise polynomial relationships of the form:\n\\[\n\\hat y = \\dfrac{1}{n_v} \\sum_{\\kappa=1}^{n_v}P_{\\sigma(x\\vert \\kappa)}(x)\\quad \\text{where}\\quad \\sigma(x\\vert \\kappa)\\in \\{1,\\dots,n_r\\}\n\\tag{1}\\]\nwhere the multivariate polynomials \\(P_\\sigma\\), \\(\\sigma=1,\\dots,n_r\\) are those associated to the implicit piece-wise model pwpModel that is an input argument of the call of the xpwpol module. The pwpModel is issued from the fit method of the pwpol module.\n\n\n\n\n\n\nxpwpol needs pwpol\n\n\n\nBefore using the xpwpol module, an implicit model pwpModel needs to be fitted as it is used as one of the input arguments of the xpwpol module.",
+    "crumbs": [
+      "Home",
+      "**API documentation**",
+      "xpwpol documentation"
+    ]
+  },
+  {
+    "objectID": "xpwpol_docs.html#the-xpwpol-arguments-args",
+    "href": "xpwpol_docs.html#the-xpwpol-arguments-args",
+    "title": "xpwpol",
+    "section": "3 The xpwpol arguments args",
+    "text": "3 The xpwpol arguments args\nThe xpwpol objects created by the xpwpol module presents a set of arguments (some of which might have defaults values). Table Table 1 describes these arguments and their potential default values. The way these parameters are used is clarified in the forthcoming sections which describe the available methods and their examples of use.\n\n\n\n\nTable 1: Possible entries in the args used in the xpwpol module.\n\n\n\n\n\n\n\n\n\n\n\nParameter\nType\nUsed for\nDefault\n\n\n\n\ndegPolRegions\nint\nThe degree of the regions polynomials \\(\\pi_\\kappa\\)\n1\n\n\nnModesRegions\nint\nMaximum number of monomials used in \\(\\pi_\\kappa\\)\n10\n\n\nqmaxNormalization\nfloat\nThe quantile used in normalizing the features\n95\n\n\nnDiv\nint\nNumber of partitions used for each voters\n5\n\n\nnJump_fit\nint\nUnder-sampling of the training data used in the fit\n1\n\n\nqOpt\nint\npercentile of error to be optimized\n95\n\n\ncontractionFac\nfloat\nThe contraction of the qOpt value needed to include a new voter (&lt;1)\n0.95\n\n\neta\nint\nThe quantile used in the computation of the normalized prediction errors\n50\n\n\nrevise\nbool\nWhether to check if a single voter is better than the aggregation\nTrue\n\n\nregionsPolsPowers\nlist[list[list[int]]]\nThe list of power matrices of the voters\nNone\n\n\nregionsPolsCoefs\nlist[list[float]]\nThe list of coefficients vectors of the voters\nNone\n\n\nnVoters\nint\nThe effective number of voters\nNone\n\n\ndicPartitionners\nlist[dict]\nThe list of partitionners (computing the indices \\(i_\\kappa(x)\\) for a vector of features \\(x\\))\nNone\n\n\nxc\nlist[list[float]]\nThe list of centers \\(x_c^{(\\kappa)}\\) used by the different voters\nNone\n\n\nxNormalization\nlist[float]\nThe vector of features normalization induced by the choice of the qmaxNormalization value\nNone\n\n\ndicSol\ndict\nThe dictionary dicSol invoked in Equation 5 which associated a polynomial index \\(\\sigma\\) to a pair of indices representing the voter and the region in the features space\nNone",
+    "crumbs": [
+      "Home",
+      "**API documentation**",
+      "xpwpol documentation"
+    ]
+  },
+  {
+    "objectID": "xpwpol_docs.html#the-fit-method",
+    "href": "xpwpol_docs.html#the-fit-method",
+    "title": "xpwpol",
+    "section": "4 The fit method",
+    "text": "4 The fit method\nlet us examine the example of use consisting in fitting an explicit piece-wise polynomial model for the sensor PS3 of the now famous Zema example.\n\n4.1 Fitting an implicit pwpModel\nAs explained earlier the first step is to derive an implicit model using the pwpol module as already explained in the dedicated section.\n\nfrom mizopol.pwpol_api import  fit as pwpol_fit\n\n# Download the dataframe \ndf = pd.read_csv('datasets/Zema.csv', index_col=0).iloc[::5]\n\n# Choose the features columns and the label \ncoly = 'PS3'\ncolX = [c for c in df.columns if c != coly]\n\n# Set the calling arguments' dictionary \nargs = dict(\n    th=0.05,\n    deg=3,\n    window=200,\n    th_monomial=1e-3,\n)\n\n# Fit the implicit pwpModel\npwpModel, (cpu1, cpu2) = pwpol_fit(\n                    df=df[::10], \n                    colX=colX, \n                    coly=coly, \n                    args=args\n                    )\n print(f'Implilcit pwpol fit Done -&gt; cpu total = {cpu1:1.3} | cpu distant {cpu2:1.3} \\n')\n\n\nTreated   0% | #rows=   5109 | #models =   0 | #coeffs =   0, | th=0.050\nTreated  84% | #rows=    839 | #models =   1 | #coeffs =   3, | th=0.050\nTreated  92% | #rows=    435 | #models =   2 | #coeffs =   9, | th=0.050\nTreated  95% | #rows=    272 | #models =   3 | #coeffs =  14, | th=0.050\nTreated  95% | #rows=    272 | #models =   3 | #coeffs =  14, | th=0.050\nTreated  96% | #rows=    206 | #models =   4 | #coeffs =  36, | th=0.060\nTreated  96% | #rows=    206 | #models =   4 | #coeffs =  36, | th=0.060\nTreated  96% | #rows=    206 | #models =   4 | #coeffs =  36, | th=0.060\nTreated  96% | #rows=    206 | #models =   4 | #coeffs =  36, | th=0.060\nTreated  98% | #rows=    150 | #models =   5 | #coeffs =  45, | th=0.104\nImplilcit pwpol fit Done -&gt; cpu total = 34.3 | cpu distant 34.2 \n\nUpon executing this script, one disposes of the implicit model pwpModel which involves \\(5\\) polynomials \\(P_\\sigma, \\sigma=1,\\dots,n_r=5\\). This model can be now used in the call for the fit method of the xpwpol module as shown hereafter\n\n\n4.2 Fitting an xpwpol model\n\n\n# Prepare the dictionar of arguments \nargsx = dict(\n        nDiv=100,\n        nVoters_max=100,\n        nModesRegions=5,\n        degPolRegions=3,\n        qmaxNormalization=99,\n        nJumpFit=1,\n        qOpt=95,\n        revise=True\n)\n# Fit the model\nmodel, (cpu1, cpu2) = fit(df, pwpModel, argsx)\n\nprint(f'cpu total for xpwpol fit Done = {cpu1:1.3} | cpu distant {cpu2:1.3} \\n')\n\n\nIter: 0, | error: [0.021, 0.049, 0.073, 0.119, 0.333, 0.576, 3.24] |nVoters: 1\nIter: 1, | error: [0.02, 0.045, 0.063, 0.089, 0.196, 0.33, 2.328] |nVoters: 2\nIter: 8, | error: [0.019, 0.045, 0.062, 0.083, 0.157, 0.279, 3.106] |nVoters: 3\ncpu total for xpwpol fit Done = 24.3 | cpu distant 23.5 \n\nIn this case, The xpwpol found an explicit solution involving \\(3\\) voters. Notice how:\n\nthe 99% normalized error’s percentile has been improved from 0.576 to 0.279 for instance upon adding new voters to the aggregation process described above (47%).\nthe 95% normalized error’s percentile which is targeted by the random optimization (since qOpt=95 is used) has been improved from 0.119 to 0.083 (69%).\n\nNotice taht The resulting model can then be used in the prediction as explained in the following section.",
+    "crumbs": [
+      "Home",
+      "**API documentation**",
+      "xpwpol documentation"
+    ]
+  },
+  {
+    "objectID": "xpwpol_docs.html#the-predict-method",
+    "href": "xpwpol_docs.html#the-predict-method",
+    "title": "xpwpol",
+    "section": "5 The predict method",
+    "text": "5 The predict method\n\nfrom mizopol.xpwpol_api import predict\n\nypred, (cpu1, cpu2) = predict(df, model)\n\nprint(f'xpwpol predict Done -&gt; cpu total = {cpu1:1.3} | cpu distant {cpu2:1.3} \\n')\n\nytrue = df[coly].values\ndfe = normalized_error(ytrue, ypred, 50)\nprint(dfe)\nxpwpol predict Done -&gt; cpu total = 1.15 | cpu distant 0.538 \n\n         Error\n50%   0.019564\n80%   0.045247\n90%   0.062677\n95%   0.083211\n98%   0.157111\n99%   0.279688\n100%  3.106232",
+    "crumbs": [
+      "Home",
+      "**API documentation**",
+      "xpwpol documentation"
+    ]
+  },
+  {
+    "objectID": "xpwpol_docs.html#examining-the-dicsol-dictionary",
+    "href": "xpwpol_docs.html#examining-the-dicsol-dictionary",
+    "title": "xpwpol",
+    "section": "6 Examining the dicSol dictionary",
+    "text": "6 Examining the dicSol dictionary\nIt is interesting to examine how each voter decomposes the features spaces into regions and affects a specific polynomial to each one of them.\nThis can be easily visualized using the dicSol field of the model.\n\nfrom mizopol.xpwpol_api import plot_dicSol\n\nfig = plot_dicSol(model)\nfig.show()\n\n\n\n\nTypical features-based explicit selection of the polynomial (among the five polynomials incuded in the identified implicit model) to be used in the prediction. The x-axis represents the index of the nDiv quantiles used in the features space’s partitioning",
+    "crumbs": [
+      "Home",
+      "**API documentation**",
+      "xpwpol documentation"
     ]
   }
 ]

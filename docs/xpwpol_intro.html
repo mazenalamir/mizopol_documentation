@@ -539,6 +539,10 @@ window.Quarto = {
 <hr>
 <p>Unlike the implicit relationships provided by the <code>pwpol</code> module which can only provides normality residuals, Explicit piece-wise polynomial representations provide <strong>explicit</strong> prediction of a label.</p>
 <p>This prediction is generally <strong>more precise</strong> that the one provided by a single polynomial explicit representation returned by <code>plars</code>. On the other hand, when used only to compute normality residuals, it might be less tight than the one provided by the <code>pwpol</code> implicit represenation.</p>
+<p>The explicit relationship provided by the <code>xpwpol</code> module takes the following form:</p>
+<p><span id="eq-xpwpol-charac-bis"><span class="math display">\[
+\hat y = \dfrac{1}{n_v} \sum_{\kappa=1}^{n_v}P_{\sigma(x\vert \kappa)}(x)\quad \text{where}\quad \sigma(x\vert \kappa)\in \{1,\dots,n_r\}
+\tag{1}\]</span></span></p>
 <p>The computation architecture that is adopted inisde the <code>xpwpol</code> module is schematically shown in the Figure below:</p>
 <div id="fig-selectors" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -546,7 +550,7 @@ window.Quarto = {
 <img src="./images/scheme_xpwpol.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-selectors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Schematic view of the principle of the xpwpol module
+Figure&nbsp;1: Schematic view of the principle of the xpwpol module. The number <span class="math inline">\(n\)</span> of voters is precisely the integer <span class="math inline">\(n_v\)</span> used in <a href="#eq-xpwpol-charac-bis" class="quarto-xref">Equation&nbsp;1</a>. The aggregation box performs the average of the values predicted by the different voters although any different kind of aggregation can be implemented.
 </figcaption>
 </figure>
 </div>
