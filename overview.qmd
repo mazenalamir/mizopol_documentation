@@ -84,12 +84,13 @@ The **g2sys** module is detailed [here](g2sys_intro.qmd)
 
 # `pwpol`
 
-
+:::{.callout-note title="Problem statement"}
 Given a set of sensors $s_j$, $j=1,\dots,n_s$ and a target sensor $s_i$, find a set of $n_r$ polynomials $P_\sigma$, $\sigma=1,\dots,n_r$, such that the following residual: 
 $$
 e_i = \min_{\sigma=1}^{n_r}\Bigl\vert s_i-P_\sigma(\{s_j\}_{j\neq i})\Bigr\vert
 $${#eq-residual-implicit}
 is small.
+:::
 
 Notice that: 
 
